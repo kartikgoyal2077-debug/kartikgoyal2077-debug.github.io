@@ -1,102 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Kartik Goyal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Kartik Goyal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<style>
+:root {
+  --bg: #0f2027;
+  --bg2: #203a43;
+  --bg3: #2c5364;
+  --card: rgba(255,255,255,0.12);
+  --text: #ffffff;
+  --accent: #7dd3fc;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-    }
+.light {
+  --bg: #f8fafc;
+  --bg2: #e2e8f0;
+  --bg3: #cbd5e1;
+  --card: rgba(255,255,255,0.6);
+  --text: #111;
+  --accent: #2563eb;
+}
 
-    .card {
-      width: 90%;
-      max-width: 400px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-    }
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
-    .avatar {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #fff;
-      margin-bottom: 15px;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg), var(--bg2), var(--bg3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  transition: 0.5s;
+}
 
-    h1 {
-      margin: 10px 0 5px;
-      font-weight: 600;
-    }
+.app {
+  width: 92%;
+  max-width: 420px;
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  animation: fadeUp 1s ease;
+}
 
-    p {
-      font-size: 14px;
-      opacity: 0.8;
-      margin-bottom: 25px;
-    }
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(30px); }
+  to { opacity:1; transform: translateY(0); }
+}
 
-    a {
-      display: block;
-      margin: 12px 0;
-      padding: 14px;
-      border-radius: 14px;
-      text-decoration: none;
-      color: #fff;
-      background: rgba(255,255,255,0.15);
-      transition: all 0.3s ease;
-    }
+.avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 4px solid var(--accent);
+  object-fit: cover;
+  margin-bottom: 15px;
+}
 
-    a:hover {
-      background: #fff;
-      color: #000;
-      transform: translateY(-3px);
-    }
+h1 { margin: 10px 0 5px; }
+p { font-size: 14px; opacity: 0.85; }
 
-    footer {
-      margin-top: 20px;
-      font-size: 12px;
-      opacity: 0.6;
-    }
-  </style>
+.btn {
+  display: block;
+  margin: 12px 0;
+  padding: 14px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--text);
+  background: rgba(255,255,255,0.18);
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: var(--accent);
+  color: #000;
+  transform: translateY(-3px);
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.controls button {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.section {
+  display: none;
+  animation: fadeUp 0.6s ease;
+}
+
+.section.active { display: block; }
+
+footer {
+  margin-top: 18px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+</style>
 </head>
 
 <body>
-  <div class="card">
+<div class="app">
 
-    <!-- upload profile.jpg to repo -->
-    <img src="profile.jpg" class="avatar" alt="Profile">
+  <!-- profile image -->
+  <img src="profile.jpg" class="avatar" alt="Profile">
 
-    <h1>Kartik Goyal</h1>
-    <p>A glimpse into my life & journey 🚀</p>
+  <h1>Kartik Goyal</h1>
+  <p>A glimpse into my life & journey 🚀</p>
 
-    <a href="https://www.instagram.com/k4325412" target="_blank">📸 Instagram</a>
-    <a href="https://x.com/Onlystudy694544" target="_blank">🐦 Twitter / X</a>
-    <a href="https://github.com/kartikgoyal2077-debug" target="_blank">💻 GitHub</a>
-
-    <footer>
-      © 2026 Kartik Goyal
-    </footer>
-
+  <div class="controls">
+    <button onclick="toggleTheme()">🌙 / ☀️</button>
+    <button onclick="toggleMusic()">🎵</button>
   </div>
+
+  <!-- HOME -->
+  <div id="home" class="section active">
+    <a class="btn" href="#" onclick="show('about')">👤 About Me</a>
+    <a class="btn" href="#" onclick="show('contact')">📩 Contact</a>
+    <a class="btn" href="https://www.instagram.com/k4325412" target="_blank">📸 Instagram</a>
+    <a class="btn" href="https://x.com/Onlystudy694544" target="_blank">🐦 Twitter / X</a>
+    <a class="btn" href="https://github.com/kartikgoyal2077-debug" target="_blank">💻 GitHub</a>
+  </div>
+
+  <!-- ABOUT -->
+  <div id="about" class="section">
+    <p>
+      Hi, I’m Kartik 👋  
+      I share my journey, thoughts, and learning as I grow in life and tech.
+    </p>
+    <a class="btn" href="#" onclick="show('home')">⬅ Back</a>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="contact" class="section">
+    <p>Email: <b>coming soon</b></p>
+    <p>DMs open on Instagram ✨</p>
+    <a class="btn" href="#" onclick="show('home')">⬅ Back</a>
+  </div>
+
+  <footer>
+    👀 Visitors: <span id="count">0</span><br>
+    © 2026 Kartik Goyal
+  </footer>
+
+</div>
+
+<!-- Background music -->
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* section navigation */
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* dark / light mode */
+function toggleTheme() {
+  document.body.classList.toggle('light');
+}
+
+/* background music */
+let playing = false;
+function toggleMusic() {
+  const m = document.getElementById('music');
+  playing ? m.pause() : m.play();
+  playing = !playing;
+}
+
+/* visitor counter (local) */
+let visits = localStorage.getItem('visits');
+visits = visits ? Number(visits) + 1 : 1;
+localStorage.setItem('visits', visits);
+document.getElementById('count').innerText = visits;
+</script>
+
 </body>
 </html>
 
