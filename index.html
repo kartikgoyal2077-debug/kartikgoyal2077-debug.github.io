@@ -5,119 +5,129 @@
 <title>Kartik Goyal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Syne',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
 
 body{
-  height:100vh;
-  overflow:hidden;
-  background:#000;
-  color:#fff;
+  min-height:100vh;
+  background:#0b0f14;
+  color:#e5e7eb;
+  overflow-x:hidden;
 }
 
-/* 🌌 animated gradient */
+/* animated ambient background */
 .bg{
   position:fixed;
   inset:0;
   background:
     radial-gradient(circle at 20% 30%, #38bdf8, transparent 40%),
     radial-gradient(circle at 80% 70%, #a855f7, transparent 40%),
-    radial-gradient(circle at 50% 50%, #22c55e, transparent 40%);
-  filter: blur(120px);
-  animation: move 18s infinite alternate ease-in-out;
+    radial-gradient(circle at 50% 90%, #22c55e, transparent 40%);
+  filter:blur(120px);
+  animation: drift 20s infinite alternate ease-in-out;
+  z-index:-1;
 }
-@keyframes move{
-  0%{transform:scale(1)}
-  100%{transform:scale(1.4) rotate(20deg)}
+@keyframes drift{
+  from{transform:scale(1)}
+  to{transform:scale(1.4) rotate(12deg)}
 }
 
-.app{
-  position:relative;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:80px 20px;
+}
+
+/* HERO */
+.hero{
   text-align:center;
-  padding:20px;
+  margin-bottom:100px;
 }
-
-h1{
+.hero h1{
   font-size:clamp(2.5rem,6vw,4rem);
   letter-spacing:-1px;
-  animation: reveal 1.2s ease forwards;
 }
-@keyframes reveal{
-  from{opacity:0;transform:translateY(40px)}
-  to{opacity:1;transform:none}
-}
-
-p{
-  margin-top:12px;
+.hero p{
+  margin-top:16px;
   opacity:.7;
-  animation: reveal 1.6s ease forwards;
+  font-size:16px;
 }
 
-.links{
-  margin-top:40px;
-  display:flex;
-  gap:24px;
-  flex-wrap:wrap;
-  justify-content:center;
+/* SECTION */
+.section{
+  margin-bottom:100px;
+}
+.section h2{
+  font-size:22px;
+  margin-bottom:16px;
+}
+.section p{
+  max-width:600px;
+  opacity:.75;
+  line-height:1.7;
 }
 
-a{
-  text-decoration:none;
-  color:#fff;
-  font-size:18px;
-  position:relative;
-}
-a::after{
-  content:'';
-  position:absolute;
-  left:0;bottom:-4px;
-  width:0;height:2px;
-  background:#fff;
-  transition:.3s;
-}
-a:hover::after{width:100%}
-
-/* 🎧 fake audio visualizer */
-.visualizer{
-  display:flex;
-  gap:6px;
-  margin-top:50px;
-}
-.bar{
-  width:6px;
-  height:30px;
-  background:#fff;
-  animation: beat 1s infinite ease-in-out;
-}
-.bar:nth-child(odd){animation-delay:.2s}
-.bar:nth-child(even){animation-delay:.4s}
-
-@keyframes beat{
-  0%,100%{height:12px;opacity:.4}
-  50%{height:48px;opacity:1}
-}
-
-.controls{
+/* QUOTES */
+.quote-box{
   margin-top:30px;
-  display:flex;
-  gap:20px;
+  padding:24px;
+  border-left:4px solid #38bdf8;
+  background:rgba(255,255,255,.04);
 }
-button{
+.quote{
+  font-size:18px;
+}
+.author{
+  margin-top:10px;
+  font-size:14px;
+  opacity:.6;
+}
+
+/* MUSIC */
+.player{
+  margin-top:30px;
+}
+.progress{
+  height:6px;
+  background:rgba(255,255,255,.2);
+  border-radius:999px;
+  overflow:hidden;
+  cursor:pointer;
+}
+.progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:#38bdf8;
+}
+.controls{
+  display:flex;
+  gap:14px;
+  margin-top:14px;
+}
+.controls button{
   background:none;
   border:1px solid rgba(255,255,255,.3);
   color:#fff;
-  padding:10px 16px;
+  padding:8px 14px;
   border-radius:999px;
   cursor:pointer;
 }
-button:hover{background:rgba(255,255,255,.15)}
+
+/* LINKS */
+.links{
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+}
+.links a{
+  color:#fff;
+  text-decoration:none;
+  opacity:.7;
+}
+.links a:hover{opacity:1}
 </style>
 </head>
 
@@ -125,43 +135,112 @@ button:hover{background:rgba(255,255,255,.15)}
 
 <div class="bg"></div>
 
-<div class="app">
-  <h1>Kartik Goyal</h1>
-  <p>building • learning • experimenting</p>
+<div class="container">
 
-  <div class="links">
-    <a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
-    <a href="https://x.com/Onlystudy694544" target="_blank">X</a>
-    <a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Kartik Goyal</h1>
+    <p>learning • thinking • evolving</p>
   </div>
 
-  <div class="visualizer">
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    <div class="bar"></div><div class="bar"></div>
+  <!-- IDEAS -->
+  <div class="section">
+    <h2>Why this site exists</h2>
+    <p>
+      This is my personal space on the internet.  
+      Not a portfolio. Not a social profile.  
+      A place where my ideas, music, thoughts, and journey stay —  
+      even when platforms change.
+    </p>
   </div>
 
-  <div class="controls">
-    <button onclick="play()">▶ Play</button>
-    <button onclick="next()">⏭ Next</button>
+  <!-- QUOTES -->
+  <div class="section">
+    <h2>Thoughts I live by</h2>
+
+    <div class="quote-box">
+      <div class="quote" id="quoteText">
+        “Small consistent steps beat intense bursts.”
+      </div>
+      <div class="author" id="quoteAuthor">
+        — Kartik
+      </div>
+    </div>
   </div>
+
+  <!-- MUSIC -->
+  <div class="section">
+    <h2>Music</h2>
+
+    <div class="player">
+      <small id="songName">Now playing</small>
+      <div class="progress" onclick="seek(event)">
+        <span id="bar"></span>
+      </div>
+
+      <div class="controls">
+        <button onclick="togglePlay()">▶ / ⏸</button>
+        <button onclick="forward()">⏩</button>
+        <button onclick="nextSong()">⏭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="section">
+    <h2>Find me</h2>
+    <div class="links">
+      <a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
+      <a href="https://x.com/Onlystudy694544" target="_blank">X</a>
+      <a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
+    </div>
+  </div>
+
 </div>
 
 <audio id="audio"></audio>
 
 <script>
-const songs=["song1.mp3","song2.mp3","song3.mp3"];
-let i=0;
+/* MUSIC */
+const songs=[
+  {src:"song1.mp3",name:"Focus"},
+  {src:"song2.mp3",name:"Calm"},
+  {src:"song3.mp3",name:"Late Night"}
+];
+let i=0,playing=false;
 const audio=document.getElementById("audio");
-audio.src=songs[i];
+audio.src=songs[i].src;
 
-function play(){audio.play()}
-function next(){
-  i=(i+1)%songs.length;
-  audio.src=songs[i];
-  audio.play();
+function togglePlay(){
+  playing?audio.pause():audio.play();
+  playing=!playing;
 }
-
+function nextSong(){
+  i=(i+1)%songs.length;
+  audio.src=songs[i].src;
+  audio.play();playing=true;
+  songName.innerText=songs[i].name;
+}
+function forward(){audio.currentTime+=10}
+audio.ontimeupdate=()=>bar.style.width=(audio.currentTime/audio.duration*100)+"%";
+function seek(e){
+  const r=e.currentTarget.getBoundingClientRect();
+  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+}
 document.addEventListener("click",()=>audio.play().catch(()=>{}),{once:true});
+
+/* QUOTES (easy to extend) */
+const quotes=[
+  "Small consistent steps beat intense bursts.",
+  "Discipline is choosing what you want most.",
+  "You don’t need motivation when you build systems.",
+  "Growth is quiet. Results are loud."
+];
+let qi=0;
+setInterval(()=>{
+  qi=(qi+1)%quotes.length;
+  quoteText.innerText="“"+quotes[qi]+"”";
+},6000);
 </script>
 
 </body>
