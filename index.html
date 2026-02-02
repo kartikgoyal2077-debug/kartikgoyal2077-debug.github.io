@@ -5,258 +5,164 @@
 <title>Kartik Goyal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#0b0f14;
-  --glass:rgba(255,255,255,.08);
-  --border:rgba(255,255,255,.15);
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --accent:#38bdf8;
-}
-
-.light{
-  --bg:#f5f7fb;
-  --glass:rgba(255,255,255,.7);
-  --border:rgba(0,0,0,.08);
-  --text:#111827;
-  --muted:#4b5563;
-  --accent:#2563eb;
-}
-
-*{box-sizing:border-box;font-family:'Inter',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Syne',sans-serif}
 
 body{
-  margin:0;
-  min-height:100vh;
-  background:radial-gradient(circle at top,var(--accent),transparent 40%),var(--bg);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:var(--text);
-  transition:.5s;
+  height:100vh;
+  overflow:hidden;
+  background:#000;
+  color:#fff;
+}
+
+/* 🌌 animated gradient */
+.bg{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, #38bdf8, transparent 40%),
+    radial-gradient(circle at 80% 70%, #a855f7, transparent 40%),
+    radial-gradient(circle at 50% 50%, #22c55e, transparent 40%);
+  filter: blur(120px);
+  animation: move 18s infinite alternate ease-in-out;
+}
+@keyframes move{
+  0%{transform:scale(1)}
+  100%{transform:scale(1.4) rotate(20deg)}
 }
 
 .app{
-  width:100%;
-  max-width:420px;
-  height:90vh;
-  background:var(--glass);
-  backdrop-filter:blur(30px);
-  border:1px solid var(--border);
-  border-radius:28px;
+  position:relative;
+  height:100%;
   display:flex;
   flex-direction:column;
-  overflow:hidden;
-  box-shadow:0 40px 80px rgba(0,0,0,.45);
-  animation:pop .8s cubic-bezier(.16,1,.3,1);
-}
-
-@keyframes pop{
-  from{opacity:0;transform:translateY(40px) scale(.96)}
-  to{opacity:1;transform:none}
-}
-
-header{
-  padding:24px;
+  justify-content:center;
+  align-items:center;
   text-align:center;
+  padding:20px;
 }
 
-.avatar{
-  width:90px;height:90px;border-radius:50%;
-  object-fit:cover;
-  border:3px solid var(--accent);
+h1{
+  font-size:clamp(2.5rem,6vw,4rem);
+  letter-spacing:-1px;
+  animation: reveal 1.2s ease forwards;
 }
-
-h1{margin:12px 0 4px;font-size:22px}
-p{margin:0;font-size:13px;color:var(--muted)}
-
-main{
-  flex:1;
-  padding:0 22px;
-  overflow:hidden;
-}
-
-.section{
-  display:none;
-  animation:slide .5s cubic-bezier(.16,1,.3,1);
-}
-.section.active{display:block}
-
-@keyframes slide{
-  from{opacity:0;transform:translateX(30px)}
+@keyframes reveal{
+  from{opacity:0;transform:translateY(40px)}
   to{opacity:1;transform:none}
 }
 
-.card{
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
+p{
+  margin-top:12px;
+  opacity:.7;
+  animation: reveal 1.6s ease forwards;
 }
 
-.btn{
-  display:block;
-  padding:14px;
-  border-radius:14px;
+.links{
+  margin-top:40px;
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+a{
   text-decoration:none;
-  color:var(--text);
-  background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02));
-  border:1px solid var(--border);
-  margin-bottom:12px;
-  text-align:center;
+  color:#fff;
+  font-size:18px;
+  position:relative;
+}
+a::after{
+  content:'';
+  position:absolute;
+  left:0;bottom:-4px;
+  width:0;height:2px;
+  background:#fff;
   transition:.3s;
 }
-.btn:hover{transform:translateY(-2px);border-color:var(--accent)}
+a:hover::after{width:100%}
 
-.player{
-  margin-top:10px;
+/* 🎧 fake audio visualizer */
+.visualizer{
+  display:flex;
+  gap:6px;
+  margin-top:50px;
 }
+.bar{
+  width:6px;
+  height:30px;
+  background:#fff;
+  animation: beat 1s infinite ease-in-out;
+}
+.bar:nth-child(odd){animation-delay:.2s}
+.bar:nth-child(even){animation-delay:.4s}
 
-.progress{
-  height:6px;
-  background:rgba(255,255,255,.2);
-  border-radius:999px;
-  overflow:hidden;
-  cursor:pointer;
-}
-.progress span{
-  display:block;
-  height:100%;
-  width:0;
-  background:var(--accent);
+@keyframes beat{
+  0%,100%{height:12px;opacity:.4}
+  50%{height:48px;opacity:1}
 }
 
 .controls{
+  margin-top:30px;
   display:flex;
-  justify-content:space-between;
-  margin-top:10px;
+  gap:20px;
 }
-.controls button{
+button{
   background:none;
-  border:none;
-  color:var(--text);
-  font-size:18px;
+  border:1px solid rgba(255,255,255,.3);
+  color:#fff;
+  padding:10px 16px;
+  border-radius:999px;
   cursor:pointer;
 }
-
-nav{
-  display:flex;
-  justify-content:space-around;
-  padding:14px;
-  border-top:1px solid var(--border);
-}
-nav button{
-  background:none;
-  border:none;
-  color:var(--muted);
-  font-size:18px;
-}
-nav button.active{color:var(--accent)}
+button:hover{background:rgba(255,255,255,.15)}
 </style>
 </head>
 
 <body>
+
+<div class="bg"></div>
+
 <div class="app">
-
-<header>
-  <img src="profile.jpg" class="avatar">
   <h1>Kartik Goyal</h1>
-  <p>Digital life • Music • Journey</p>
-</header>
+  <p>building • learning • experimenting</p>
 
-<main>
-  <div id="home" class="section active">
-    <div class="card">
-      <a class="btn" href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
-      <a class="btn" href="https://x.com/Onlystudy694544" target="_blank">Twitter / X</a>
-      <a class="btn" href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
-    </div>
-
-    <div class="card player">
-      <small id="song">Now playing</small>
-      <div class="progress" onclick="seek(event)">
-        <span id="bar"></span>
-      </div>
-      <div class="controls">
-        <button onclick="togglePlay()">▶️</button>
-        <button onclick="forward()">⏩</button>
-        <button onclick="nextSong()">⏭️</button>
-      </div>
-    </div>
+  <div class="links">
+    <a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
+    <a href="https://x.com/Onlystudy694544" target="_blank">X</a>
+    <a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
   </div>
 
-  <div id="about" class="section">
-    <div class="card">
-      <p>
-        I’m Kartik.  
-        This site is my digital space — music, thoughts, and experiments.
-      </p>
-    </div>
+  <div class="visualizer">
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div><div class="bar"></div>
   </div>
 
-  <div id="contact" class="section">
-    <div class="card">
-      <p>DM me on Instagram ✨</p>
-    </div>
+  <div class="controls">
+    <button onclick="play()">▶ Play</button>
+    <button onclick="next()">⏭ Next</button>
   </div>
-</main>
-
-<nav>
-  <button onclick="show('home')" class="active">🏠</button>
-  <button onclick="show('about')">👤</button>
-  <button onclick="show('contact')">✉️</button>
-  <button onclick="toggleTheme()">🌙</button>
-</nav>
-
 </div>
 
 <audio id="audio"></audio>
 
 <script>
-const audio=document.getElementById("audio");
 const songs=["song1.mp3","song2.mp3","song3.mp3"];
-let i=0,playing=false;
-
+let i=0;
+const audio=document.getElementById("audio");
 audio.src=songs[i];
-audio.volume=.7;
 
-function togglePlay(){
-  playing?audio.pause():audio.play();
-  playing=!playing;
-}
-function nextSong(){
+function play(){audio.play()}
+function next(){
   i=(i+1)%songs.length;
   audio.src=songs[i];
-  audio.play();playing=true;
+  audio.play();
 }
-function forward(){audio.currentTime+=10}
-
-audio.ontimeupdate=()=>{
-  bar.style.width=(audio.currentTime/audio.duration*100)+"%";
-}
-
-function seek(e){
-  const r=e.currentTarget.getBoundingClientRect();
-  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
-}
-
-function show(id){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-}
-
-function toggleTheme(){
-  document.body.classList.toggle("light");
-  localStorage.theme=document.body.className;
-}
-if(localStorage.theme)document.body.className=localStorage.theme;
 
 document.addEventListener("click",()=>audio.play().catch(()=>{}),{once:true});
 </script>
+
 </body>
 </html>
