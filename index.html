@@ -8,30 +8,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --bg:#0b0f14;
+  --card:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.15);
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#38bdf8;
+}
+
+.light{
+  --bg:#f6f7fb;
+  --card:rgba(255,255,255,.7);
+  --border:rgba(0,0,0,.1);
+  --text:#111827;
+  --muted:#4b5563;
+  --accent:#2563eb;
+}
+
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
 
 body{
+  background:var(--bg);
+  color:var(--text);
   min-height:100vh;
-  background:#0b0f14;
-  color:#e5e7eb;
-  overflow-x:hidden;
+  transition:.4s;
 }
 
-/* animated ambient background */
 .bg{
   position:fixed;
   inset:0;
   background:
-    radial-gradient(circle at 20% 30%, #38bdf8, transparent 40%),
-    radial-gradient(circle at 80% 70%, #a855f7, transparent 40%),
-    radial-gradient(circle at 50% 90%, #22c55e, transparent 40%);
+    radial-gradient(circle at 20% 30%, var(--accent), transparent 40%),
+    radial-gradient(circle at 80% 70%, #a855f7, transparent 40%);
   filter:blur(120px);
-  animation: drift 20s infinite alternate ease-in-out;
+  opacity:.6;
   z-index:-1;
-}
-@keyframes drift{
-  from{transform:scale(1)}
-  to{transform:scale(1.4) rotate(12deg)}
 }
 
 .container{
@@ -40,58 +52,37 @@ body{
   padding:80px 20px;
 }
 
-/* HERO */
-.hero{
-  text-align:center;
-  margin-bottom:100px;
-}
-.hero h1{
-  font-size:clamp(2.5rem,6vw,4rem);
-  letter-spacing:-1px;
-}
-.hero p{
-  margin-top:16px;
-  opacity:.7;
-  font-size:16px;
-}
+.hero{text-align:center;margin-bottom:110px}
+.hero h1{font-size:clamp(2.5rem,6vw,4rem)}
+.hero p{margin-top:12px;color:var(--muted)}
 
-/* SECTION */
-.section{
-  margin-bottom:100px;
-}
-.section h2{
-  font-size:22px;
-  margin-bottom:16px;
-}
-.section p{
-  max-width:600px;
-  opacity:.75;
-  line-height:1.7;
-}
+.section{margin-bottom:110px}
+.section h2{font-size:22px;margin-bottom:18px}
+.section p{max-width:620px;color:var(--muted);line-height:1.7}
 
-/* QUOTES */
-.quote-box{
-  margin-top:30px;
-  padding:24px;
-  border-left:4px solid #38bdf8;
-  background:rgba(255,255,255,.04);
+/* DAILY REFLECTION */
+.reflect{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:22px;
 }
-.quote{
-  font-size:18px;
+.reflect textarea{
+  width:100%;
+  min-height:120px;
+  background:none;
+  border:none;
+  outline:none;
+  resize:none;
+  color:var(--text);
+  font-size:15px;
 }
-.author{
-  margin-top:10px;
-  font-size:14px;
-  opacity:.6;
-}
+.reflect small{color:var(--muted)}
 
 /* MUSIC */
-.player{
-  margin-top:30px;
-}
+.player{max-width:600px}
 .progress{
   height:6px;
-  background:rgba(255,255,255,.2);
+  background:rgba(255,255,255,.25);
   border-radius:999px;
   overflow:hidden;
   cursor:pointer;
@@ -100,71 +91,84 @@ body{
   display:block;
   height:100%;
   width:0;
-  background:#38bdf8;
+  background:var(--accent);
 }
-.controls{
-  display:flex;
-  gap:14px;
-  margin-top:14px;
-}
+.time{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px}
+.controls{display:flex;gap:14px;margin-top:12px}
 .controls button{
   background:none;
-  border:1px solid rgba(255,255,255,.3);
-  color:#fff;
+  border:1px solid var(--border);
+  color:var(--text);
   padding:8px 14px;
   border-radius:999px;
   cursor:pointer;
 }
 
-/* LINKS */
-.links{
-  display:flex;
-  gap:24px;
-  flex-wrap:wrap;
+/* VISUALIZER */
+canvas{
+  width:100%;
+  height:80px;
+  margin-top:16px;
 }
-.links a{
-  color:#fff;
+
+/* IDENTITY */
+.identity{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:22px;
+}
+.identity a{
+  padding:22px;
   text-decoration:none;
-  opacity:.7;
+  color:var(--text);
+  border:1px solid var(--border);
+  background:var(--card);
+  transition:.3s;
 }
-.links a:hover{opacity:1}
+.identity a span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+.identity a:hover{transform:translateY(-4px);border-color:var(--accent)}
+
+.toggle{
+  position:fixed;
+  top:20px;right:20px;
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:10px 14px;
+  border-radius:999px;
+  cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
 <div class="bg"></div>
+<button class="toggle" onclick="toggleTheme()">🌙 / ☀️</button>
 
 <div class="container">
 
   <!-- HERO -->
   <div class="hero">
     <h1>Kartik Goyal</h1>
-    <p>learning • thinking • evolving</p>
+    <p>thinking • learning • evolving</p>
   </div>
 
-  <!-- IDEAS -->
+  <!-- PURPOSE -->
   <div class="section">
-    <h2>Why this site exists</h2>
+    <h2>Why this space exists</h2>
     <p>
-      This is my personal space on the internet.  
-      Not a portfolio. Not a social profile.  
-      A place where my ideas, music, thoughts, and journey stay —  
-      even when platforms change.
+      This is my personal digital space — a place for thoughts,
+      reflections, music, and growth over time.
     </p>
   </div>
 
-  <!-- QUOTES -->
+  <!-- DAILY REFLECTION -->
   <div class="section">
-    <h2>Thoughts I live by</h2>
+    <h2>Daily reflection</h2>
 
-    <div class="quote-box">
-      <div class="quote" id="quoteText">
-        “Small consistent steps beat intense bursts.”
-      </div>
-      <div class="author" id="quoteAuthor">
-        — Kartik
-      </div>
+    <div class="reflect">
+      <textarea id="reflection" placeholder="What did you learn or feel today?"></textarea>
+      <small>Saved automatically on this device.</small>
     </div>
   </div>
 
@@ -173,9 +177,15 @@ body{
     <h2>Music</h2>
 
     <div class="player">
-      <small id="songName">Now playing</small>
+      <div id="songName" style="color:var(--muted)">Focus</div>
+
       <div class="progress" onclick="seek(event)">
         <span id="bar"></span>
+      </div>
+
+      <div class="time">
+        <span id="current">0:00</span>
+        <span id="duration">0:00</span>
       </div>
 
       <div class="controls">
@@ -183,16 +193,25 @@ body{
         <button onclick="forward()">⏩</button>
         <button onclick="nextSong()">⏭</button>
       </div>
+
+      <canvas id="visualizer"></canvas>
     </div>
   </div>
 
-  <!-- LINKS -->
+  <!-- IDENTITY -->
   <div class="section">
-    <h2>Find me</h2>
-    <div class="links">
-      <a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
-      <a href="https://x.com/Onlystudy694544" target="_blank">X</a>
-      <a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
+    <h2>Where I exist</h2>
+
+    <div class="identity">
+      <a href="https://www.instagram.com/k4325412" target="_blank">
+        Instagram <span>life & moments</span>
+      </a>
+      <a href="https://x.com/Onlystudy694544" target="_blank">
+        X / Twitter <span>thoughts in real time</span>
+      </a>
+      <a href="https://github.com/kartikgoyal2077-debug" target="_blank">
+        GitHub <span>work & experiments</span>
+      </a>
     </div>
   </div>
 
@@ -201,7 +220,19 @@ body{
 <audio id="audio"></audio>
 
 <script>
-/* MUSIC */
+/* THEME */
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  localStorage.theme=document.body.className;
+}
+if(localStorage.theme)document.body.className=localStorage.theme;
+
+/* DAILY REFLECTION */
+const reflection=document.getElementById("reflection");
+reflection.value=localStorage.reflection||"";
+reflection.oninput=()=>localStorage.reflection=reflection.value;
+
+/* MUSIC + VISUALIZER */
 const songs=[
   {src:"song1.mp3",name:"Focus"},
   {src:"song2.mp3",name:"Calm"},
@@ -210,6 +241,7 @@ const songs=[
 let i=0,playing=false;
 const audio=document.getElementById("audio");
 audio.src=songs[i].src;
+songName.innerText=songs[i].name;
 
 function togglePlay(){
   playing?audio.pause():audio.play();
@@ -218,29 +250,51 @@ function togglePlay(){
 function nextSong(){
   i=(i+1)%songs.length;
   audio.src=songs[i].src;
-  audio.play();playing=true;
   songName.innerText=songs[i].name;
+  audio.play();playing=true;
 }
 function forward(){audio.currentTime+=10}
-audio.ontimeupdate=()=>bar.style.width=(audio.currentTime/audio.duration*100)+"%";
+
+audio.ontimeupdate=()=>{
+  bar.style.width=(audio.currentTime/audio.duration*100)+"%";
+  current.innerText=format(audio.currentTime);
+  duration.innerText=format(audio.duration);
+}
 function seek(e){
   const r=e.currentTarget.getBoundingClientRect();
   audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
 }
-document.addEventListener("click",()=>audio.play().catch(()=>{}),{once:true});
+function format(t){
+  if(!t)return"0:00";
+  const m=Math.floor(t/60);
+  const s=Math.floor(t%60).toString().padStart(2,"0");
+  return m+":"+s;
+}
 
-/* QUOTES (easy to extend) */
-const quotes=[
-  "Small consistent steps beat intense bursts.",
-  "Discipline is choosing what you want most.",
-  "You don’t need motivation when you build systems.",
-  "Growth is quiet. Results are loud."
-];
-let qi=0;
-setInterval(()=>{
-  qi=(qi+1)%quotes.length;
-  quoteText.innerText="“"+quotes[qi]+"”";
-},6000);
+/* VISUALIZER */
+const canvas=document.getElementById("visualizer");
+const ctx=canvas.getContext("2d");
+const audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+const src=audioCtx.createMediaElementSource(audio);
+const analyser=audioCtx.createAnalyser();
+src.connect(analyser);
+analyser.connect(audioCtx.destination);
+analyser.fftSize=64;
+const data=new Uint8Array(analyser.frequencyBinCount);
+
+function draw(){
+  requestAnimationFrame(draw);
+  analyser.getByteFrequencyData(data);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const w=canvas.width/data.length;
+  data.forEach((v,i)=>{
+    ctx.fillStyle=getComputedStyle(document.body).getPropertyValue("--accent");
+    ctx.fillRect(i*w,canvas.height-v/2,w-2,v/2);
+  });
+}
+draw();
+
+document.addEventListener("click",()=>audio.play().catch(()=>{}),{once:true});
 </script>
 
 </body>
