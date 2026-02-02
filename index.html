@@ -5,238 +5,258 @@
 <title>Kartik Goyal</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg: #0f2027;
-  --bg2: #203a43;
-  --bg3: #2c5364;
-  --card: rgba(255,255,255,0.12);
-  --text: #ffffff;
-  --accent: #7dd3fc;
+:root{
+  --bg:#0b0f14;
+  --glass:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.15);
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#38bdf8;
 }
 
-.light {
-  --bg: #f8fafc;
-  --bg2: #e2e8f0;
-  --bg3: #cbd5e1;
-  --card: rgba(255,255,255,0.6);
-  --text: #111;
-  --accent: #2563eb;
+.light{
+  --bg:#f5f7fb;
+  --glass:rgba(255,255,255,.7);
+  --border:rgba(0,0,0,.08);
+  --text:#111827;
+  --muted:#4b5563;
+  --accent:#2563eb;
 }
 
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+*{box-sizing:border-box;font-family:'Inter',sans-serif}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(circle at top,var(--accent),transparent 40%),var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--text);
+  transition:.5s;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg), var(--bg2), var(--bg3));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text);
-  transition: 0.5s;
+.app{
+  width:100%;
+  max-width:420px;
+  height:90vh;
+  background:var(--glass);
+  backdrop-filter:blur(30px);
+  border:1px solid var(--border);
+  border-radius:28px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,.45);
+  animation:pop .8s cubic-bezier(.16,1,.3,1);
 }
 
-.app {
-  width: 92%;
-  max-width: 420px;
-  background: var(--card);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 28px;
-  text-align: center;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-  animation: fadeUp 1s ease;
+@keyframes pop{
+  from{opacity:0;transform:translateY(40px) scale(.96)}
+  to{opacity:1;transform:none}
 }
 
-@keyframes fadeUp {
-  from { opacity:0; transform: translateY(30px); }
-  to { opacity:1; transform: translateY(0); }
+header{
+  padding:24px;
+  text-align:center;
 }
 
-.avatar {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  border: 4px solid var(--accent);
-  object-fit: cover;
-  margin-bottom: 15px;
+.avatar{
+  width:90px;height:90px;border-radius:50%;
+  object-fit:cover;
+  border:3px solid var(--accent);
 }
 
-h1 { margin: 10px 0 5px; }
-p { font-size: 14px; opacity: 0.85; }
+h1{margin:12px 0 4px;font-size:22px}
+p{margin:0;font-size:13px;color:var(--muted)}
 
-.btn {
-  display: block;
-  margin: 12px 0;
-  padding: 14px;
-  border-radius: 14px;
-  text-decoration: none;
-  color: var(--text);
-  background: rgba(255,255,255,0.18);
-  transition: 0.3s;
+main{
+  flex:1;
+  padding:0 22px;
+  overflow:hidden;
 }
 
-.btn:hover {
-  background: var(--accent);
-  color: #000;
-  transform: translateY(-3px);
+.section{
+  display:none;
+  animation:slide .5s cubic-bezier(.16,1,.3,1);
+}
+.section.active{display:block}
+
+@keyframes slide{
+  from{opacity:0;transform:translateX(30px)}
+  to{opacity:1;transform:none}
 }
 
-.controls {
-  display: flex;
-  justify-content: space-between;
-  margin: 16px 0;
+.card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
 }
 
-.controls button {
-  background: rgba(255,255,255,0.2);
-  border: none;
-  padding: 10px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-  color: var(--text);
-  font-size: 16px;
+.btn{
+  display:block;
+  padding:14px;
+  border-radius:14px;
+  text-decoration:none;
+  color:var(--text);
+  background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02));
+  border:1px solid var(--border);
+  margin-bottom:12px;
+  text-align:center;
+  transition:.3s;
+}
+.btn:hover{transform:translateY(-2px);border-color:var(--accent)}
+
+.player{
+  margin-top:10px;
 }
 
-.section {
-  display: none;
-  animation: fadeUp 0.6s ease;
+.progress{
+  height:6px;
+  background:rgba(255,255,255,.2);
+  border-radius:999px;
+  overflow:hidden;
+  cursor:pointer;
+}
+.progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--accent);
 }
 
-.section.active {
-  display: block;
+.controls{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+.controls button{
+  background:none;
+  border:none;
+  color:var(--text);
+  font-size:18px;
+  cursor:pointer;
 }
 
-footer {
-  margin-top: 18px;
-  font-size: 12px;
-  opacity: 0.6;
+nav{
+  display:flex;
+  justify-content:space-around;
+  padding:14px;
+  border-top:1px solid var(--border);
 }
+nav button{
+  background:none;
+  border:none;
+  color:var(--muted);
+  font-size:18px;
+}
+nav button.active{color:var(--accent)}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-  <!-- PROFILE IMAGE -->
-  <img src="profile.jpg" class="avatar" alt="Profile">
-
+<header>
+  <img src="profile.jpg" class="avatar">
   <h1>Kartik Goyal</h1>
-  <p>A glimpse into my life & journey 🚀</p>
+  <p>Digital life • Music • Journey</p>
+</header>
 
-  <!-- CONTROLS -->
-  <div class="controls">
-    <button onclick="toggleTheme()">🌙 / ☀️</button>
-    <button onclick="togglePlay()">▶️ / ⏸️</button>
-    <button onclick="forward()">⏩</button>
-    <button onclick="nextSong()">⏭️</button>
-  </div>
-
-  <!-- HOME -->
+<main>
   <div id="home" class="section active">
-    <a class="btn" href="#" onclick="show('about')">👤 About Me</a>
-    <a class="btn" href="#" onclick="show('contact')">📩 Contact</a>
-    <a class="btn" href="https://www.instagram.com/k4325412" target="_blank">📸 Instagram</a>
-    <a class="btn" href="https://x.com/Onlystudy694544" target="_blank">🐦 Twitter / X</a>
-    <a class="btn" href="https://github.com/kartikgoyal2077-debug" target="_blank">💻 GitHub</a>
+    <div class="card">
+      <a class="btn" href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
+      <a class="btn" href="https://x.com/Onlystudy694544" target="_blank">Twitter / X</a>
+      <a class="btn" href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
+    </div>
+
+    <div class="card player">
+      <small id="song">Now playing</small>
+      <div class="progress" onclick="seek(event)">
+        <span id="bar"></span>
+      </div>
+      <div class="controls">
+        <button onclick="togglePlay()">▶️</button>
+        <button onclick="forward()">⏩</button>
+        <button onclick="nextSong()">⏭️</button>
+      </div>
+    </div>
   </div>
 
-  <!-- ABOUT -->
   <div id="about" class="section">
-    <p>
-      Hi, I’m Kartik 👋<br>
-      I share my journey, growth, and thoughts as I build my future.
-    </p>
-    <a class="btn" href="#" onclick="show('home')">⬅ Back</a>
+    <div class="card">
+      <p>
+        I’m Kartik.  
+        This site is my digital space — music, thoughts, and experiments.
+      </p>
+    </div>
   </div>
 
-  <!-- CONTACT -->
   <div id="contact" class="section">
-    <p>DM me on Instagram ✨</p>
-    <p>Email coming soon 📧</p>
-    <a class="btn" href="#" onclick="show('home')">⬅ Back</a>
+    <div class="card">
+      <p>DM me on Instagram ✨</p>
+    </div>
   </div>
+</main>
 
-  <footer>
-    👀 Visitors: <span id="count">0</span><br>
-    © 2026 Kartik Goyal
-  </footer>
+<nav>
+  <button onclick="show('home')" class="active">🏠</button>
+  <button onclick="show('about')">👤</button>
+  <button onclick="show('contact')">✉️</button>
+  <button onclick="toggleTheme()">🌙</button>
+</nav>
 
 </div>
 
-<!-- AUDIO -->
-<audio id="music"></audio>
+<audio id="audio"></audio>
 
 <script>
-/* navigation */
-function show(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+const audio=document.getElementById("audio");
+const songs=["song1.mp3","song2.mp3","song3.mp3"];
+let i=0,playing=false;
+
+audio.src=songs[i];
+audio.volume=.7;
+
+function togglePlay(){
+  playing?audio.pause():audio.play();
+  playing=!playing;
+}
+function nextSong(){
+  i=(i+1)%songs.length;
+  audio.src=songs[i];
+  audio.play();playing=true;
+}
+function forward(){audio.currentTime+=10}
+
+audio.ontimeupdate=()=>{
+  bar.style.width=(audio.currentTime/audio.duration*100)+"%";
 }
 
-/* theme toggle */
-function toggleTheme() {
-  document.body.classList.toggle('light');
+function seek(e){
+  const r=e.currentTarget.getBoundingClientRect();
+  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
 }
 
-/* 🎵 MUSIC SYSTEM */
-const songs = [
-  "song1.mp3",
-  "song2.mp3",
-  "song3.mp3"
-];
-
-let currentSong = 0;
-let isPlaying = false;
-const audio = document.getElementById("music");
-audio.src = songs[currentSong];
-audio.volume = 0.6;
-
-/* play / pause */
-function togglePlay() {
-  if (!isPlaying) {
-    audio.play();
-    isPlaying = true;
-  } else {
-    audio.pause();
-    isPlaying = false;
-  }
+function show(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
 }
 
-/* next song */
-function nextSong() {
-  currentSong = (currentSong + 1) % songs.length;
-  audio.src = songs[currentSong];
-  audio.play();
-  isPlaying = true;
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  localStorage.theme=document.body.className;
 }
+if(localStorage.theme)document.body.className=localStorage.theme;
 
-/* skip forward 10 seconds */
-function forward() {
-  if (audio.duration) {
-    audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
-  }
-}
-
-/* autoplay after first interaction */
-document.addEventListener("click", () => {
-  if (!isPlaying) {
-    audio.play().then(() => isPlaying = true).catch(() => {});
-  }
-}, { once: true });
-
-/* visitor counter */
-let visits = localStorage.getItem("visits");
-visits = visits ? Number(visits) + 1 : 1;
-localStorage.setItem("visits", visits);
-document.getElementById("count").innerText = visits;
+document.addEventListener("click",()=>audio.play().catch(()=>{}),{once:true});
 </script>
-
 </body>
 </html>
