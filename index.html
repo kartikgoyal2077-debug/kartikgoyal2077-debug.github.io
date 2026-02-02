@@ -10,17 +10,17 @@
 <style>
 :root{
   --bg:#0b0f14;
-  --card:rgba(255,255,255,.05);
-  --border:rgba(255,255,255,.15);
+  --panel:#121821;
+  --border:#1f2937;
   --text:#e5e7eb;
   --muted:#9ca3af;
   --accent:#38bdf8;
 }
 
 .light{
-  --bg:#f6f7fb;
-  --card:rgba(255,255,255,.7);
-  --border:rgba(0,0,0,.1);
+  --bg:#f5f7fb;
+  --panel:#ffffff;
+  --border:#e5e7eb;
   --text:#111827;
   --muted:#4b5563;
   --accent:#2563eb;
@@ -32,189 +32,174 @@ body{
   background:var(--bg);
   color:var(--text);
   min-height:100vh;
-  transition:.4s;
-}
-
-.bg{
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 30%, var(--accent), transparent 40%),
-    radial-gradient(circle at 80% 70%, #a855f7, transparent 40%);
-  filter:blur(120px);
-  opacity:.6;
-  z-index:-1;
+  transition:background .4s,color .4s;
 }
 
 .container{
-  max-width:900px;
+  max-width:1100px;
   margin:auto;
-  padding:80px 20px;
+  padding:40px 20px;
+  animation:fadeIn .8s ease;
 }
 
-.hero{text-align:center;margin-bottom:110px}
-.hero h1{font-size:clamp(2.5rem,6vw,4rem)}
-.hero p{margin-top:12px;color:var(--muted)}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:none}
+}
 
-.section{margin-bottom:110px}
-.section h2{font-size:22px;margin-bottom:18px}
-.section p{max-width:620px;color:var(--muted);line-height:1.7}
+.top-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:20px;
+}
 
-/* DAILY REFLECTION */
-.reflect{
-  background:var(--card);
+.layout{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:32px;
+}
+
+.panel{
+  background:var(--panel);
   border:1px solid var(--border);
-  padding:22px;
+  padding:24px;
+  animation:slideUp .7s cubic-bezier(.16,1,.3,1);
 }
-.reflect textarea{
-  width:100%;
-  min-height:120px;
-  background:none;
-  border:none;
-  outline:none;
-  resize:none;
-  color:var(--text);
-  font-size:15px;
-}
-.reflect small{color:var(--muted)}
 
-/* MUSIC */
-.player{max-width:600px}
-.progress{
-  height:6px;
-  background:rgba(255,255,255,.25);
-  border-radius:999px;
-  overflow:hidden;
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:none}
+}
+
+.profile img{
+  width:100px;height:100px;border-radius:50%;
+  border:3px solid var(--accent);
+  object-fit:cover;
+}
+
+.profile h1{margin-top:14px;font-size:22px}
+.profile p{margin-top:6px;color:var(--muted);font-size:14px}
+
+.section{margin-bottom:32px}
+.section h2{font-size:18px;margin-bottom:12px}
+
+.quote{
+  font-size:20px;
+  line-height:1.6;
+  transition:opacity .4s ease;
+}
+
+button{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:8px 14px;
   cursor:pointer;
+  transition:.25s;
+}
+button:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+}
+
+.music small{color:var(--muted)}
+
+.progress{
+  margin-top:10px;
+  height:6px;
+  background:#0003;
+  cursor:pointer;
+  overflow:hidden;
 }
 .progress span{
   display:block;
   height:100%;
   width:0;
   background:var(--accent);
-}
-.time{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px}
-.controls{display:flex;gap:14px;margin-top:12px}
-.controls button{
-  background:none;
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:8px 14px;
-  border-radius:999px;
-  cursor:pointer;
+  transition:width .15s linear;
 }
 
-/* VISUALIZER */
+.controls{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+
 canvas{
   width:100%;
   height:80px;
-  margin-top:16px;
+  margin-top:14px;
 }
 
-/* IDENTITY */
-.identity{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:22px;
-}
-.identity a{
-  padding:22px;
-  text-decoration:none;
+textarea{
+  width:100%;
+  min-height:120px;
+  background:none;
+  border:1px solid var(--border);
   color:var(--text);
-  border:1px solid var(--border);
-  background:var(--card);
-  transition:.3s;
-}
-.identity a span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
-.identity a:hover{transform:translateY(-4px);border-color:var(--accent)}
-
-.toggle{
-  position:fixed;
-  top:20px;right:20px;
-  background:var(--card);
-  border:1px solid var(--border);
-  padding:10px 14px;
-  border-radius:999px;
-  cursor:pointer;
+  padding:10px;
+  resize:none;
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
-<button class="toggle" onclick="toggleTheme()">🌙 / ☀️</button>
-
 <div class="container">
 
-  <!-- HERO -->
-  <div class="hero">
-    <h1>Kartik Goyal</h1>
-    <p>thinking • learning • evolving</p>
+  <div class="top-actions">
+    <button onclick="toggleTheme()">🌙 / ☀️</button>
   </div>
 
-  <!-- PURPOSE -->
-  <div class="section">
-    <h2>Why this space exists</h2>
-    <p>
-      This is my personal digital space — a place for thoughts,
-      reflections, music, and growth over time.
-    </p>
-  </div>
+  <div class="layout">
 
-  <!-- DAILY REFLECTION -->
-  <div class="section">
-    <h2>Daily reflection</h2>
+    <!-- LEFT -->
+    <div class="panel profile">
 
-    <div class="reflect">
-      <textarea id="reflection" placeholder="What did you learn or feel today?"></textarea>
-      <small>Saved automatically on this device.</small>
-    </div>
-  </div>
+      <img src="profile.jpg" alt="Profile">
+      <h1>Kartik Goyal</h1>
+      <p>thinking • learning • evolving</p>
 
-  <!-- MUSIC -->
-  <div class="section">
-    <h2>Music</h2>
+      <div class="section music">
+        <h2>Music</h2>
+        <small id="songName">Focus</small>
 
-    <div class="player">
-      <div id="songName" style="color:var(--muted)">Focus</div>
+        <div class="progress" onclick="seek(event)">
+          <span id="bar"></span>
+        </div>
 
-      <div class="progress" onclick="seek(event)">
-        <span id="bar"></span>
+        <div class="controls">
+          <button onclick="togglePlay()">▶ / ⏸</button>
+          <button onclick="forward()">⏩</button>
+          <button onclick="nextSong()">⏭</button>
+        </div>
+
+        <canvas id="visualizer"></canvas>
       </div>
 
-      <div class="time">
-        <span id="current">0:00</span>
-        <span id="duration">0:00</span>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="panel">
+
+      <div class="section">
+        <h2>Quote</h2>
+        <div class="quote" id="quoteText">
+          “Small consistent steps beat intense bursts.”
+        </div>
+        <div style="margin-top:14px">
+          <button onclick="newQuote()">New quote</button>
+        </div>
       </div>
 
-      <div class="controls">
-        <button onclick="togglePlay()">▶ / ⏸</button>
-        <button onclick="forward()">⏩</button>
-        <button onclick="nextSong()">⏭</button>
+      <div class="section">
+        <h2>Daily reflection</h2>
+        <textarea id="reflection" placeholder="What did you learn today?"></textarea>
       </div>
 
-      <canvas id="visualizer"></canvas>
     </div>
+
   </div>
-
-  <!-- IDENTITY -->
-  <div class="section">
-    <h2>Where I exist</h2>
-
-    <div class="identity">
-      <a href="https://www.instagram.com/k4325412" target="_blank">
-        Instagram <span>life & moments</span>
-      </a>
-      <a href="https://x.com/Onlystudy694544" target="_blank">
-        X / Twitter <span>thoughts in real time</span>
-      </a>
-      <a href="https://github.com/kartikgoyal2077-debug" target="_blank">
-        GitHub <span>work & experiments</span>
-      </a>
-    </div>
-  </div>
-
 </div>
 
 <audio id="audio"></audio>
@@ -227,12 +212,27 @@ function toggleTheme(){
 }
 if(localStorage.theme)document.body.className=localStorage.theme;
 
-/* DAILY REFLECTION */
+/* QUOTES */
+const quotes=[
+  "Small consistent steps beat intense bursts.",
+  "Discipline is choosing what you want most.",
+  "Growth is quiet. Results are loud.",
+  "Build systems, not motivation."
+];
+function newQuote(){
+  quoteText.style.opacity=0;
+  setTimeout(()=>{
+    quoteText.innerText="“"+quotes[Math.floor(Math.random()*quotes.length)]+"”";
+    quoteText.style.opacity=1;
+  },200);
+}
+
+/* REFLECTION */
 const reflection=document.getElementById("reflection");
 reflection.value=localStorage.reflection||"";
 reflection.oninput=()=>localStorage.reflection=reflection.value;
 
-/* MUSIC + VISUALIZER */
+/* MUSIC */
 const songs=[
   {src:"song1.mp3",name:"Focus"},
   {src:"song2.mp3",name:"Calm"},
@@ -257,44 +257,46 @@ function forward(){audio.currentTime+=10}
 
 audio.ontimeupdate=()=>{
   bar.style.width=(audio.currentTime/audio.duration*100)+"%";
-  current.innerText=format(audio.currentTime);
-  duration.innerText=format(audio.duration);
-}
+};
 function seek(e){
   const r=e.currentTarget.getBoundingClientRect();
   audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
 }
-function format(t){
-  if(!t)return"0:00";
-  const m=Math.floor(t/60);
-  const s=Math.floor(t%60).toString().padStart(2,"0");
-  return m+":"+s;
-}
 
-/* VISUALIZER */
+/* AUDIO VISUALIZER (SMOOTH) */
 const canvas=document.getElementById("visualizer");
 const ctx=canvas.getContext("2d");
-const audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-const src=audioCtx.createMediaElementSource(audio);
-const analyser=audioCtx.createAnalyser();
-src.connect(analyser);
-analyser.connect(audioCtx.destination);
-analyser.fftSize=64;
-const data=new Uint8Array(analyser.frequencyBinCount);
+canvas.width=600; canvas.height=80;
+
+let audioCtx, analyser, dataArray;
+function initVisualizer(){
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  const src=audioCtx.createMediaElementSource(audio);
+  analyser=audioCtx.createAnalyser();
+  analyser.fftSize=64;
+  src.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  dataArray=new Uint8Array(analyser.frequencyBinCount);
+  draw();
+}
 
 function draw(){
   requestAnimationFrame(draw);
-  analyser.getByteFrequencyData(data);
+  analyser.getByteFrequencyData(dataArray);
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  const w=canvas.width/data.length;
-  data.forEach((v,i)=>{
+  const barWidth=canvas.width/dataArray.length;
+  dataArray.forEach((v,i)=>{
+    const h=v*0.4;
     ctx.fillStyle=getComputedStyle(document.body).getPropertyValue("--accent");
-    ctx.fillRect(i*w,canvas.height-v/2,w-2,v/2);
+    ctx.fillRect(i*barWidth,canvas.height-h,barWidth-3,h);
   });
 }
-draw();
 
-document.addEventListener("click",()=>audio.play().catch(()=>{}),{once:true});
+/* INIT AFTER USER INTERACTION */
+document.addEventListener("click",()=>{
+  if(!audioCtx) initVisualizer();
+  audio.play().catch(()=>{});
+},{once:true});
 </script>
 
 </body>
