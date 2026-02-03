@@ -4,31 +4,34 @@
 <meta charset="UTF-8">
 <title>Kartik</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --text:#f5f5f5;
   --muted:rgba(255,255,255,.6);
-  --bgDark:rgba(0,0,0,.85);
+  --accent:rgba(255,255,255,.9);
 }
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
-html,body{height:100%}
+html,body{min-height:100%}
+
 body{
   background:#000;
   color:var(--text);
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
-/* background */
+/* ===== BACKGROUND ===== */
 .bg{
   position:fixed;
   inset:0;
   background:
-    linear-gradient(to bottom,var(--bgDark),rgba(0,0,0,.95)),
+    linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,.8)),
     url("https://www.bing.com/th?id=OHR.FanetteIsland_ZH-CN6466809551_1920x1080.jpg")
     center/cover no-repeat;
-  transform:scale(1.1);
+  transform:scale(1.08);
   transition:transform 12s ease;
   z-index:-3;
 }
@@ -47,35 +50,36 @@ body::after{
 </svg>");
 }
 
-/* glow */
+/* glow (desktop only) */
 .glow{
   position:fixed;
-  width:460px;
-  height:460px;
+  width:420px;
+  height:420px;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.15),transparent 65%);
+  background:radial-gradient(circle,rgba(255,255,255,.18),transparent 65%);
   filter:blur(120px);
   pointer-events:none;
   transform:translate(-50%,-50%);
   z-index:-1;
-  transition:.4s;
 }
 
 /* layout */
 .wrap{
-  height:100%;
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:60px;
+  padding:60px 24px;
 }
 .inner{
   max-width:780px;
-  animation:floatText 18s ease-in-out infinite;
+  width:100%;
+  animation:floatText 14s ease-in-out infinite;
 }
 
 @keyframes floatText{
-  50%{transform:translateY(-12px)}
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
 }
 
 /* reveal */
@@ -93,90 +97,99 @@ body::after{
 @keyframes reveal{to{opacity:1;transform:none}}
 
 h1{
-  font-size:clamp(2.6rem,5vw,4rem);
+  font-size:clamp(2.2rem,6vw,4rem);
   font-weight:400;
+  text-align:center;
 }
 
 p{
-  margin-top:28px;
-  font-size:18px;
+  margin-top:24px;
+  font-size:clamp(16px,4vw,18px);
   color:var(--muted);
   line-height:1.8;
+  text-align:center;
 }
 
 .quote{
-  margin-top:60px;
-  font-size:20px;
+  margin-top:50px;
+  font-size:clamp(18px,4.5vw,20px);
   color:var(--muted);
   max-width:700px;
+  margin-inline:auto;
+  text-align:center;
   font-style:italic;
 }
 
-.micro{
-  margin-top:40px;
-  font-size:16px;
+/* about */
+.about{
+  margin-top:50px;
+  font-size:15px;
   color:var(--muted);
+  max-width:600px;
+  margin-inline:auto;
+  text-align:center;
 }
 
 /* find me */
 .find{
-  margin-top:70px;
+  margin-top:60px;
   display:flex;
-  gap:36px;
+  gap:28px;
+  justify-content:center;
+  flex-wrap:wrap;
 }
 .find a{
   text-decoration:none;
   color:var(--muted);
-  font-size:15px;
+  font-size:14px;
+  position:relative;
 }
-.find a:hover{color:#fff}
+.find a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0;
+  height:1px;
+  background:var(--accent);
+  transition:.4s;
+}
+.find a:hover{color:var(--accent)}
+.find a:hover::after{width:100%}
 
 /* music */
 .player{
-  margin-top:90px;
-  opacity:.8;
+  margin-top:70px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  opacity:.9;
+  align-items:center;
 }
-.player:hover{opacity:1}
-.controls{display:flex;gap:18px}
-canvas{width:100%;height:80px}
-
-/* reflection (hidden) */
-#reflection{
-  display:none;
-  margin-top:50px;
-  width:100%;
-  max-width:600px;
-  min-height:140px;
-  background:none;
-  border:1px solid rgba(255,255,255,.2);
-  color:#fff;
-  padding:16px;
+.controls{
+  display:flex;
+  gap:20px;
 }
 
-/* silence mode */
-.silence .player,
-.silence .glow{
-  display:none;
-}
-
-/* buttons */
-button{
+button,select{
   background:none;
   border:none;
-  color:#fff;
+  color:var(--text);
+  font-size:15px;
   cursor:pointer;
-  opacity:.7;
 }
-button:hover{opacity:1}
 
-/* ui */
-.top{
-  position:fixed;
-  top:24px;
-  right:24px;
-  z-index:10;
-  display:flex;
-  gap:16px;
+canvas{
+  width:100%;
+  max-width:600px;
+  height:80px;
+}
+
+/* MOBILE ADJUSTMENTS */
+@media (max-width: 768px){
+  .glow{display:none;}
+  .inner{animation:none;}
+  .bg{transform:scale(1);}
 }
 </style>
 </head>
@@ -186,23 +199,27 @@ button:hover{opacity:1}
 <div class="bg" id="bg"></div>
 <div class="glow" id="glow"></div>
 
-<div class="top">
-  <button id="silenceBtn">silence</button>
-</div>
-
 <div class="wrap">
   <div class="inner">
 
-    <div class="line"><h1>Kartik</h1></div>
-
     <div class="line">
-      <p id="timeText"></p>
+      <h1>Kartik</h1>
     </div>
 
-    <div class="line quote" id="quoteText">Loading today’s thought…</div>
+    <div class="line">
+      <p>
+        An evolving space —<br>
+        reflection, presence, quiet motion.
+      </p>
+    </div>
 
-    <div class="line micro">
-      Currently learning to move slower, not faster.
+    <div class="line quote" id="quoteText">
+      Loading today’s thought…
+    </div>
+
+    <div class="line about">
+      Here I record thoughts, reflect on moments,  
+      and let quiet intuition speak.
     </div>
 
     <div class="line find">
@@ -212,92 +229,109 @@ button:hover{opacity:1}
     </div>
 
     <div class="player line">
-      <button id="playBtn">play / pause</button>
+      <select id="trackSelect">
+        <option value="song1.mp3">focus</option>
+        <option value="song2.mp3">calm</option>
+        <option value="song3.mp3">late night</option>
+      </select>
+
+      <div class="controls">
+        <button id="playBtn">play / pause</button>
+        <button id="nextBtn">next</button>
+      </div>
+
       <canvas id="viz"></canvas>
     </div>
-
-    <textarea id="reflection" placeholder="Write privately. Press . again to hide."></textarea>
 
   </div>
 </div>
 
-<audio id="audio" src="song1.mp3" loop></audio>
+<audio id="audio"></audio>
 
 <script>
-/* time aware */
-const hour=new Date().getHours();
-const timeText=document.getElementById("timeText");
-if(hour<5){timeText.innerText="late night · quiet hours";}
-else if(hour<12){timeText.innerText="morning · fresh start";}
-else if(hour<18){timeText.innerText="afternoon · steady pace";}
-else{timeText.innerText="evening · slowing down";}
+/* detect touch */
+const isTouch = "ontouchstart" in window;
 
-/* quote per day */
-async function loadQuote(){
-  const today=new Date().toDateString();
-  if(localStorage.quoteDate===today){
-    quoteText.innerText=localStorage.quote;
-    return;
-  }
-  const r=await fetch("https://api.quotable.io/random?tags=wisdom|success");
-  const d=await r.json();
-  localStorage.quote=`"${d.content}" — ${d.author}`;
-  localStorage.quoteDate=today;
-  quoteText.innerText=localStorage.quote;
-}
-loadQuote();
-
-/* glow + parallax */
-const glow=document.getElementById("glow");
-const bg=document.getElementById("bg");
-addEventListener("mousemove",e=>{
-  glow.style.left=e.clientX+"px";
-  glow.style.top=e.clientY+"px";
-  bg.style.transform=`scale(1.1) translate(${(e.clientX/window.innerWidth-.5)*20}px,${(e.clientY/window.innerHeight-.5)*20}px)`;
-});
-
-/* silence */
-silenceBtn.onclick=()=>{
-  document.body.classList.toggle("silence");
-};
-
-/* reflection easter egg */
-document.addEventListener("keydown",e=>{
-  if(e.key==="."){
-    reflection.style.display=reflection.style.display==="block"?"none":"block";
-  }
-});
-
-/* music */
-const audio=document.getElementById("audio");
-let playing=false;
-playBtn.onclick=()=>{
-  playing?audio.pause():audio.play();
-  playing=!playing;
-};
-document.addEventListener("visibilitychange",()=>{
-  if(document.hidden) audio.pause();
-});
-
-/* visualizer */
-const ctx=viz.getContext("2d");
-const ac=new (AudioContext||webkitAudioContext)();
-const src=ac.createMediaElementSource(audio);
-const an=ac.createAnalyser();
-src.connect(an);an.connect(ac.destination);
-an.fftSize=64;
-const data=new Uint8Array(an.frequencyBinCount);
-
-function draw(){
-  requestAnimationFrame(draw);
-  an.getByteFrequencyData(data);
-  ctx.clearRect(0,0,viz.width,viz.height);
-  data.forEach((v,i)=>{
-    ctx.fillStyle="rgba(255,255,255,.5)";
-    ctx.fillRect(i*12,viz.height-v/2,6,v/2);
+/* glow + parallax (desktop only) */
+if(!isTouch){
+  const glow=document.getElementById("glow");
+  const bg=document.getElementById("bg");
+  window.addEventListener("mousemove",e=>{
+    const x=e.clientX/window.innerWidth-.5;
+    const y=e.clientY/window.innerHeight-.5;
+    glow.style.left=e.clientX+"px";
+    glow.style.top=e.clientY+"px";
+    bg.style.transform=`scale(1.08) translate(${x*20}px,${y*20}px)`;
   });
 }
-document.addEventListener("click",()=>{ac.resume();draw()},{once:true});
+
+/* QUOTES — FIXED */
+async function getQuote(){
+  try{
+    const res = await fetch("https://api.quotable.io/random?tags=success|wisdom");
+    if(!res.ok) throw new Error();
+    const data = await res.json();
+    quoteText.innerText = `"${data.content}" — ${data.author}`;
+    sessionStorage.quote = quoteText.innerText;
+  }catch{
+    quoteText.innerText = sessionStorage.quote ||
+      "“Quiet progress compounds.”";
+  }
+}
+getQuote();
+
+/* MUSIC */
+const audio=document.getElementById("audio");
+const playBtn=document.getElementById("playBtn");
+const nextBtn=document.getElementById("nextBtn");
+const select=document.getElementById("trackSelect");
+
+audio.src = select.value;
+let playing=false;
+
+playBtn.onclick=()=>{
+  playing ? audio.pause() : audio.play();
+  playing=!playing;
+};
+
+nextBtn.onclick=()=>{
+  select.selectedIndex=(select.selectedIndex+1)%select.options.length;
+  audio.src=select.value;
+  audio.play();
+  playing=true;
+};
+
+select.onchange=()=>{
+  audio.src=select.value;
+  audio.play();
+  playing=true;
+};
+
+/* VISUALIZER */
+const vizCtx=viz.getContext("2d");
+const audioCtx=new (AudioContext||webkitAudioContext)();
+const srcNode=audioCtx.createMediaElementSource(audio);
+const analyser=audioCtx.createAnalyser();
+srcNode.connect(analyser);
+analyser.connect(audioCtx.destination);
+analyser.fftSize=128;
+const dataArray=new Uint8Array(analyser.frequencyBinCount);
+
+function drawViz(){
+  requestAnimationFrame(drawViz);
+  analyser.getByteFrequencyData(dataArray);
+  vizCtx.clearRect(0,0,viz.width,viz.height);
+  const step=viz.width/dataArray.length;
+  dataArray.forEach((v,i)=>{
+    vizCtx.fillStyle="rgba(255,255,255,.5)";
+    vizCtx.fillRect(i*step, viz.height-v/2, step-1, v/2);
+  });
+}
+
+document.addEventListener("click",()=>{
+  audioCtx.resume();
+  drawViz();
+},{once:true});
 </script>
 
 </body>
