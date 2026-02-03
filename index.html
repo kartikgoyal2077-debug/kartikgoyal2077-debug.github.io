@@ -1,35 +1,78 @@
-/* 🌌 Ambient background motion */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kartik Goyal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0b0f14;
+  --panel:#121821;
+  --border:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#38bdf8;
+}
+
+.light{
+  --bg:#f5f7fb;
+  --panel:#ffffff;
+  --border:#e5e7eb;
+  --text:#111827;
+  --muted:#4b5563;
+  --accent:#2563eb;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:'Inter',sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  transition:background .4s,color .4s;
+  overflow-x:hidden;
+}
+
+/* 🌌 AMBIENT BACKGROUND */
 .ambient{
   position:fixed;
   inset:0;
+  z-index:-2;
   overflow:hidden;
-  z-index:-1;
 }
 
 .ambient span{
   position:absolute;
   width:60vmax;
   height:60vmax;
-  background:radial-gradient(circle, var(--accent), transparent 60%);
+  background:radial-gradient(circle,var(--accent),transparent 60%);
   opacity:.15;
   filter:blur(120px);
-  animation:float 30s infinite alternate ease-in-out;
+  animation:float 40s infinite alternate ease-in-out;
 }
 
 .ambient span:nth-child(1){
   top:-10%;
   left:-10%;
-  animation-duration:40s;
+  animation-duration:50s;
 }
 .ambient span:nth-child(2){
   bottom:-20%;
   right:-10%;
-  animation-duration:55s;
+  animation-duration:65s;
 }
 .ambient span:nth-child(3){
   top:30%;
   right:20%;
-  animation-duration:65s;
+  animation-duration:80s;
 }
 
 @keyframes float{
@@ -39,13 +82,322 @@
 
 /* subtle grain */
 body::after{
-  content:'';
+  content:"";
   position:fixed;
   inset:0;
-  background:url('data:image/svg+xml;utf8,\
-  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">\
-  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="4"/></filter>\
-  <rect width="100" height="100" filter="url(%23n)" opacity=".02"/></svg>');
   pointer-events:none;
   z-index:-1;
+  background:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>\
+<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4'/></filter>\
+<rect width='120' height='120' filter='url(%23n)' opacity='.02'/>\
+</svg>");
 }
+
+/* LAYOUT */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
+  animation:fadeIn .8s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:none}
+}
+
+.top-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:20px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:32px;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:24px;
+  animation:slideUp .7s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:none}
+}
+
+/* PROFILE */
+.profile img{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  border:3px solid var(--accent);
+  object-fit:cover;
+}
+
+.profile h1{
+  margin-top:14px;
+  font-size:22px;
+}
+
+.profile p{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* SECTIONS */
+.section{
+  margin-bottom:32px;
+}
+
+.section h2{
+  font-size:18px;
+  margin-bottom:12px;
+}
+
+/* QUOTES */
+.quote{
+  font-size:20px;
+  line-height:1.6;
+  transition:opacity .3s ease;
+}
+
+/* MUSIC */
+.music small{
+  color:var(--muted);
+}
+
+.progress{
+  margin-top:10px;
+  height:6px;
+  background:#0003;
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--accent);
+  transition:width .15s linear;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+
+/* VISUALIZER */
+canvas{
+  width:100%;
+  height:80px;
+  margin-top:14px;
+}
+
+/* INPUTS & BUTTONS */
+button{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:8px 14px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+button:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+}
+
+textarea{
+  width:100%;
+  min-height:120px;
+  background:none;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:10px;
+  resize:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- AMBIENT BACKGROUND -->
+<div class="ambient">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<div class="container">
+
+  <div class="top-actions">
+    <button onclick="toggleTheme()">🌙 / ☀️</button>
+  </div>
+
+  <div class="layout">
+
+    <!-- LEFT PANEL -->
+    <div class="panel profile">
+
+      <img src="profile.jpg" alt="Profile">
+
+      <h1>Kartik Goyal</h1>
+      <p>thinking • learning • evolving</p>
+
+      <div class="section music">
+        <h2>Music</h2>
+        <small id="songName">Focus</small>
+
+        <div class="progress" onclick="seek(event)">
+          <span id="bar"></span>
+        </div>
+
+        <div class="controls">
+          <button onclick="togglePlay()">▶ / ⏸</button>
+          <button onclick="forward()">⏩</button>
+          <button onclick="nextSong()">⏭</button>
+        </div>
+
+        <canvas id="visualizer"></canvas>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel">
+
+      <div class="section">
+        <h2>Quote</h2>
+        <div class="quote" id="quoteText">
+          “Small consistent steps beat intense bursts.”
+        </div>
+        <div style="margin-top:14px">
+          <button onclick="newQuote()">New quote</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Daily reflection</h2>
+        <textarea id="reflection" placeholder="What did you learn today?"></textarea>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+/* THEME */
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  localStorage.theme=document.body.className;
+}
+if(localStorage.theme) document.body.className=localStorage.theme;
+
+/* QUOTES */
+const quotes=[
+  "Small consistent steps beat intense bursts.",
+  "Discipline is choosing what you want most.",
+  "Growth is quiet. Results are loud.",
+  "Build systems, not motivation."
+];
+function newQuote(){
+  quoteText.style.opacity=0;
+  setTimeout(()=>{
+    quoteText.innerText="“"+quotes[Math.floor(Math.random()*quotes.length)]+"”";
+    quoteText.style.opacity=1;
+  },200);
+}
+
+/* REFLECTION */
+const reflection=document.getElementById("reflection");
+reflection.value=localStorage.reflection||"";
+reflection.oninput=()=>localStorage.reflection=reflection.value;
+
+/* MUSIC */
+const songs=[
+  {src:"song1.mp3",name:"Focus"},
+  {src:"song2.mp3",name:"Calm"},
+  {src:"song3.mp3",name:"Late Night"}
+];
+let i=0,playing=false;
+const audio=document.getElementById("audio");
+audio.src=songs[i].src;
+songName.innerText=songs[i].name;
+
+function togglePlay(){
+  playing?audio.pause():audio.play();
+  playing=!playing;
+}
+function nextSong(){
+  i=(i+1)%songs.length;
+  audio.src=songs[i].src;
+  songName.innerText=songs[i].name;
+  audio.play();
+  playing=true;
+}
+function forward(){
+  audio.currentTime+=10;
+}
+
+audio.ontimeupdate=()=>{
+  bar.style.width=(audio.currentTime/audio.duration*100)+"%";
+};
+function seek(e){
+  const r=e.currentTarget.getBoundingClientRect();
+  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+}
+
+/* AUDIO VISUALIZER (SAFE) */
+const canvas=document.getElementById("visualizer");
+const ctx=canvas.getContext("2d");
+canvas.width=600;
+canvas.height=80;
+
+let audioCtx, analyser, dataArray;
+
+function initVisualizer(){
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  const src=audioCtx.createMediaElementSource(audio);
+  analyser=audioCtx.createAnalyser();
+  analyser.fftSize=64;
+  src.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  dataArray=new Uint8Array(analyser.frequencyBinCount);
+  draw();
+}
+
+function draw(){
+  requestAnimationFrame(draw);
+  analyser.getByteFrequencyData(dataArray);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const w=canvas.width/dataArray.length;
+  dataArray.forEach((v,i)=>{
+    const h=v*0.4;
+    ctx.fillStyle=getComputedStyle(document.body)
+      .getPropertyValue("--accent");
+    ctx.fillRect(i*w,canvas.height-h,w-3,h);
+  });
+}
+
+/* INIT AFTER USER CLICK */
+document.addEventListener("click",()=>{
+  if(!audioCtx) initVisualizer();
+  audio.play().catch(()=>{});
+},{once:true});
+</script>
+
+</body>
+</html>
