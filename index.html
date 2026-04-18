@@ -17,14 +17,14 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;overflow-x:hidden;cursor:none;transition:background 1.2s ease}
 
 /* CURSOR */
-#cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
-#cursor-ring{position:fixed;width:38px;height:38px;border:1px solid rgba(212,168,83,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease}
+#cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;will-change:transform;transform:translate(-50%,-50%)}
+#cursor-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(212,168,83,.45);border-radius:50%;pointer-events:none;z-index:9998;will-change:transform;transform:translate(-50%,-50%);transition:width .2s,height .2s}
 
 /* CANVAS */
 #bg-canvas{position:fixed;inset:0;z-index:0;opacity:.5;transition:opacity 1s}
 
 /* WALLPAPER OVERLAY */
-#wallpaper{position:fixed;inset:0;z-index:1;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease}
+#wallpaper{position:fixed;inset:0;z-index:1;opacity:0;transition:opacity 1.5s ease}
 #wall-overlay{position:fixed;inset:0;z-index:2;background:rgba(9,9,11,.72);opacity:0;transition:opacity 1.5s ease;pointer-events:none}
 
 /* NAV */
@@ -459,11 +459,19 @@ footer p{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted);lett
 /* ---- CURSOR ---- */
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
-setInterval(()=>{rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px'},16);
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.transform=`translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
+},{ passive:true });
+function ringLoop(){
+  rx+=(mx-rx)*.15;ry+=(my-ry)*.15;
+  ring.style.transform=`translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
+  requestAnimationFrame(ringLoop);
+}
+ringLoop();
 document.querySelectorAll('a,button,.int-card,.c-link,.pl-row,.wall-thumb,.q-cat,.tag').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';ring.style.transform='translate(-50%,-50%) scale(1.6)'});
-  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.transform='translate(-50%,-50%) scale(1)'});
+  el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px'},{passive:true});
+  el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px'},{passive:true});
 });
 
 /* ---- PARTICLE BG ---- */
@@ -544,25 +552,31 @@ renderCats();renderQuote();
 
 /* ---- WALLPAPERS ---- */
 const walls=[
-  {label:'Night sky',url:'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&q=60'},
-  {label:'Forest fog',url:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=60'},
-  {label:'Ocean calm',url:'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=400&q=60'},
-  {label:'Mountains',url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=60'},
-  {label:'Desert dusk',url:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400&q=60'},
-  {label:'Rainy window',url:'https://images.unsplash.com/photo-1501691223387-dd0500403074?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1501691223387-dd0500403074?w=400&q=60'},
-  {label:'Snow field',url:'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=400&q=60'},
-  {label:'Galaxy',url:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=80',thumb:'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&q=60'},
+  {label:'Night sky',   grad:'radial-gradient(ellipse at 20% 50%, #0d1b4b 0%, #090d1f 50%, #000005 100%)', stars:true},
+  {label:'Forest fog',  grad:'linear-gradient(160deg, #0a1a0d 0%, #1a3320 40%, #2d4a2a 70%, #1a2e18 100%)'},
+  {label:'Ocean calm',  grad:'linear-gradient(180deg, #020b18 0%, #041e3a 40%, #0a3d62 75%, #062540 100%)'},
+  {label:'Desert dusk', grad:'linear-gradient(170deg, #1a0a00 0%, #4a1500 30%, #8b3a00 55%, #c4622d 75%, #e8955a 100%)'},
+  {label:'Aurora',      grad:'linear-gradient(135deg, #010b14 0%, #012a1e 30%, #014d35 55%, #1a6b4a 75%, #0d3d52 100%)'},
+  {label:'Deep cosmos', grad:'radial-gradient(ellipse at 70% 30%, #1a0533 0%, #0d0221 50%, #000008 100%)', stars:true},
+  {label:'Volcano',     grad:'linear-gradient(160deg, #0a0000 0%, #2d0500 35%, #6b0f00 60%, #c42b00 80%, #e85000 100%)'},
+  {label:'Arctic dawn', grad:'linear-gradient(180deg, #03111e 0%, #062d4a 35%, #0a4a6e 60%, #1a7a9a 80%, #4ab0c8 100%)'},
 ];
+
 let activeWall=-1;
 const wg=document.getElementById('wall-grid');
-wg.innerHTML=walls.map((w,i)=>`<div class="wall-thumb" data-label="${w.label}" onclick="applyWall(${i})" id="wt${i}"><img src="${w.thumb}" alt="${w.label}" loading="lazy"/></div>`).join('');
+wg.innerHTML=walls.map((w,i)=>`
+  <div class="wall-thumb" data-label="${w.label}" onclick="applyWall(${i})" id="wt${i}" style="background:${w.grad};">
+    <span style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:8px 10px;font-family:system-ui,sans-serif;font-size:10px;color:rgba(255,255,255,.7);letter-spacing:.05em;text-transform:uppercase;background:linear-gradient(transparent,rgba(0,0,0,.5))">${w.label}</span>
+  </div>`).join('');
 
 function applyWall(i){
   activeWall=i;
   const wp=document.getElementById('wallpaper'),ov=document.getElementById('wall-overlay');
-  wp.style.backgroundImage=`url('${walls[i].url}')`;
-  wp.style.opacity='1';ov.style.opacity='1';
-  document.getElementById('bg-canvas').style.opacity='0.2';
+  wp.style.background=walls[i].grad;
+  wp.style.backgroundSize='cover';
+  wp.style.opacity='1';
+  ov.style.opacity='1';
+  document.getElementById('bg-canvas').style.opacity='0.25';
   document.getElementById('wall-info').textContent=`Active: ${walls[i].label}`;
   document.querySelectorAll('.wall-thumb').forEach((t,j)=>t.classList.toggle('active',j===i));
 }
