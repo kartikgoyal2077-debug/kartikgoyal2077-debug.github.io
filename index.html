@@ -7,171 +7,165 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#07070a;--bg2:#0f0f12;--bg3:#17171b;--bg4:#1e1e23;
-  --text:#f8f8f8;--muted:#6b6b78;--muted2:#a0a0b0;
+  --bg:#07070a;--bg2:#0f0f13;--bg3:#17171c;--bg4:#1e1e25;
+  --text:#f8f8f8;--muted:#6b6b7a;--muted2:#a0a0b2;
   --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
   --gold:#d4a853;--gold2:#b8922f;--gold3:rgba(212,168,83,0.1);
   --green:#4ade80;
 }
-html{scroll-behavior:auto;overflow-x:hidden}
+html{overflow-x:hidden;scroll-behavior:auto}
 body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;overflow-x:hidden;cursor:none}
 body.light{--bg:#f2f0ea;--bg2:#e8e4da;--bg3:#ddd8cc;--bg4:#d2ccbe;--text:#16140f;--muted:#7a7568;--muted2:#555048;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13)}
 
-/* ===================== SCROLL PROGRESS ===================== */
-#spbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--gold),#f5c842);z-index:9999;width:0%;transition:width .05s}
+/* SCROLL BAR */
+#spbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),#f5d080,var(--gold));background-size:200%;z-index:9999;width:0%;animation:shimmer 2s linear infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ===================== CUSTOM CURSOR ===================== */
-#cur{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9998;will-change:transform;transform:translate(-50%,-50%)}
-#cur-ring{position:fixed;width:32px;height:32px;border:1.5px solid rgba(212,168,83,.5);border-radius:50%;pointer-events:none;z-index:9997;will-change:transform;transform:translate(-50%,-50%);transition:width .18s,height .18s}
+/* CURSOR */
+#cur{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9998;will-change:transform;transform:translate(-50%,-50%)}
+#cur-ring{position:fixed;width:30px;height:30px;border:1px solid rgba(212,168,83,.55);border-radius:50%;pointer-events:none;z-index:9997;will-change:transform;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-color .18s}
+#cur-trail{position:fixed;width:4px;height:4px;background:rgba(212,168,83,.3);border-radius:50%;pointer-events:none;z-index:9996;will-change:transform;transform:translate(-50%,-50%)}
 
-/* ===================== BG CANVAS ===================== */
+/* CANVAS */
 #bg-canvas{position:fixed;inset:0;z-index:0;opacity:.4}
 
-/* ===================== WALLPAPER ===================== */
+/* WALLPAPER */
 #wallpaper{position:fixed;inset:0;z-index:1;opacity:0;transition:opacity 1.8s}
 #wall-overlay{position:fixed;inset:0;z-index:2;background:rgba(7,7,10,.78);opacity:0;transition:opacity 1.8s;pointer-events:none}
 
-/* ===================== GRAIN ===================== */
-#grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.035;
-background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+/* GRAIN */
+#grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.032;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
 
-/* ===================== LOADER ===================== */
-#loader{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
-#loader.out{animation:loaderOut .9s cubic-bezier(.76,0,.24,1) forwards}
-@keyframes loaderOut{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-100%);opacity:0;pointer-events:none}}
-.ld-name{overflow:hidden;line-height:1}
-.ld-name span{font-size:clamp(3rem,9vw,7rem);font-weight:400;letter-spacing:-.04em;display:inline-block;transform:translateY(110%);animation:letterUp .6s cubic-bezier(.4,0,.2,1) forwards}
-.ld-name span:nth-child(1){animation-delay:.05s}.ld-name span:nth-child(2){animation-delay:.1s}.ld-name span:nth-child(3){animation-delay:.15s}.ld-name span:nth-child(4){animation-delay:.2s}.ld-name span:nth-child(5){animation-delay:.25s}.ld-name span:nth-child(6){animation-delay:.3s}
-@keyframes letterUp{to{transform:translateY(0)}}
-.ld-bar{width:200px;height:1.5px;background:var(--border2);border-radius:2px;overflow:hidden}
-.ld-fill{height:100%;background:var(--gold);width:0%;animation:ldbar 1.8s ease forwards}
-@keyframes ldbar{to{width:100%}}
-.ld-label{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);animation:fadeIn .5s .4s both}
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;overflow:hidden}
+#loader.out{animation:loaderSlide .9s cubic-bezier(.86,0,.07,1) forwards}
+@keyframes loaderSlide{to{clip-path:inset(0 0 100% 0)}}
+.ld-letters{display:flex;gap:2px;overflow:hidden}
+.ld-letters span{font-size:clamp(3rem,9vw,7rem);font-weight:400;letter-spacing:-.04em;display:inline-block;transform:translateY(120%) rotate(8deg);animation:lUp .7s cubic-bezier(.4,0,.2,1) forwards}
+.ld-letters span:nth-child(1){animation-delay:.04s}.ld-letters span:nth-child(2){animation-delay:.09s}.ld-letters span:nth-child(3){animation-delay:.14s}.ld-letters span:nth-child(4){animation-delay:.19s}.ld-letters span:nth-child(5){animation-delay:.24s}.ld-letters span:nth-child(6){animation-delay:.29s}
+@keyframes lUp{to{transform:translateY(0) rotate(0deg)}}
+.ld-sub{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);animation:fadeIn .5s .4s both}
+.ld-bar{width:220px;height:1px;background:var(--border2);overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--gold),#f5d080);width:0%;animation:lfill 1.9s ease forwards}
+@keyframes lfill{to{width:100%}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* ===================== NAV ===================== */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:18px 48px;background:rgba(7,7,10,.55);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
-.nav-logo{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;font-family:system-ui,sans-serif;font-weight:700}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:18px 48px;background:rgba(7,7,10,.5);backdrop-filter:blur(28px);border-bottom:1px solid var(--border);transition:padding .4s}
+nav.scrolled{padding:12px 48px}
+.nav-logo{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);text-decoration:none;font-family:system-ui,sans-serif;font-weight:700}
 .nav-links{display:flex;align-items:center;gap:20px}
-.nav-links a{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:var(--text)}
+.nav-links a{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
+.nav-links a:hover{color:var(--text)}.nav-links a:hover::after{width:100%}
 .live-pill{display:flex;align-items:center;gap:5px;font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)}
-.ldot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:gpulse 2s infinite;flex-shrink:0}
-@keyframes gpulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
-#clock{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);letter-spacing:.05em}
+.ldot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;animation:gpls 2s infinite}
+@keyframes gpls{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}70%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+#clock{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)}
 .nicons{display:flex;gap:8px}
-.nibtn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;padding:4px;transition:color .2s}
+.nibtn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px;padding:4px;transition:color .2s}
 .nibtn:hover{color:var(--text)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-.hamburger span{display:block;width:20px;height:1px;background:var(--muted);transition:all .3s;transform-origin:center}
-.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.hamburger.open span:nth-child(2){opacity:0}
-.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-.mob-menu{display:none;position:fixed;inset:0;top:0;background:rgba(7,7,10,.97);z-index:490;flex-direction:column;align-items:center;justify-content:center;gap:32px;backdrop-filter:blur(24px)}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:18px;height:1px;background:var(--muted);transition:all .3s;transform-origin:center}
+.hamburger.open span:nth-child(1){transform:translateY(5px) rotate(45deg)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+.mob-menu{display:none;position:fixed;inset:0;background:rgba(7,7,10,.97);z-index:490;flex-direction:column;align-items:center;justify-content:center;gap:28px;backdrop-filter:blur(24px)}
 .mob-menu.open{display:flex}
-.mob-menu a{font-family:system-ui,sans-serif;font-size:20px;color:var(--muted2);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .2s}
+.mob-menu a{font-family:system-ui,sans-serif;font-size:18px;color:var(--muted2);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;opacity:0;transform:translateY(20px)}
+.mob-menu.open a{animation:fadeUp .4s both}
+.mob-menu.open a:nth-child(1){animation-delay:.05s}.mob-menu.open a:nth-child(2){animation-delay:.1s}.mob-menu.open a:nth-child(3){animation-delay:.15s}.mob-menu.open a:nth-child(4){animation-delay:.2s}.mob-menu.open a:nth-child(5){animation-delay:.25s}.mob-menu.open a:nth-child(6){animation-delay:.3s}.mob-menu.open a:nth-child(7){animation-delay:.35s}.mob-menu.open a:nth-child(8){animation-delay:.4s}
 .mob-menu a:hover{color:var(--gold)}
 
-/* ===================== SECTIONS — CINEMATIC ===================== */
-/* Each section has its own entrance animation */
-.sec{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+/* BUTTONS */
+.btn-gold{background:var(--gold);color:#07070a;border:none;padding:14px 34px;border-radius:100px;font-family:system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;position:relative;overflow:hidden}
+.btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);transform:translateX(-100%);transition:transform .5s}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(212,168,83,.35)}
+.btn-gold:hover::after{transform:translateX(100%)}
+.btn-outline{background:transparent;color:var(--muted2);border:1px solid var(--border2);padding:14px 34px;border-radius:100px;font-family:system-ui,sans-serif;font-size:13px;letter-spacing:.05em;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block}
+.btn-outline:hover{border-color:var(--text);color:var(--text);transform:translateY(-2px)}
 
-/* HERO */
-#s-hero{padding:120px 40px 80px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border2);border-radius:100px;padding:8px 22px;font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:48px;backdrop-filter:blur(10px);opacity:0;animation:fadeUp .7s .3s both}
+/* MARQUEE */
+.mq-wrap{position:relative;z-index:10;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0;background:rgba(15,15,19,.6);backdrop-filter:blur(14px)}
+.mq-track{display:flex;width:max-content;animation:mqa 30s linear infinite}
+.mq-track:hover{animation-play-state:paused}
+.mq-item{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:0 26px;display:flex;align-items:center;gap:26px;white-space:nowrap}
+.mq-item::after{content:'◆';color:var(--gold);font-size:6px}
+@keyframes mqa{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ===================== HERO ===================== */
+#s-hero{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 40px 100px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border2);border-radius:100px;padding:8px 22px;font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:48px;backdrop-filter:blur(12px);opacity:0;animation:fadeUp .8s .3s both}
 #hero-name{font-size:clamp(3.5rem,10vw,8.5rem);font-weight:400;line-height:1.0;letter-spacing:-.04em;margin-bottom:8px;min-height:1.1em}
 .hero-italic{font-style:italic;color:var(--muted)}
 .cblink{display:inline-block;width:3px;height:.85em;background:var(--gold);margin-left:4px;vertical-align:middle;animation:blink .8s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.hero-sub{font-size:16px;color:var(--muted);max-width:480px;line-height:1.9;margin:28px auto 52px;font-style:italic;opacity:0;animation:fadeUp .7s .8s both}
-.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px;opacity:0;animation:fadeUp .6s 1s both}
+.hero-sub{font-size:16px;color:var(--muted);max-width:480px;line-height:1.9;margin:28px auto 52px;font-style:italic;opacity:0;animation:fadeUp .7s .85s both}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px;opacity:0;animation:fadeUp .6s 1.05s both}
 .hero-socials{display:flex;gap:28px;opacity:0;animation:fadeUp .6s 1.2s both}
-.hero-socials a{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.hero-socials a{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
 .hero-socials a:hover{color:var(--gold)}
-.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;animation:floatHint 3s 1.5s ease-in-out infinite,fadeIn .5s 1.5s both;cursor:pointer}
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;opacity:0;animation:fadeIn .6s 1.6s both}
 .scroll-hint span{font-family:system-ui,sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.sline{width:1px;height:48px;background:linear-gradient(to bottom,rgba(212,168,83,.7),transparent)}
-@keyframes floatHint{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+.sline{width:1px;height:48px;background:linear-gradient(to bottom,rgba(212,168,83,.7),transparent);animation:slinePulse 2s ease-in-out infinite}
+@keyframes slinePulse{0%,100%{opacity:.7;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 
-/* BUTTONS */
-.btn-gold{background:var(--gold);color:#07070a;border:none;padding:14px 34px;border-radius:100px;font-family:system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.05em;cursor:pointer;transition:all .22s;text-decoration:none;display:inline-block}
-.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);box-shadow:0 14px 40px rgba(212,168,83,.3)}
-.btn-outline{background:transparent;color:var(--muted2);border:1px solid var(--border2);padding:14px 34px;border-radius:100px;font-family:system-ui,sans-serif;font-size:13px;letter-spacing:.05em;cursor:pointer;transition:all .22s;text-decoration:none;display:inline-block}
-.btn-outline:hover{border-color:var(--text);color:var(--text)}
+/* ===================== SECTION DIVIDER ===================== */
+.sdiv{position:relative;z-index:10;height:1px;background:var(--border);overflow:hidden}
+.sdiv::after{content:'';position:absolute;left:-100%;top:0;height:100%;width:60%;background:linear-gradient(90deg,transparent,var(--gold),transparent);transition:left 1.2s ease}
+.sdiv.lit::after{left:150%}
 
-/* MARQUEE */
-.mq-wrap{position:relative;z-index:10;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0;background:rgba(15,15,18,.6);backdrop-filter:blur(12px)}
-.mq-track{display:flex;width:max-content;animation:mqa 32s linear infinite}
-.mq-track:hover{animation-play-state:paused}
-.mq-item{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:0 26px;white-space:nowrap;display:flex;align-items:center;gap:26px}
-.mq-item::after{content:'◆';color:var(--gold);font-size:6px}
-@keyframes mqa{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* ===================== CINEMATIC SECTION WRAPPERS ===================== */
-/* Each .panel is a full-viewport section with its own clip/reveal */
+/* ===================== CINEMATIC PANELS ===================== */
 .panel{position:relative;z-index:10;overflow:hidden}
 
-/* Wipe from left */
-.panel-wipe-left .panel-inner{transform:translateX(-80px);opacity:0;transition:transform 1.1s cubic-bezier(.16,1,.3,1),opacity .9s ease}
-.panel-wipe-left.entered .panel-inner{transform:translateX(0);opacity:1}
+/* ZOOM BLUR — scales & unblurs */
+.pzoom .pi{opacity:0;transform:scale(1.07);filter:blur(10px);transition:opacity 1s ease,transform 1.3s cubic-bezier(.16,1,.3,1),filter 1s ease}
+.pzoom.in .pi{opacity:1;transform:scale(1);filter:blur(0)}
 
-/* Wipe from right */
-.panel-wipe-right .panel-inner{transform:translateX(80px);opacity:0;transition:transform 1.1s cubic-bezier(.16,1,.3,1),opacity .9s ease}
-.panel-wipe-right.entered .panel-inner{transform:translateX(0);opacity:1}
+/* WIPE LEFT — slides from left */
+.pwl .pi{opacity:0;transform:translateX(-90px);transition:opacity .9s ease,transform 1.2s cubic-bezier(.16,1,.3,1)}
+.pwl.in .pi{opacity:1;transform:translateX(0)}
 
-/* Scale up */
-.panel-scale .panel-inner{transform:scale(.94);opacity:0;transition:transform 1.1s cubic-bezier(.16,1,.3,1),opacity .9s ease}
-.panel-scale.entered .panel-inner{transform:scale(1);opacity:1}
+/* WIPE RIGHT */
+.pwr .pi{opacity:0;transform:translateX(90px);transition:opacity .9s ease,transform 1.2s cubic-bezier(.16,1,.3,1)}
+.pwr.in .pi{opacity:1;transform:translateX(0)}
 
-/* Clip reveal top */
-.panel-clip .panel-inner{clip-path:inset(100% 0 0 0);transition:clip-path 1.2s cubic-bezier(.16,1,.3,1)}
-.panel-clip.entered .panel-inner{clip-path:inset(0% 0 0 0)}
+/* CLIP CURTAIN — wipes down like a reveal curtain */
+.pclip .pi{clip-path:inset(0 0 100% 0);transition:clip-path 1.3s cubic-bezier(.16,1,.3,1)}
+.pclip.in .pi{clip-path:inset(0 0 0% 0)}
 
-/* Skew slide */
-.panel-skew .panel-inner{transform:skewY(3deg) translateY(60px);opacity:0;transition:transform 1.1s cubic-bezier(.16,1,.3,1),opacity .9s ease}
-.panel-skew.entered .panel-inner{transform:skewY(0deg) translateY(0);opacity:1}
+/* SKEW RISE — skewed + rising */
+.pskew .pi{opacity:0;transform:skewY(4deg) translateY(70px);transition:opacity .9s ease,transform 1.2s cubic-bezier(.16,1,.3,1)}
+.pskew.in .pi{opacity:1;transform:skewY(0deg) translateY(0)}
 
-/* Parallax split — left/right children */
-.panel-split .split-left{transform:translateX(-60px);opacity:0;transition:transform 1.2s cubic-bezier(.16,1,.3,1),opacity 1s ease}
-.panel-split .split-right{transform:translateX(60px);opacity:0;transition:transform 1.2s .15s cubic-bezier(.16,1,.3,1),opacity 1s .15s ease}
-.panel-split.entered .split-left,.panel-split.entered .split-right{transform:translateX(0);opacity:1}
+/* SPLIT — left & right halves from opposite sides */
+.psplit .sl{opacity:0;transform:translateX(-70px);transition:opacity .95s ease,transform 1.25s cubic-bezier(.16,1,.3,1)}
+.psplit .sr{opacity:0;transform:translateX(70px);transition:opacity .95s .12s ease,transform 1.25s .12s cubic-bezier(.16,1,.3,1)}
+.psplit.in .sl,.psplit.in .sr{opacity:1;transform:translateX(0)}
 
-/* Zoom blur */
-.panel-zoom .panel-inner{transform:scale(1.06);opacity:0;filter:blur(8px);transition:transform 1.2s cubic-bezier(.16,1,.3,1),opacity .9s ease,filter .9s ease}
-.panel-zoom.entered .panel-inner{transform:scale(1);opacity:1;filter:blur(0)}
+/* ROTATE FADE — 3D rotate in */
+.protate .pi{opacity:0;transform:perspective(1200px) rotateX(12deg) translateY(60px);transform-origin:top;transition:opacity 1s ease,transform 1.3s cubic-bezier(.16,1,.3,1)}
+.protate.in .pi{opacity:1;transform:perspective(1200px) rotateX(0deg) translateY(0)}
 
-/* Stagger children */
-.panel-stagger.entered .stagger-child:nth-child(1){animation:fadeUp .7s .05s both}
-.panel-stagger.entered .stagger-child:nth-child(2){animation:fadeUp .7s .15s both}
-.panel-stagger.entered .stagger-child:nth-child(3){animation:fadeUp .7s .25s both}
-.panel-stagger.entered .stagger-child:nth-child(4){animation:fadeUp .7s .35s both}
-.panel-stagger.entered .stagger-child:nth-child(5){animation:fadeUp .7s .45s both}
-.panel-stagger.entered .stagger-child:nth-child(6){animation:fadeUp .7s .55s both}
-.stagger-child{opacity:0}
+/* STAGGER CARDS */
+.stagger .sc-item{opacity:0;transform:translateY(40px)}
+.stagger.in .sc-item:nth-child(1){animation:fadeUp .65s .05s both}
+.stagger.in .sc-item:nth-child(2){animation:fadeUp .65s .12s both}
+.stagger.in .sc-item:nth-child(3){animation:fadeUp .65s .19s both}
+.stagger.in .sc-item:nth-child(4){animation:fadeUp .65s .26s both}
+.stagger.in .sc-item:nth-child(5){animation:fadeUp .65s .33s both}
+.stagger.in .sc-item:nth-child(6){animation:fadeUp .65s .40s both}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
-
-/* Section line between panels */
-.sec-divider{position:relative;z-index:10;height:1px;background:var(--border);overflow:hidden}
-.sec-divider::after{content:'';position:absolute;left:-100%;top:0;height:100%;width:100%;background:linear-gradient(to right,transparent,var(--gold),transparent);transition:left 1.4s ease}
-.sec-divider.lit::after{left:100%}
-
-/* ===================== SECTION INNER LAYOUT ===================== */
+/* ===================== INNER LAYOUT ===================== */
 .si{width:100%;max-width:960px;padding:90px 40px;margin:0 auto}
 .stag{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px}
 .stag::before{content:'';width:20px;height:1px;background:var(--gold);display:inline-block}
-.stitle{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;letter-spacing:-.025em;line-height:1.18;margin-bottom:44px}
-
-/* Horizontal rule with label */
-.hr-label{display:flex;align-items:center;gap:16px;margin:0 0 44px}
-.hr-label::before,.hr-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.hr-label span{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.stitle{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;letter-spacing:-.025em;line-height:1.18;margin-bottom:40px}
 
 /* ===================== QUOTE ===================== */
 .qcard{background:var(--bg2);border:1px solid var(--border2);border-radius:24px;padding:52px 56px;position:relative;overflow:hidden}
-.qcard::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(212,168,83,.06),transparent 55%)}
+.qcard::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(212,168,83,.06),transparent 55%);pointer-events:none}
 @property --qa{syntax:'<angle>';initial-value:0deg;inherits:false}
-.qspin{position:absolute;inset:0;border-radius:24px;padding:1.5px;background:conic-gradient(from var(--qa),transparent 0%,var(--gold) 20%,transparent 40%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.3;animation:qrot 5s linear infinite}
+.qspin{position:absolute;inset:0;border-radius:24px;padding:1.5px;background:conic-gradient(from var(--qa),transparent,var(--gold) 20%,transparent 40%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.28;animation:qrot 5s linear infinite}
 @keyframes qrot{to{--qa:360deg}}
 .qmark{font-size:100px;line-height:.7;color:rgba(212,168,83,.07);font-family:Georgia,serif;position:absolute;top:20px;left:36px}
 .qbody{font-size:clamp(1.15rem,2.2vw,1.5rem);line-height:1.75;font-style:italic;color:var(--text);position:relative;z-index:1;margin-bottom:24px;max-width:680px}
@@ -184,19 +178,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .qcat{font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg3);border:1px solid var(--border);padding:5px 12px;border-radius:100px;cursor:pointer;transition:all .2s}
 .qcat.active,.qcat:hover{color:var(--gold);border-color:rgba(212,168,83,.3);background:var(--gold3)}
 .qnum{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);margin-top:14px;text-align:right;position:relative;z-index:1}
-.ai-box{margin-top:18px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:24px 28px}
-.ai-lbl{font-family:system-ui,sans-serif;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.ai-lbl::before{content:'✦';font-size:10px}
-.ai-text{font-size:14px;line-height:1.8;font-style:italic;color:var(--muted2)}
-.ai-btn{margin-top:14px;font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:var(--gold3);border:1px solid rgba(212,168,83,.25);padding:7px 18px;border-radius:100px;cursor:pointer;transition:all .2s}
-.ai-btn:hover{background:rgba(212,168,83,.18)}
+.aibox{margin-top:18px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:24px 28px}
+.ailbl{font-family:system-ui,sans-serif;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.ailbl::before{content:'✦'}
+.aitext{font-size:14px;line-height:1.8;font-style:italic;color:var(--muted2)}
+.aibtn{margin-top:14px;font-family:system-ui,sans-serif;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:var(--gold3);border:1px solid rgba(212,168,83,.25);padding:7px 18px;border-radius:100px;cursor:pointer;transition:all .2s}
+.aibtn:hover{background:rgba(212,168,83,.2)}
 
 /* ===================== WALLPAPER ===================== */
 .wgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
 .wthumb{aspect-ratio:16/9;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all .3s;position:relative;display:flex;align-items:flex-end;overflow:hidden}
 .wthumb:hover{transform:translateY(-4px) scale(1.02);border-color:var(--border2)}
 .wthumb.active{border-color:var(--gold);box-shadow:0 0 20px rgba(212,168,83,.15)}
-.wthumb-lbl{width:100%;padding:7px 9px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-family:system-ui,sans-serif;font-size:9px;color:rgba(255,255,255,.7);letter-spacing:.07em;text-transform:uppercase}
+.wtlbl{width:100%;padding:7px 9px;background:linear-gradient(transparent,rgba(0,0,0,.7));font-family:system-ui,sans-serif;font-size:9px;color:rgba(255,255,255,.75);letter-spacing:.07em;text-transform:uppercase}
 .wbtns{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
 .wbtn{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:7px 16px;border-radius:100px;cursor:pointer;transition:all .2s}
 .wbtn:hover,.wbtn.active{color:var(--gold);border-color:rgba(212,168,83,.3)}
@@ -222,23 +216,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .streakl{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);margin-top:5px}
 
 /* ===================== ABOUT ===================== */
-.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
-.about-text p{color:var(--muted2);line-height:1.95;margin-bottom:16px;font-size:15px;font-family:system-ui,sans-serif}
-.srow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.sc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
-.sn{font-size:1.8rem;color:var(--gold);font-weight:400;line-height:1;margin-bottom:4px}
-.sl{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);letter-spacing:.05em}
+.arow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ac{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.an{font-size:1.8rem;color:var(--gold);font-weight:400;line-height:1;margin-bottom:4px}
+.al{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
 .tag{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted2);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:5px 13px;border-radius:100px;cursor:default;transition:all .2s}
 .tag:hover{border-color:var(--gold);color:var(--gold)}
-
-/* ===================== READING ===================== */
-.rcard{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:30px 34px;display:flex;gap:26px;align-items:flex-start}
-.bcover{width:68px;height:96px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:linear-gradient(135deg,#1a1a2e,#2d1b45)}
+.rcard{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:28px 30px;display:flex;gap:22px;align-items:flex-start;margin-top:14px}
+.bcover{width:64px;height:90px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(135deg,#1a1a2e,#2d1b45)}
 .binfo{flex:1}
-.btitle{font-size:17px;font-weight:400;margin-bottom:3px}
-.bautor{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted);margin-bottom:12px;letter-spacing:.05em}
-.btake{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted2);line-height:1.75;margin-bottom:14px;font-style:italic}
+.btitle{font-size:16px;font-weight:400;margin-bottom:3px}
+.bautor{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted);margin-bottom:10px}
+.btake{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted2);line-height:1.75;margin-bottom:12px;font-style:italic}
 .bprog{display:flex;align-items:center;gap:10px}
 .bbar{flex:1;height:2px;background:var(--border2);border-radius:2px;overflow:hidden}
 .bfill{height:100%;background:var(--gold);border-radius:2px}
@@ -248,9 +238,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
 .pcard{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:26px 22px;transition:all .3s;position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block}
 .pcard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(212,168,83,.06),transparent 65%);opacity:0;transition:opacity .3s}
-.pcard:hover{border-color:rgba(212,168,83,.22);transform:translateY(-5px)}
-.pcard:hover::before{opacity:1}
-.picon{font-size:22px;margin-bottom:13px}
+.pcard:hover{border-color:rgba(212,168,83,.22);transform:translateY(-5px)}.pcard:hover::before{opacity:1}
+.picon{font-size:22px;margin-bottom:12px}
 .pname{font-family:system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
 .pdesc{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:12px}
 .ptags{display:flex;flex-wrap:wrap;gap:5px}
@@ -262,15 +251,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
 .icard{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:26px 22px;transition:all .3s;position:relative;overflow:hidden;cursor:default}
 .icard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(212,168,83,.05),transparent 65%);opacity:0;transition:opacity .3s}
-.icard:hover{border-color:rgba(212,168,83,.22);transform:translateY(-5px)}
-.icard:hover::before{opacity:1}
+.icard:hover{border-color:rgba(212,168,83,.22);transform:translateY(-5px)}.icard:hover::before{opacity:1}
 .iicon{font-size:22px;margin-bottom:12px;display:block}
 .ititle{font-family:system-ui,sans-serif;font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px}
 .idesc{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted);line-height:1.75}
 
 /* ===================== WEATHER ===================== */
-.wcard{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:26px 30px;display:flex;align-items:center;gap:22px}
-.wicon{font-size:38px}
+.wcard{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px 28px;display:flex;align-items:center;gap:20px}
+.wicon{font-size:36px}
 .winfo{flex:1}
 .wloc{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px}
 .wtemp{font-size:2rem;color:var(--text);font-weight:400;line-height:1}
@@ -278,24 +266,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .wmeta{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);text-align:right;line-height:1.7}
 
 /* ===================== MUSIC PLAYER ===================== */
-.player{background:var(--bg2);border:1px solid var(--border2);border-radius:22px;padding:34px 38px}
-.pltop{display:flex;align-items:center;gap:16px;margin-bottom:26px}
-.plart{width:58px;height:58px;border-radius:12px;background:linear-gradient(135deg,#1a1a2e,#2d1b45);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;transition:all .3s}
-.plart.spin{animation:vspin 3s linear infinite}
+.player{background:var(--bg2);border:1px solid var(--border2);border-radius:22px;padding:32px 36px}
+.pltop{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.plart{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#1a1a2e,#2d1b45);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;transition:transform .3s}
+.plart.spin{animation:vspin 4s linear infinite}
 @keyframes vspin{to{transform:rotate(360deg)}}
 .plinfo{flex:1}
 .pltrack{font-size:15px;color:var(--text);margin-bottom:3px}
-.plartist{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted);letter-spacing:.05em}
+.plartist{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted)}
 .plbadge{font-family:system-ui,sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:var(--gold3);border:1px solid rgba(212,168,83,.2);padding:4px 11px;border-radius:100px}
 .volwrap{display:flex;align-items:center;gap:9px;margin-bottom:14px}
 .vollbl{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)}
 .vslider{flex:1;-webkit-appearance:none;appearance:none;height:2px;background:var(--border2);border-radius:2px;outline:none}
 .vslider::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--gold);cursor:pointer}
 .progbar{height:2px;background:rgba(255,255,255,.07);border-radius:2px;cursor:pointer;margin-bottom:7px;position:relative}
-.progfill{height:100%;background:linear-gradient(to right,var(--gold),#f5c842);border-radius:2px;width:0%;position:relative}
+.progfill{height:100%;background:linear-gradient(to right,var(--gold),#f5d080);border-radius:2px;width:0%;position:relative;transition:width .5s linear}
 .progfill::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--gold)}
 .ptimes{display:flex;justify-content:space-between;font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);margin-bottom:20px}
-.pctrl{display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:24px}
+.pctrl{display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:22px}
 .cbtn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;transition:color .2s;padding:4px}
 .cbtn:hover{color:var(--text)}
 .cplay{width:48px;height:48px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:#07070a;transition:all .18s}
@@ -308,9 +296,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .plname{font-size:12px;color:var(--muted2);flex:1}
 .plrow.cur .plname{color:var(--gold)}
 .pldur{font-size:10px;color:var(--muted)}
+/* hidden YT frame */
+#yt-frame{position:fixed;bottom:-9999px;right:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;border:none}
 
 /* ===================== GUESTBOOK ===================== */
-.gbentries{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;max-height:300px;overflow-y:auto}
+.gbentries{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;max-height:280px;overflow-y:auto}
 .gbentry{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:14px 18px}
 .gbname{font-family:system-ui,sans-serif;font-size:11px;font-weight:600;color:var(--gold);margin-bottom:4px}
 .gbmsg{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted2);line-height:1.65}
@@ -326,9 +316,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
 .clinks{display:flex;flex-direction:column;gap:9px;margin-top:18px}
 .clink{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--muted2);padding:13px 17px;background:var(--bg2);border:1px solid var(--border);border-radius:11px;transition:all .22s;font-family:system-ui,sans-serif;font-size:12px}
-.clink:hover{border-color:rgba(212,168,83,.3);color:var(--gold);transform:translateX(4px)}
+.clink:hover{border-color:rgba(212,168,83,.3);color:var(--gold);transform:translateX(5px)}
 .clink span{font-size:15px}
-.cform{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:30px 34px}
+.cform{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:28px 32px}
 .fg{margin-bottom:14px}
 .fl{display:block;font-family:system-ui,sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .fi{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:11px 14px;color:var(--text);font-family:system-ui,sans-serif;font-size:12px;outline:none;transition:border-color .2s}
@@ -339,20 +329,20 @@ textarea.fi{resize:vertical;min-height:90px}
 .fsub:hover{background:var(--gold2);transform:translateY(-1px)}
 .fok{display:none;text-align:center;padding:18px;font-family:system-ui,sans-serif;font-size:13px;color:var(--green)}
 
-/* ===================== FIXED UI ===================== */
-#btt{position:fixed;bottom:80px;right:22px;z-index:400;width:40px;height:40px;border-radius:50%;background:var(--gold);border:none;color:#07070a;font-size:15px;cursor:pointer;opacity:0;transform:translateY(14px);transition:all .3s;display:flex;align-items:center;justify-content:center}
+/* ===================== FIXED ELEMENTS ===================== */
+#btt{position:fixed;bottom:80px;right:22px;z-index:400;width:40px;height:40px;border-radius:50%;background:var(--gold);border:none;color:#07070a;font-size:14px;cursor:pointer;opacity:0;transform:translateY(14px);transition:all .3s;display:flex;align-items:center;justify-content:center}
 #btt.show{opacity:1;transform:translateY(0)}
-#rand-btn{position:fixed;left:22px;bottom:80px;z-index:400;width:44px;height:44px;border-radius:50%;background:var(--bg2);border:1px solid var(--border2);color:var(--gold);font-size:17px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center}
+#rand-btn{position:fixed;left:22px;bottom:80px;z-index:400;width:42px;height:42px;border-radius:50%;background:var(--bg2);border:1px solid var(--border2);color:var(--gold);font-size:16px;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center}
 #rand-btn:hover{background:var(--gold3);transform:scale(1.1)}
-#rand-popup{position:fixed;left:74px;bottom:80px;z-index:400;background:var(--bg2);border:1px solid var(--border2);border-radius:13px;padding:16px 20px;max-width:280px;font-style:italic;font-size:13px;color:var(--text);line-height:1.7;opacity:0;transform:translateX(-8px);transition:all .3s;pointer-events:none}
+#rand-popup{position:fixed;left:72px;bottom:80px;z-index:400;background:var(--bg2);border:1px solid var(--border2);border-radius:13px;padding:14px 18px;max-width:260px;font-style:italic;font-size:13px;color:var(--text);line-height:1.7;opacity:0;transform:translateX(-8px);transition:all .3s;pointer-events:none}
 #rand-popup.show{opacity:1;transform:translateX(0)}
-.mood-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(7,7,10,.92);backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:11px 44px;display:flex;align-items:center;gap:18px;transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
-.mood-bar.show{transform:translateY(0)}
+.moodbar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(7,7,10,.92);backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:11px 44px;display:flex;align-items:center;gap:18px;transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.moodbar.show{transform:translateY(0)}
 .mblbl{font-family:system-ui,sans-serif;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
 .mbmoods{display:flex;gap:6px;flex-wrap:wrap}
 .mbm{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:5px 13px;border-radius:100px;cursor:pointer;transition:all .2s}
 .mbm.active,.mbm:hover{color:var(--gold);border-color:rgba(212,168,83,.3);background:var(--gold3)}
-.mbclose{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:2px 5px}
+.mbclose{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px}
 .mbclose:hover{color:var(--text)}
 
 /* ===================== FOOTER ===================== */
@@ -362,15 +352,16 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
 .flinks a{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s}
 .flinks a:hover{color:var(--gold)}
 
-/* ===================== RESPONSIVE ===================== */
 @media(max-width:768px){
   nav{padding:14px 18px}.nav-links{display:none}.hamburger{display:flex}
   #hero-name{font-size:3.2rem}.si{padding:60px 20px}
-  .thgrid,.about-layout,.cgrid,.pgrid,.igrid{grid-template-columns:1fr}
-  .wgrid{grid-template-columns:repeat(2,1fr)}.srow{grid-template-columns:1fr 1fr}
+  .thgrid,.cgrid,.pgrid,.igrid{grid-template-columns:1fr}
+  .wgrid{grid-template-columns:repeat(2,1fr)}.arow{grid-template-columns:1fr 1fr}
   .qcard{padding:32px 26px}.player{padding:24px 20px}
   footer{flex-direction:column;gap:10px;padding:20px 18px}
-  .mood-bar{padding:11px 16px}.mbmoods{flex-wrap:wrap}
+  .moodbar{padding:11px 16px}
+  #s-about .si{grid-template-columns:1fr!important}
+  #s-vibe .si>div{grid-template-columns:1fr!important}
 }
 </style>
 </head>
@@ -378,24 +369,25 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="ld-name"><span>K</span><span>a</span><span>r</span><span>t</span><span>i</span><span>k</span></div>
+  <div class="ld-letters"><span>K</span><span>a</span><span>r</span><span>t</span><span>i</span><span>k</span></div>
+  <div class="ld-sub">Loading experience</div>
   <div class="ld-bar"><div class="ld-fill"></div></div>
-  <div class="ld-label">Loading experience</div>
 </div>
 
+<!-- HIDDEN YOUTUBE PLAYER -->
+<iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 <div id="spbar"></div>
-<div id="cur"></div>
-<div id="cur-ring"></div>
+<div id="cur"></div><div id="cur-ring"></div><div id="cur-trail"></div>
 <canvas id="bg-canvas"></canvas>
-<div id="wallpaper"></div>
-<div id="wall-overlay"></div>
+<div id="wallpaper"></div><div id="wall-overlay"></div>
 <div id="grain"></div>
 <button id="btt" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
-<button id="rand-btn" title="Random thought" onclick="showRand()">💭</button>
+<button id="rand-btn" onclick="showRand()">💭</button>
 <div id="rand-popup"></div>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <a class="nav-logo" href="#">Kartik</a>
   <div class="nav-links">
     <div class="live-pill"><div class="ldot"></div>Present</div>
@@ -417,57 +409,48 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
   <a href="#s-guest" onclick="toggleMenu()">Guestbook</a><a href="#s-contact" onclick="toggleMenu()">Contact</a>
 </div>
 
-<!-- ==================== HERO ==================== -->
-<section class="sec" id="s-hero">
+<!-- HERO -->
+<section id="s-hero">
   <div class="hero-badge"><div class="ldot"></div>Open to conversations & collaborations</div>
   <h1 id="hero-name"><span class="cblink"></span></h1>
-  <p class="hero-sub">An evolving space — reflection, presence, quiet motion.<br>Here I record thoughts, reflect on moments, and let quiet intuition speak.</p>
+  <p class="hero-sub">An evolving space — reflection, presence, quiet motion.<br>Here I record thoughts and let quiet intuition speak.</p>
   <div class="hero-ctas"><a href="#s-quote" class="btn-gold">Today's quote</a><a href="#s-wall" class="btn-outline">Set wallpaper</a></div>
   <div class="hero-socials">
     <a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
     <a href="https://x.com/Onlystudy694544" target="_blank">X / Twitter</a>
     <a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
   </div>
-  <div class="scroll-hint" onclick="document.getElementById('s-quote').scrollIntoView({behavior:'smooth'})"><span>Scroll</span><div class="sline"></div></div>
+  <div class="scroll-hint" onclick="document.getElementById('s-quote').scrollIntoView({behavior:'smooth'})">
+    <span>Scroll</span><div class="sline"></div>
+  </div>
 </section>
 
-<!-- MARQUEE -->
 <div class="mq-wrap"><div class="mq-track" id="mq"></div></div>
 
-<!-- ==================== QUOTE ==================== -->
-<div class="sec-divider" id="div1"></div>
-<section class="panel panel-zoom" id="s-quote"><div class="panel-inner"><div class="si">
+<!-- QUOTE — zoom blur -->
+<div class="sdiv" id="d1"></div>
+<section class="panel pzoom" id="s-quote"><div class="pi"><div class="si">
   <p class="stag">Daily quote</p><h2 class="stitle">Words that moved me today</h2>
-  <div class="qcard">
-    <div class="qspin"></div><div class="qmark">"</div>
-    <p class="qbody" id="qbody">…</p>
-    <p class="qauthor" id="qauthor"></p>
-    <div class="qactions">
-      <button class="qbtn" onclick="nextQ()">Next →</button>
-      <button class="qbtn" onclick="copyQ()">Copy</button>
-      <button class="qbtn" id="qfav" onclick="favQ()">♡ Save</button>
-    </div>
+  <div class="qcard"><div class="qspin"></div><div class="qmark">"</div>
+    <p class="qbody" id="qbody">…</p><p class="qauthor" id="qauthor"></p>
+    <div class="qactions"><button class="qbtn" onclick="nextQ()">Next →</button><button class="qbtn" onclick="copyQ()">Copy</button><button class="qbtn" id="qfav" onclick="favQ()">♡ Save</button></div>
     <p class="qnum" id="qnum"></p>
   </div>
   <div class="qcats" id="qcats"></div>
-  <div class="ai-box">
-    <div class="ai-lbl">AI-generated quote for you</div>
-    <p class="ai-text" id="ai-q">Click below to get a personalized quote based on your mood…</p>
-    <button class="ai-btn" onclick="genAIQuote()">✦ Generate with AI</button>
-  </div>
+  <div class="aibox"><div class="ailbl">AI-generated quote for you</div><p class="aitext" id="ai-q">Click below to get a personalized quote…</p><button class="aibtn" onclick="genAIQuote()">✦ Generate with AI</button></div>
 </div></div></section>
 
-<!-- ==================== WALLPAPER ==================== -->
-<div class="sec-divider" id="div2"></div>
-<section class="panel panel-wipe-left" id="s-wall"><div class="panel-inner"><div class="si">
+<!-- WALLPAPER — wipe left -->
+<div class="sdiv" id="d2"></div>
+<section class="panel pwl" id="s-wall"><div class="pi"><div class="si">
   <p class="stag">Background</p><h2 class="stitle">Set your wallpaper</h2>
   <div class="wgrid" id="wgrid"></div>
   <div class="wbtns"><button class="wbtn active" onclick="setWall('none',this)">None</button><button class="wbtn" onclick="setWall('auto',this)">Auto daily</button><span class="winfo" id="winfo">No wallpaper active</span></div>
 </div></div></section>
 
-<!-- ==================== THOUGHT ==================== -->
-<div class="sec-divider" id="div3"></div>
-<section class="panel panel-wipe-right" id="s-thought"><div class="panel-inner"><div class="si">
+<!-- THOUGHT — wipe right -->
+<div class="sdiv" id="d3"></div>
+<section class="panel pwr" id="s-thought"><div class="pi"><div class="si">
   <p class="stag">Thought of the day</p><h2 class="stitle">What's on my mind</h2>
   <div class="thgrid">
     <div class="thmain"><p class="thtext" id="thtext"></p><div class="thmeta"><span id="thdate"></span><span class="thtag" id="thtag"></span></div><div class="thdots" id="thdots"></div></div>
@@ -478,144 +461,106 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
   </div>
 </div></div></section>
 
-<!-- ==================== ABOUT ==================== -->
-<div class="sec-divider" id="div4"></div>
-<section class="panel panel-split" id="s-about"><div class="si" style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start">
-  <div class="split-left">
+<!-- ABOUT — split -->
+<div class="sdiv" id="d4"></div>
+<section class="panel psplit" id="s-about"><div class="si" style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start">
+  <div class="sl">
     <p class="stag">About me</p><h2 class="stitle">A quiet mind<br>in a loud world</h2>
-    <div class="about-text">
-      <p>I'm Kartik — drawn to stillness, late-night thinking, and the space between ideas. This site is less a portfolio and more a living notebook.</p>
-      <p>I find meaning in focus, build things quietly, and believe calm is a superpower in a noisy world.</p>
-      <p>Based in Rajasthan, India. Always thinking, occasionally writing, perpetually curious.</p>
-      <div class="tags"><span class="tag">Focus</span><span class="tag">Calm</span><span class="tag">Late night</span><span class="tag">Reflection</span><span class="tag">Presence</span><span class="tag">Curiosity</span><span class="tag">Depth</span></div>
-    </div>
+    <p style="color:var(--muted2);line-height:1.95;margin-bottom:16px;font-size:15px;font-family:system-ui,sans-serif">I'm Kartik — drawn to stillness, late-night thinking, and the space between ideas. This site is less a portfolio and more a living notebook.</p>
+    <p style="color:var(--muted2);line-height:1.95;margin-bottom:16px;font-size:15px;font-family:system-ui,sans-serif">I find meaning in focus, build things quietly, and believe calm is a superpower in a noisy world.</p>
+    <p style="color:var(--muted2);line-height:1.95;font-size:15px;font-family:system-ui,sans-serif">Based in Rajasthan, India. Always thinking, occasionally writing, perpetually curious.</p>
+    <div class="tags"><span class="tag">Focus</span><span class="tag">Calm</span><span class="tag">Late night</span><span class="tag">Reflection</span><span class="tag">Presence</span><span class="tag">Curiosity</span><span class="tag">Depth</span></div>
   </div>
-  <div class="split-right" style="margin-top:60px">
-    <div class="srow">
-      <div class="sc"><div class="sn" id="sdays">—</div><div class="sl">Days journaling</div></div>
-      <div class="sc"><div class="sn">7</div><div class="sl">Thoughts shared</div></div>
-      <div class="sc"><div class="sn">∞</div><div class="sl">Questions open</div></div>
-      <div class="sc"><div class="sn">2024</div><div class="sl">Year started</div></div>
-    </div>
-    <div class="rcard" style="margin-top:14px">
-      <div class="bcover">📖</div>
-      <div class="binfo">
-        <div class="btitle">Meditations</div><div class="bautor">Marcus Aurelius</div>
-        <div class="btake">"A private journal of a Roman emperor — raw, honest, and surprisingly modern."</div>
-        <div class="bprog"><div class="bbar"><div class="bfill" style="width:68%"></div></div><span class="bpct">68%</span></div>
-      </div>
-    </div>
+  <div class="sr" style="margin-top:64px">
+    <div class="arow"><div class="ac"><div class="an" id="sdays">—</div><div class="al">Days journaling</div></div><div class="ac"><div class="an">7</div><div class="al">Thoughts shared</div></div><div class="ac"><div class="an">∞</div><div class="al">Questions open</div></div><div class="ac"><div class="an">2024</div><div class="al">Year started</div></div></div>
+    <div class="rcard"><div class="bcover">📖</div><div class="binfo"><div class="btitle">Meditations</div><div class="bautor">Marcus Aurelius</div><div class="btake">"A private journal of a Roman emperor — raw, honest, and surprisingly modern."</div><div class="bprog"><div class="bbar"><div class="bfill" style="width:68%"></div></div><span class="bpct">68%</span></div></div></div>
   </div>
 </div></section>
 
-<!-- ==================== PROJECTS ==================== -->
-<div class="sec-divider" id="div5"></div>
-<section class="panel panel-clip" id="s-projects"><div class="panel-inner"><div class="si">
+<!-- PROJECTS — clip curtain -->
+<div class="sdiv" id="d5"></div>
+<section class="panel pclip" id="s-projects"><div class="pi"><div class="si">
   <p class="stag">Projects</p><h2 class="stitle">Things I've built quietly</h2>
-  <div class="pgrid">
-    <a class="pcard" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">🌐</div><div class="pname">kartikgoyal.in</div><div class="pdesc">This very site — a living notebook of thoughts, reflections, and quiet presence.</div><div class="ptags"><span class="ptag">HTML</span><span class="ptag">CSS</span><span class="ptag">JS</span></div></a>
-    <a class="pcard" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">⚡</div><div class="pname">Focus Timer</div><div class="pdesc">A minimal Pomodoro-style focus timer built for deep work sessions with ambient sound.</div><div class="ptags"><span class="ptag">JavaScript</span><span class="ptag">Web Audio</span></div></a>
-    <a class="pcard" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">📓</div><div class="pname">Daily Journal</div><div class="pdesc">A private journaling app with mood tracking, streak counter, and reflection prompts.</div><div class="ptags"><span class="ptag">React</span><span class="ptag">Storage</span></div></a>
+  <div class="pgrid stagger" id="pgrid">
+    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">🌐</div><div class="pname">kartikgoyal.in</div><div class="pdesc">This very site — a living notebook of thoughts, reflections, and quiet presence.</div><div class="ptags"><span class="ptag">HTML</span><span class="ptag">CSS</span><span class="ptag">JS</span></div></a>
+    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">⚡</div><div class="pname">Focus Timer</div><div class="pdesc">A minimal Pomodoro-style focus timer built for deep work sessions.</div><div class="ptags"><span class="ptag">JavaScript</span><span class="ptag">Web Audio</span></div></a>
+    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">📓</div><div class="pname">Daily Journal</div><div class="pdesc">A private journaling app with mood tracking and reflection prompts.</div><div class="ptags"><span class="ptag">React</span><span class="ptag">Storage</span></div></a>
   </div>
 </div></div></section>
 
-<!-- ==================== INTERESTS ==================== -->
-<div class="sec-divider" id="div6"></div>
-<section class="panel panel-skew" id="s-interests"><div class="panel-inner"><div class="si">
+<!-- INTERESTS — skew rise + stagger -->
+<div class="sdiv" id="d6"></div>
+<section class="panel pskew" id="s-interests"><div class="pi"><div class="si">
   <p class="stag">Interests</p><h2 class="stitle">What I explore</h2>
-  <div class="igrid panel-stagger" id="int-stagger">
-    <div class="icard stagger-child"><span class="iicon">🌙</span><div class="ititle">Late-night thinking</div><div class="idesc">The quiet after midnight where honest thoughts surface without noise.</div></div>
-    <div class="icard stagger-child"><span class="iicon">📖</span><div class="ititle">Reading & reflection</div><div class="idesc">Books, ideas, and letting concepts settle before acting on them.</div></div>
-    <div class="icard stagger-child"><span class="iicon">⚡</span><div class="ititle">Building quietly</div><div class="idesc">Code, projects, and systems — quiet craft that compounds over time.</div></div>
-    <div class="icard stagger-child"><span class="iicon">🎵</span><div class="ititle">Ambient music</div><div class="idesc">Soundscapes that create space for thought rather than filling it.</div></div>
-    <div class="icard stagger-child"><span class="iicon">🧘</span><div class="ititle">Presence</div><div class="idesc">Being where you are, fully, without rushing toward somewhere else.</div></div>
-    <div class="icard stagger-child"><span class="iicon">🌿</span><div class="ititle">Slow living</div><div class="idesc">Choosing depth over speed, quality over quantity, meaning over metrics.</div></div>
+  <div class="igrid stagger" id="igrid">
+    <div class="icard sc-item"><span class="iicon">🌙</span><div class="ititle">Late-night thinking</div><div class="idesc">The quiet after midnight where honest thoughts surface without noise.</div></div>
+    <div class="icard sc-item"><span class="iicon">📖</span><div class="ititle">Reading & reflection</div><div class="idesc">Books, ideas, and letting concepts settle before acting on them.</div></div>
+    <div class="icard sc-item"><span class="iicon">⚡</span><div class="ititle">Building quietly</div><div class="idesc">Code, projects, and systems — quiet craft that compounds over time.</div></div>
+    <div class="icard sc-item"><span class="iicon">🎵</span><div class="ititle">Ambient music</div><div class="idesc">Soundscapes that create space for thought rather than filling it.</div></div>
+    <div class="icard sc-item"><span class="iicon">🧘</span><div class="ititle">Presence</div><div class="idesc">Being where you are, fully, without rushing toward somewhere else.</div></div>
+    <div class="icard sc-item"><span class="iicon">🌿</span><div class="ititle">Slow living</div><div class="idesc">Choosing depth over speed, quality over quantity, meaning over metrics.</div></div>
   </div>
 </div></div></section>
 
-<!-- ==================== WEATHER + VIBE ==================== -->
-<div class="sec-divider" id="div7"></div>
-<section class="panel panel-wipe-left" id="s-vibe"><div class="panel-inner"><div class="si">
-  <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start">
-    <div>
-      <p class="stag">Right now</p><h2 class="stitle" style="margin-bottom:20px">Rajasthan</h2>
-      <div class="wcard">
-        <div class="wicon" id="wicon">🌤️</div>
-        <div class="winfo"><div class="wloc">Rajasthan · Live</div><div class="wtemp" id="wtemp">—°C</div><div class="wdesc" id="wdesc">Fetching…</div></div>
-        <div class="wmeta" id="wmeta"></div>
+<!-- VIBE + WEATHER — rotate fade -->
+<div class="sdiv" id="d7"></div>
+<section class="panel protate" id="s-vibe"><div class="pi"><div class="si" style="display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:start">
+  <div>
+    <p class="stag">Right now</p><h2 class="stitle" style="margin-bottom:18px">Rajasthan</h2>
+    <div class="wcard"><div class="wicon" id="wicon">🌤️</div><div class="winfo"><div class="wloc">Rajasthan · Live</div><div class="wtemp" id="wtemp">—°C</div><div class="wdesc" id="wdesc">Fetching…</div></div><div class="wmeta" id="wmeta"></div></div>
+  </div>
+  <div>
+    <p class="stag">Current vibe</p><h2 class="stitle" style="margin-bottom:18px">Calm music — always on</h2>
+    <div class="player">
+      <div class="pltop">
+        <div class="plart" id="plart">🌊</div>
+        <div class="plinfo"><div class="pltrack" id="pltrack">Weightless</div><div class="plartist" id="plartist">Marconi Union</div></div>
+        <div class="plbadge" id="plbadge">● Playing</div>
       </div>
-    </div>
-    <div>
-      <p class="stag">Current vibe</p><h2 class="stitle" style="margin-bottom:20px">Ambient sounds</h2>
-      <div class="player">
-        <div class="pltop">
-          <div class="plart" id="plart">🌊</div>
-          <div class="plinfo"><div class="pltrack" id="pltrack">Weightless</div><div class="plartist" id="plartist">Ambient · Web Audio</div></div>
-          <div class="plbadge" id="plbadge">● Live</div>
-        </div>
-        <div class="volwrap"><span class="vollbl">🔊</span><input type="range" class="vslider" id="vslider" min="0" max="1" step="0.01" value="0.4" oninput="setVol(this.value)"><span style="font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)" id="volpct">40%</span></div>
-        <div class="progbar"><div class="progfill" id="progfill"></div></div>
-        <div class="ptimes"><span id="tcur">0:00</span><span id="ttot">∞</span></div>
-        <div class="pctrl"><button class="cbtn" onclick="prevT()">⏮</button><button class="cplay" id="playbtn" onclick="togglePlay()">▶</button><button class="cbtn" onclick="nextT()">⏭</button></div>
-        <div class="pllist" id="pllist"></div>
-      </div>
+      <div class="volwrap"><span class="vollbl">🔊</span><input type="range" class="vslider" id="vslider" min="0" max="100" step="1" value="70" oninput="setVol(this.value)"><span style="font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)" id="volpct">70%</span></div>
+      <div class="progbar"><div class="progfill" id="progfill"></div></div>
+      <div class="ptimes"><span id="tcur">0:00</span><span id="ttot">—:--</span></div>
+      <div class="pctrl"><button class="cbtn" onclick="prevT()">⏮</button><button class="cplay" id="playbtn" onclick="togglePlay()">⏸</button><button class="cbtn" onclick="nextT()">⏭</button></div>
+      <div class="pllist" id="pllist"></div>
     </div>
   </div>
-</div></div></section>
+</div></div></div></section>
 
-<!-- ==================== GUESTBOOK ==================== -->
-<div class="sec-divider" id="div8"></div>
-<section class="panel panel-zoom" id="s-guest"><div class="panel-inner"><div class="si">
+<!-- GUESTBOOK — zoom -->
+<div class="sdiv" id="d8"></div>
+<section class="panel pzoom" id="s-guest"><div class="pi"><div class="si">
   <p class="stag">Guestbook</p><h2 class="stitle">Leave a thought</h2>
   <div class="gbentries" id="gbentries"></div>
-  <div class="gbform">
-    <input class="gbinput" id="gbname" placeholder="Your name"/>
-    <textarea class="gbinput" id="gbmsg" placeholder="Leave a message, a thought, anything…" rows="3"></textarea>
-    <button class="gbsubmit" onclick="addEntry()">Leave a message →</button>
-  </div>
+  <div class="gbform"><input class="gbinput" id="gbname" placeholder="Your name"/><textarea class="gbinput" id="gbmsg" placeholder="Leave a message, a thought, anything…" rows="3"></textarea><button class="gbsubmit" onclick="addEntry()">Leave a message →</button></div>
 </div></div></section>
 
-<!-- ==================== CONTACT ==================== -->
-<div class="sec-divider" id="div9"></div>
-<section class="panel panel-split" id="s-contact"><div class="si" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
-  <div class="split-left">
+<!-- CONTACT — split -->
+<div class="sdiv" id="d9"></div>
+<section class="panel psplit" id="s-contact"><div class="si" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+  <div class="sl">
     <p class="stag">Get in touch</p><h2 class="stitle">Let's talk</h2>
     <p style="color:var(--muted2);line-height:1.9;font-family:system-ui,sans-serif;font-size:14px;margin-bottom:20px">Whether you want to share a thought or just say hello — I'm here. I reply slowly, but I do reply.</p>
     <div class="clinks">
       <a class="clink" href="https://www.instagram.com/k4325412" target="_blank"><span>📸</span>Instagram — @k4325412</a>
-      <a class="clink" href="https://x.com/Onlystudy694544" target="_blank"><span>✕</span>X / Twitter — @Onlystudy694544</a>
+      <a class="clink" href="https://x.com/Onlystudy694544" target="_blank"><span>✕</span>X — @Onlystudy694544</a>
       <a class="clink" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span>💻</span>GitHub — kartikgoyal2077-debug</a>
     </div>
   </div>
-  <div class="split-right">
-    <div class="cform">
-      <div id="fwrap">
-        <div class="fg"><label class="fl">Your name</label><input class="fi" id="fname" placeholder="What should I call you?"/></div>
-        <div class="fg"><label class="fl">Message</label><textarea class="fi" id="fmsg" placeholder="A thought, a question, anything…"></textarea></div>
-        <button class="fsub" onclick="sendMsg()">Send message →</button>
-      </div>
-      <div class="fok" id="fok">✓ Received. I'll be in touch.</div>
-    </div>
+  <div class="sr">
+    <div class="cform"><div id="fwrap">
+      <div class="fg"><label class="fl">Your name</label><input class="fi" id="fname" placeholder="What should I call you?"/></div>
+      <div class="fg"><label class="fl">Message</label><textarea class="fi" id="fmsg" placeholder="A thought, a question, anything…"></textarea></div>
+      <button class="fsub" onclick="sendMsg()">Send message →</button>
+    </div><div class="fok" id="fok">✓ Received. I'll be in touch.</div></div>
   </div>
 </div></section>
 
-<!-- FOOTER -->
-<div class="sec-divider"></div>
-<footer>
-  <p>© 2025 Kartik Goyal · kartikgoyal.in · Rajasthan, India</p>
-  <div class="flinks"><a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a><a href="https://x.com/Onlystudy694544" target="_blank">X</a><a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a><a href="#">↑ Top</a></div>
-</footer>
+<div class="sdiv"></div>
+<footer><p>© 2025 Kartik Goyal · kartikgoyal.in · Rajasthan, India</p><div class="flinks"><a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a><a href="https://x.com/Onlystudy694544" target="_blank">X</a><a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a><a href="#">↑ Top</a></div></footer>
 
-<!-- MOOD BAR -->
-<div class="mood-bar" id="moodbar">
+<div class="moodbar" id="moodbar">
   <span class="mblbl">How are you feeling?</span>
-  <div class="mbmoods">
-    <button class="mbm" onclick="setMood('🌙','Calm & reflective',this)">🌙 Calm</button>
-    <button class="mbm" onclick="setMood('⚡','Energised & focused',this)">⚡ Focused</button>
-    <button class="mbm" onclick="setMood('🌿','Peaceful & slow',this)">🌿 Peaceful</button>
-    <button class="mbm" onclick="setMood('🔥','Creative & restless',this)">🔥 Creative</button>
-    <button class="mbm" onclick="setMood('💭','Deep in thought',this)">💭 Thinking</button>
-  </div>
+  <div class="mbmoods"><button class="mbm" onclick="setMood('🌙','Calm & reflective',this)">🌙 Calm</button><button class="mbm" onclick="setMood('⚡','Energised & focused',this)">⚡ Focused</button><button class="mbm" onclick="setMood('🌿','Peaceful & slow',this)">🌿 Peaceful</button><button class="mbm" onclick="setMood('🔥','Creative & restless',this)">🔥 Creative</button><button class="mbm" onclick="setMood('💭','Deep in thought',this)">💭 Thinking</button></div>
   <button class="mbclose" onclick="document.getElementById('moodbar').classList.remove('show')">✕</button>
 </div>
 
@@ -624,51 +569,51 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
 window.addEventListener('load',()=>{
   setTimeout(()=>{
     document.getElementById('loader').classList.add('out');
-    setTimeout(()=>{document.getElementById('loader').style.display='none'},900);
+    setTimeout(()=>document.getElementById('loader').style.display='none',950);
     startTypewriter();
-    initMusic();
-  },2000);
+  },2100);
 });
 
-/* ======= SCROLL PROGRESS + BTT ======= */
+/* ======= SCROLL ======= */
 window.addEventListener('scroll',()=>{
-  const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-innerHeight;
+  const s=scrollY,h=document.documentElement.scrollHeight-innerHeight;
   document.getElementById('spbar').style.width=(s/h*100)+'%';
   document.getElementById('btt').classList.toggle('show',s>400);
-  // light up dividers
-  document.querySelectorAll('.sec-divider').forEach(d=>{
-    if(d.getBoundingClientRect().top<innerHeight*.9)d.classList.add('lit');
-  });
+  document.getElementById('nav').classList.toggle('scrolled',s>60);
+  document.querySelectorAll('.sdiv').forEach(d=>{if(d.getBoundingClientRect().top<innerHeight*.9)d.classList.add('lit')});
 },{passive:true});
 
-/* ======= CURSOR ======= */
-const CE=document.getElementById('cur'),RE=document.getElementById('cur-ring');
-let mx=0,my=0,rx=0,ry=0;
+/* ======= CURSOR — triple layer ======= */
+const CE=document.getElementById('cur'),RE=document.getElementById('cur-ring'),TE=document.getElementById('cur-trail');
+let mx=0,my=0,rx=0,ry=0,tx=0,ty=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;CE.style.transform=`translate(calc(${mx}px - 50%),calc(${my}px - 50%))`},{passive:true});
-(function rl(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;RE.style.transform=`translate(calc(${rx}px - 50%),calc(${ry}px - 50%))`;requestAnimationFrame(rl)})();
-document.querySelectorAll('a,button,.icard,.pcard,.clink,.plrow,.wthumb,.qcat,.tag').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{RE.style.width='50px';RE.style.height='50px'},{passive:true});
-  el.addEventListener('mouseleave',()=>{RE.style.width='32px';RE.style.height='32px'},{passive:true});
+(function rl(){
+  rx+=(mx-rx)*.14;ry+=(my-ry)*.14;RE.style.transform=`translate(calc(${rx}px - 50%),calc(${ry}px - 50%))`;
+  tx+=(mx-tx)*.06;ty+=(my-ty)*.06;TE.style.transform=`translate(calc(${tx}px - 50%),calc(${ty}px - 50%))`;
+  requestAnimationFrame(rl)
+})();
+document.querySelectorAll('a,button,.icard,.pcard,.clink,.plrow,.wthumb,.qcat,.tag,.gbentry').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{RE.style.width='48px';RE.style.height='48px';RE.style.borderColor='rgba(212,168,83,.8)'},{passive:true});
+  el.addEventListener('mouseleave',()=>{RE.style.width='30px';RE.style.height='30px';RE.style.borderColor='rgba(212,168,83,.55)'},{passive:true});
 });
 
-/* ======= PARTICLE BG ======= */
-const cv=document.getElementById('bg-canvas'),ctx=cv.getContext('2d');
+/* ======= PARTICLES ======= */
+const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
 let W,H,pts=[];
 function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight}rsz();addEventListener('resize',rsz,{passive:true});
-class P{constructor(){this.r()}r(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.28;this.vy=(Math.random()-.5)*.28;this.rad=Math.random()*1.1+.3;this.a=Math.random()*.38+.05}dr(){ctx.beginPath();ctx.arc(this.x,this.y,this.rad,0,Math.PI*2);ctx.fillStyle=`rgba(212,168,83,${this.a})`;ctx.fill()}up(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.r()}}
+class P{constructor(){this.r()}r(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.26;this.vy=(Math.random()-.5)*.26;this.rad=Math.random()*1.1+.3;this.a=Math.random()*.36+.05}dr(){cx.beginPath();cx.arc(this.x,this.y,this.rad,0,Math.PI*2);cx.fillStyle=`rgba(212,168,83,${this.a})`;cx.fill()}up(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.r()}}
 for(let i=0;i<80;i++)pts.push(new P());
-(function lp(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.up();p.dr()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<105){ctx.beginPath();ctx.strokeStyle=`rgba(212,168,83,${.055*(1-d/105)})`;ctx.lineWidth=.4;ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke()}}requestAnimationFrame(lp)})();
+(function lp(){cx.clearRect(0,0,W,H);pts.forEach(p=>{p.up();p.dr()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<105){cx.beginPath();cx.strokeStyle=`rgba(212,168,83,${.05*(1-d/105)})`;cx.lineWidth=.4;cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.stroke()}}requestAnimationFrame(lp)})();
 
 /* ======= MARQUEE ======= */
 const mw=['Reflection','Presence','Quiet motion','Focus','Calm','Late night','Curiosity','Depth','Stillness','Clarity','Intention','Wonder'];
 const mqEl=document.getElementById('mq');mqEl.innerHTML=(mw.map(w=>`<span class="mq-item">${w}</span>`).join('')).repeat(2);
 
 /* ======= CLOCK ======= */
-function tickClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})+' IST'}tickClock();setInterval(tickClock,1000);
+function tc(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})+' IST'}tc();setInterval(tc,1000);
 
 /* ======= THEME ======= */
-let dark=true;
-function toggleTheme(){dark=!dark;document.body.classList.toggle('light',!dark);document.getElementById('theme-btn').textContent=dark?'☀️':'🌙'}
+let dark=true;function toggleTheme(){dark=!dark;document.body.classList.toggle('light',!dark);document.getElementById('theme-btn').textContent=dark?'☀️':'🌙'}
 
 /* ======= HAMBURGER ======= */
 let menuOpen=false;
@@ -678,58 +623,47 @@ function toggleMenu(){menuOpen=!menuOpen;document.getElementById('mob-menu').cla
 function startTypewriter(){
   const el=document.getElementById('hero-name');
   const txt='Kartik';let i=0;el.innerHTML='<span class="cblink"></span>';
-  const iv=setInterval(()=>{
-    if(i<txt.length){el.innerHTML=txt.slice(0,++i)+'<span class="cblink"></span>'}
-    else{clearInterval(iv);setTimeout(()=>{el.innerHTML=txt+'<br><span class="hero-italic">Goyal</span>'},350)}
-  },100);
+  const iv=setInterval(()=>{if(i<txt.length){el.innerHTML=txt.slice(0,++i)+'<span class="cblink"></span>'}else{clearInterval(iv);setTimeout(()=>{el.innerHTML=txt+'<br><span class="hero-italic">Goyal</span>'},350)}},95);
 }
 
-/* ======= CINEMATIC SECTION OBSERVERS ======= */
-const panelObs=new IntersectionObserver(entries=>{
+/* ======= CINEMATIC PANEL OBSERVER ======= */
+const pObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('entered');
-      // stagger children if present
-      const sg=e.target.querySelector('.panel-stagger');
-      if(sg)sg.classList.add('entered');
-      // light divider above
-      const prev=e.target.previousElementSibling;
-      if(prev&&prev.classList.contains('sec-divider'))prev.classList.add('lit');
+    if(e.isIntersecting&&!e.target.classList.contains('in')){
+      e.target.classList.add('in');
+      const sg=e.target.querySelector('.stagger');if(sg)sg.classList.add('in');
+      const prev=e.target.previousElementSibling;if(prev?.classList.contains('sdiv'))prev.classList.add('lit');
     }
   });
-},{threshold:.08,rootMargin:'0px 0px -60px 0px'});
-document.querySelectorAll('.panel').forEach(p=>panelObs.observe(p));
+},{threshold:.07,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.panel').forEach(p=>pObs.observe(p));
 
 /* ======= STATS ======= */
 const days=Math.floor((Date.now()-new Date('2024-01-01'))/86400000);
-document.getElementById('sdays').textContent=days;
-document.getElementById('streakn').textContent=days;
+document.getElementById('sdays').textContent=days;document.getElementById('streakn').textContent=days;
 
 /* ======= QUOTES ======= */
 const allQ={
   stoic:[{t:"You have power over your mind, not outside events. Realize this, and you will find strength.",a:"Marcus Aurelius"},{t:"The impediment to action advances action. What stands in the way becomes the way.",a:"Marcus Aurelius"},{t:"Waste no more time arguing about what a good man should be. Be one.",a:"Marcus Aurelius"},{t:"He who fears death will never do anything worthy of a man who is alive.",a:"Seneca"}],
-  calm:[{t:"Almost everything will work again if you unplug it for a few minutes, including you.",a:"Anne Lamott"},{t:"In the midst of movement and chaos, keep stillness inside of you.",a:"Deepak Chopra"},{t:"The quieter you become, the more you are able to hear.",a:"Rumi"},{t:"Nowhere can man find a quieter or more untroubled retreat than in his own soul.",a:"Marcus Aurelius"}],
+  calm:[{t:"Almost everything will work again if you unplug it for a few minutes, including you.",a:"Anne Lamott"},{t:"In the midst of movement and chaos, keep stillness inside of you.",a:"Deepak Chopra"},{t:"The quieter you become, the more you are able to hear.",a:"Rumi"},{t:"Nowhere can man find a quieter retreat than in his own soul.",a:"Marcus Aurelius"}],
   focus:[{t:"Concentrate all your thoughts upon the work in hand. The sun's rays do not burn until brought to a focus.",a:"Alexander Graham Bell"},{t:"You don't need more time. You need to decide.",a:"Seth Godin"},{t:"Where your attention goes, your life goes.",a:"Idowu Koyenikan"},{t:"The successful warrior is the average man, with laser-like focus.",a:"Bruce Lee"}],
-  life:[{t:"The unexamined life is not worth living.",a:"Socrates"},{t:"We are what we repeatedly do. Excellence, then, is not an act, but a habit.",a:"Aristotle"},{t:"In three words I can sum up everything I've learned about life: it goes on.",a:"Robert Frost"},{t:"Do not go where the path may lead; go instead where there is no path and leave a trail.",a:"Ralph Waldo Emerson"}],
+  life:[{t:"The unexamined life is not worth living.",a:"Socrates"},{t:"We are what we repeatedly do. Excellence, then, is not an act, but a habit.",a:"Aristotle"},{t:"In three words I can sum up everything I've learned about life: it goes on.",a:"Robert Frost"},{t:"Do not go where the path may lead; go instead where there is no path and leave a trail.",a:"Emerson"}],
 };
 const cats=Object.keys(allQ);let aCat=cats[new Date().getDay()%cats.length],qIdx=new Date().getDate()%allQ[aCat].length,saved=[];
-function renderCats(){document.getElementById('qcats').innerHTML=cats.map(c=>`<button class="qcat${c===aCat?' active':''}" onclick="switchCat('${c}')">${c[0].toUpperCase()+c.slice(1)}</button>`).join('')}
-function renderQ(){const q=allQ[aCat][qIdx];document.getElementById('qbody').textContent=q.t;document.getElementById('qauthor').textContent=q.a;document.getElementById('qnum').textContent=`${qIdx+1} / ${allQ[aCat].length} · ${aCat}`;document.getElementById('qfav').textContent=saved.includes(qIdx+'|'+aCat)?'♥ Saved':'♡ Save'}
-function nextQ(){qIdx=(qIdx+1)%allQ[aCat].length;renderQ()}
-function switchCat(c){aCat=c;qIdx=0;renderCats();renderQ()}
-function copyQ(){const q=allQ[aCat][qIdx];navigator.clipboard?.writeText(`"${q.t}" — ${q.a}`);document.getElementById('qfav').textContent='Copied!';setTimeout(renderQ,1400)}
-function favQ(){const k=qIdx+'|'+aCat;const i=saved.indexOf(k);if(i>-1)saved.splice(i,1);else saved.push(k);renderQ()}
-renderCats();renderQ();
+function rCats(){document.getElementById('qcats').innerHTML=cats.map(c=>`<button class="qcat${c===aCat?' active':''}" onclick="switchCat('${c}')">${c[0].toUpperCase()+c.slice(1)}</button>`).join('')}
+function rQ(){const q=allQ[aCat][qIdx];document.getElementById('qbody').textContent=q.t;document.getElementById('qauthor').textContent=q.a;document.getElementById('qnum').textContent=`${qIdx+1} / ${allQ[aCat].length} · ${aCat}`;document.getElementById('qfav').textContent=saved.includes(qIdx+'|'+aCat)?'♥ Saved':'♡ Save'}
+function nextQ(){qIdx=(qIdx+1)%allQ[aCat].length;rQ()}
+function switchCat(c){aCat=c;qIdx=0;rCats();rQ()}
+function copyQ(){const q=allQ[aCat][qIdx];navigator.clipboard?.writeText(`"${q.t}" — ${q.a}`);document.getElementById('qfav').textContent='Copied!';setTimeout(rQ,1400)}
+function favQ(){const k=qIdx+'|'+aCat;const i=saved.indexOf(k);if(i>-1)saved.splice(i,1);else saved.push(k);rQ()}
+rCats();rQ();
 
 /* ======= AI QUOTE ======= */
 async function genAIQuote(){
-  const btn=document.querySelector('.ai-btn'),el=document.getElementById('ai-q');
+  const btn=document.querySelector('.aibtn'),el=document.getElementById('ai-q');
   const mood=document.getElementById('moodd').textContent||'calm';
   btn.textContent='Generating…';btn.disabled=true;el.textContent='Thinking…';
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:120,messages:[{role:'user',content:`Write one short original poetic quote (1-2 sentences) for someone feeling "${mood}". Make it quiet, wise, personal. Return only the quote, no attribution, no quote marks.`}]})});
-    const d=await res.json();el.textContent=d.content?.[0]?.text||'In the space between thoughts, you already know the answer.';
-  }catch{el.textContent='In the space between thoughts, you already know the answer.'}
+  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:120,messages:[{role:'user',content:`Write one short original poetic quote (1-2 sentences) for someone feeling "${mood}". Quiet, wise, personal. Return only the quote, no attribution, no quote marks.`}]})});const d=await res.json();el.textContent=d.content?.[0]?.text||'In the space between thoughts, you already know the answer.'}catch{el.textContent='In the space between thoughts, you already know the answer.'}
   btn.textContent='✦ Generate again';btn.disabled=false;
 }
 
@@ -745,55 +679,127 @@ const walls=[
   {label:'Arctic dawn',grad:'linear-gradient(180deg,#03111e,#062d4a 35%,#0a4a6e 60%,#1a7a9a 80%,#4ab0c8)'},
 ];
 let aWall=-1;
-document.getElementById('wgrid').innerHTML=walls.map((w,i)=>`<div class="wthumb" onclick="applyWall(${i})" id="wt${i}" style="background:${w.grad}"><span class="wthumb-lbl">${w.label}</span></div>`).join('');
-function applyWall(i){aWall=i;const wp=document.getElementById('wallpaper'),ov=document.getElementById('wall-overlay');wp.style.background=walls[i].grad;wp.style.opacity='1';ov.style.opacity='1';document.getElementById('bg-canvas').style.opacity='.2';document.getElementById('winfo').textContent='Active: '+walls[i].label;document.querySelectorAll('.wthumb').forEach((t,j)=>t.classList.toggle('active',j===i))}
+document.getElementById('wgrid').innerHTML=walls.map((w,i)=>`<div class="wthumb" onclick="applyWall(${i})" id="wt${i}" style="background:${w.grad}"><span class="wtlbl">${w.label}</span></div>`).join('');
+function applyWall(i){aWall=i;const wp=document.getElementById('wallpaper'),ov=document.getElementById('wall-overlay');wp.style.background=walls[i].grad;wp.style.opacity='1';ov.style.opacity='1';document.getElementById('bg-canvas').style.opacity='.18';document.getElementById('winfo').textContent='Active: '+walls[i].label;document.querySelectorAll('.wthumb').forEach((t,j)=>t.classList.toggle('active',j===i))}
 function setWall(mode,btn){if(mode==='none'){document.getElementById('wallpaper').style.opacity='0';document.getElementById('wall-overlay').style.opacity='0';document.getElementById('bg-canvas').style.opacity='.4';document.getElementById('winfo').textContent='No wallpaper active';document.querySelectorAll('.wthumb').forEach(t=>t.classList.remove('active'));aWall=-1}else if(mode==='auto')applyWall(new Date().getDay()%walls.length);document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
 
 /* ======= THOUGHTS ======= */
 const thoughts=[{t:"Stillness is not the absence of movement — it's the presence of attention.",tag:"On focus"},{t:"The most important conversations happen in the quiet, with yourself.",tag:"On reflection"},{t:"Doing less, but with full presence, is the hardest and most valuable discipline.",tag:"On calm"},{t:"Late nights are honest. No performance, just thought.",tag:"On late nights"},{t:"You don't need to explain your pace to anyone.",tag:"On patience"},{t:"Some days the only progress is staying curious.",tag:"On growth"},{t:"Quiet people are often listening to what loud people miss.",tag:"On presence"}];
 let aTh=new Date().getDay()%thoughts.length;
 const thdots=document.getElementById('thdots');
-thoughts.forEach((_,i)=>{const d=document.createElement('div');d.className='tdot'+(i===aTh?' active':'');d.onclick=()=>{aTh=i;renderTh()};thdots.appendChild(d)});
-function renderTh(){document.getElementById('thtext').textContent=thoughts[aTh].t;document.getElementById('thtag').textContent=thoughts[aTh].tag;document.getElementById('thdate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',month:'long',day:'numeric'});document.querySelectorAll('.tdot').forEach((d,i)=>d.classList.toggle('active',i===aTh))}
-renderTh();
+thoughts.forEach((_,i)=>{const d=document.createElement('div');d.className='tdot'+(i===aTh?' active':'');d.onclick=()=>{aTh=i;rTh()};thdots.appendChild(d)});
+function rTh(){document.getElementById('thtext').textContent=thoughts[aTh].t;document.getElementById('thtag').textContent=thoughts[aTh].tag;document.getElementById('thdate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',month:'long',day:'numeric'});document.querySelectorAll('.tdot').forEach((d,i)=>d.classList.toggle('active',i===aTh))}
+rTh();
 
 /* ======= MOOD ======= */
 const moods=[{e:'🌙',d:'Calm & reflective'},{e:'⚡',d:'Energised & focused'},{e:'🌿',d:'Peaceful & slow'},{e:'🔥',d:'Creative & restless'},{e:'💭',d:'Deep in thought'}];
 const tm=moods[new Date().getDay()%moods.length];document.getElementById('moodval').textContent=tm.e;document.getElementById('moodd').textContent=tm.d;
-setTimeout(()=>document.getElementById('moodbar').classList.add('show'),3500);
+setTimeout(()=>document.getElementById('moodbar').classList.add('show'),4000);
 function setMood(e,d,btn){document.getElementById('moodval').textContent=e;document.getElementById('moodd').textContent=d;document.querySelectorAll('.mbm').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTimeout(()=>document.getElementById('moodbar').classList.remove('show'),1000)}
 
 /* ======= WEATHER ======= */
-(async()=>{try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=27.2&longitude=76.3&current_weather=true&timezone=Asia%2FKolkata');const d=await r.json();const w=d.current_weather;const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',71:'❄️',80:'🌦️',95:'⛈️'};document.getElementById('wicon').textContent=ic[w.weathercode]||'🌡️';document.getElementById('wtemp').textContent=Math.round(w.temperature)+'°C';document.getElementById('wdesc').textContent=w.windspeed<20?'Light winds · Pleasant':'Windy · '+w.windspeed+'km/h';document.getElementById('wmeta').innerHTML=`Wind: ${w.windspeed}km/h<br>Updated: now`}catch{document.getElementById('wtemp').textContent='~38°C';document.getElementById('wdesc').textContent='Hot & dry · Summer';document.getElementById('wicon').textContent='☀️'}})();
+(async()=>{try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=27.2&longitude=76.3&current_weather=true&timezone=Asia%2FKolkata');const d=await r.json();const w=d.current_weather;const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',71:'❄️',80:'🌦️',95:'⛈️'};document.getElementById('wicon').textContent=ic[w.weathercode]||'🌡️';document.getElementById('wtemp').textContent=Math.round(w.temperature)+'°C';document.getElementById('wdesc').textContent=w.windspeed<20?'Light winds · Pleasant':'Windy · '+Math.round(w.windspeed)+'km/h';document.getElementById('wmeta').innerHTML=`Wind: ${Math.round(w.windspeed)}km/h<br>Updated: now`}catch{document.getElementById('wtemp').textContent='~38°C';document.getElementById('wdesc').textContent='Hot & dry · Summer';document.getElementById('wicon').textContent='☀️'}})();
 
-/* ======= WEB AUDIO MUSIC ======= */
-let actx=null,gain=null,playing=false,muted=false,ci=0,elapsed=0,lastT=null,rafM,stopCur=null;
+/* ======= YOUTUBE MUSIC PLAYER ======= */
 const tracks=[
-  {name:'Weightless',icon:'🌊',fn:(c,g)=>{const o1=c.createOscillator(),o2=c.createOscillator(),o3=c.createOscillator(),lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=.1;lg.gain.value=8;lfo.connect(lg);lg.connect(o1.frequency);o1.type='sine';o1.frequency.value=136.1;o2.type='sine';o2.frequency.value=272.2;o3.type='sine';o3.frequency.value=181.4;const g1=c.createGain(),g2=c.createGain(),g3=c.createGain();g1.gain.value=.45;g2.gain.value=.22;g3.gain.value=.18;o1.connect(g1);o2.connect(g2);o3.connect(g3);[g1,g2,g3].forEach(gn=>gn.connect(g));[o1,o2,o3,lfo].forEach(o=>o.start());return()=>{try{[o1,o2,o3,lfo].forEach(o=>o.stop())}catch{}}}},
-  {name:'Deep Forest',icon:'🌿',fn:(c,g)=>{const freqs=[110,165,220,330];const all=[];freqs.forEach(f=>{const o=c.createOscillator(),gn=c.createGain();o.type='sine';o.frequency.value=f;gn.gain.value=.16;o.connect(gn);gn.connect(g);o.start();all.push(o)});const lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=.05;lg.gain.value=14;lfo.connect(lg);lg.connect(all[0].frequency);lfo.start();all.push(lfo);return()=>{try{all.forEach(o=>o.stop())}catch{}}}},
-  {name:'Ocean Drift',icon:'🌊',fn:(c,g)=>{const buf=c.createBuffer(1,c.sampleRate*4,c.sampleRate);const data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.28;const src=c.createBufferSource();src.buffer=buf;src.loop=true;const filt=c.createBiquadFilter();filt.type='lowpass';filt.frequency.value=380;src.connect(filt);filt.connect(g);src.start();const o=c.createOscillator(),og=c.createGain();o.type='sine';o.frequency.value=55;og.gain.value=.28;o.connect(og);og.connect(g);o.start();return()=>{try{src.stop();o.stop()}catch{}}}},
-  {name:'Night Pulse',icon:'🌙',fn:(c,g)=>{const all=[];[220,330,440,660].forEach((f,i)=>{const o=c.createOscillator(),og=c.createGain();o.type=i%2===0?'sine':'triangle';o.frequency.value=f;og.gain.value=.13;o.connect(og);og.connect(g);o.start();const lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=.08+i*.02;lg.gain.value=.07;lfo.connect(lg);lg.connect(og.gain);lfo.start();all.push(o,lfo)});return()=>{try{all.forEach(o=>o.stop())}catch{}}}},
-  {name:'Still Waters',icon:'☀️',fn:(c,g)=>{const o=c.createOscillator(),og=c.createGain();o.type='sine';o.frequency.value=432;og.gain.value=.38;const lfo=c.createOscillator(),lg=c.createGain();lfo.frequency.value=.07;lg.gain.value=18;lfo.connect(lg);lg.connect(o.frequency);const filt=c.createBiquadFilter();filt.type='lowpass';filt.frequency.value=760;o.connect(og);og.connect(filt);filt.connect(g);o.start();lfo.start();return()=>{try{o.stop();lfo.stop()}catch{}}}},
+  {name:'Weightless',       artist:'Marconi Union',      dur:'8:09', icon:'🌊', ytId:'UfcAVejslrU'},
+  {name:'Experience',       artist:'Ludovico Einaudi',   dur:'5:14', icon:'🎹', ytId:'_QXHZeFT4p4'},
+  {name:"Comptine d'un autre été", artist:'Yann Tiersen',dur:'2:58', icon:'🌿', ytId:'yNi6Q3mEiGY'},
+  {name:'Clair de Lune',    artist:'Claude Debussy',     dur:'5:00', icon:'🌙', ytId:'CvFH_6DNRCY'},
+  {name:'On the Nature of Daylight', artist:'Max Richter',dur:'6:24',icon:'☀️', ytId:'rVN1B-tUpgs'},
+  {name:'Spiegel im Spiegel',artist:"Arvo Pärt",         dur:'9:59', icon:'🪞', ytId:'TJ6Mzvh3XCc'},
 ];
+let ci=0,playing=true,elapsed=0,lastTs=null,rafM,volVal=70,mutedState=false;
 
-function initMusic(){
-  if(actx)return;
-  actx=new(window.AudioContext||window.webkitAudioContext)();
-  gain=actx.createGain();gain.gain.value=.4;gain.connect(actx.destination);
-  loadT(0,true);
+function buildPl(){
+  document.getElementById('pllist').innerHTML=tracks.map((t,i)=>`
+    <div class="plrow${i===ci?' cur':''}" onclick="loadT(${i})">
+      <span class="plnum">${i===ci&&playing?'♪':i+1}</span>
+      <span class="plname">${t.name} — ${t.artist}</span>
+      <span class="pldur">${t.dur}</span>
+    </div>`).join('');
 }
-function fmt(s){s=Math.floor(s);return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
-function tickM(ts){if(!lastT)lastT=ts;elapsed+=(ts-lastT)/1000;lastT=ts;const m=Math.floor(elapsed/60),s=Math.floor(elapsed%60);document.getElementById('tcur').textContent=m+':'+String(s).padStart(2,'0');document.getElementById('progfill').style.width=Math.min((elapsed/300)*100,99.9)+'%';rafM=requestAnimationFrame(tickM)}
-function loadT(i,auto=true){if(stopCur){stopCur();stopCur=null}ci=i;elapsed=0;lastT=null;cancelAnimationFrame(rafM);document.getElementById('pltrack').textContent=tracks[i].name;document.getElementById('plartist').textContent='Ambient · Web Audio';document.getElementById('plart').textContent=tracks[i].icon;buildPl();if(auto&&actx){stopCur=tracks[i].fn(actx,gain);playing=true;document.getElementById('playbtn').textContent='⏸';document.getElementById('plart').classList.add('spin');document.getElementById('plbadge').textContent='● Live';lastT=null;rafM=requestAnimationFrame(tickM)}else{playing=false;document.getElementById('playbtn').textContent='▶';document.getElementById('plart').classList.remove('spin');document.getElementById('plbadge').textContent='Paused'}}
-function togglePlay(){if(!actx)initMusic();if(playing){if(stopCur){stopCur();stopCur=null}cancelAnimationFrame(rafM);playing=false;document.getElementById('playbtn').textContent='▶';document.getElementById('plart').classList.remove('spin');document.getElementById('plbadge').textContent='Paused'}else{stopCur=tracks[ci].fn(actx,gain);playing=true;lastT=null;rafM=requestAnimationFrame(tickM);document.getElementById('playbtn').textContent='⏸';document.getElementById('plart').classList.add('spin');document.getElementById('plbadge').textContent='● Live'}buildPl()}
-function nextT(){if(stopCur){stopCur();stopCur=null}cancelAnimationFrame(rafM);loadT((ci+1)%tracks.length,playing)}
-function prevT(){if(stopCur){stopCur();stopCur=null}cancelAnimationFrame(rafM);loadT((ci-1+tracks.length)%tracks.length,playing)}
-function setVol(v){if(gain)gain.gain.value=parseFloat(v);document.getElementById('volpct').textContent=Math.round(v*100)+'%'}
-function toggleMute(){muted=!muted;if(gain)gain.gain.value=muted?0:parseFloat(document.getElementById('vslider').value);document.getElementById('mute-btn').textContent=muted?'🔇':'🔊'}
-function buildPl(){document.getElementById('pllist').innerHTML=tracks.map((t,i)=>`<div class="plrow${i===ci?' cur':''}" onclick="loadT(${i},${playing})"><span class="plnum">${i===ci&&playing?'♪':i+1}</span><span class="plname">${t.name}</span><span class="pldur">∞</span></div>`).join('')}
+
+function loadYT(id,vol,autoplay=1){
+  const v=Math.round(vol);
+  document.getElementById('yt-frame').src=
+    `https://www.youtube.com/embed/${id}?autoplay=${autoplay}&loop=1&playlist=${id}&controls=0&rel=0&mute=0&volume=${v}&enablejsapi=1`;
+}
+
+function parseDur(d){const p=d.split(':');return parseInt(p[0])*60+parseInt(p[1])}
+
+function fmtT(s){s=Math.floor(s);return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
+
+function tickM(ts){
+  if(!lastTs)lastTs=ts;
+  elapsed+=(ts-lastTs)/1000;lastTs=ts;
+  const tot=parseDur(tracks[ci].dur);
+  const pct=Math.min(elapsed/tot,1);
+  document.getElementById('progfill').style.width=(pct*100)+'%';
+  document.getElementById('tcur').textContent=fmtT(elapsed);
+  if(pct>=1){nextT();return}
+  rafM=requestAnimationFrame(tickM);
+}
+
+function loadT(i,auto=true){
+  ci=i;elapsed=0;lastTs=null;cancelAnimationFrame(rafM);
+  document.getElementById('pltrack').textContent=tracks[i].name;
+  document.getElementById('plartist').textContent=tracks[i].artist;
+  document.getElementById('plart').textContent=tracks[i].icon;
+  document.getElementById('ttot').textContent=tracks[i].dur;
+  document.getElementById('progfill').style.width='0%';
+  document.getElementById('tcur').textContent='0:00';
+  if(auto){
+    loadYT(tracks[i].ytId,volVal,1);
+    playing=true;
+    document.getElementById('playbtn').textContent='⏸';
+    document.getElementById('plart').classList.add('spin');
+    document.getElementById('plbadge').textContent='● Playing';
+    lastTs=null;rafM=requestAnimationFrame(tickM);
+  } else {
+    loadYT(tracks[i].ytId,volVal,0);
+    playing=false;
+    document.getElementById('playbtn').textContent='▶';
+    document.getElementById('plart').classList.remove('spin');
+    document.getElementById('plbadge').textContent='Paused';
+  }
+  buildPl();
+}
+
+function togglePlay(){
+  playing=!playing;
+  if(playing){
+    loadYT(tracks[ci].ytId,volVal,1);
+    document.getElementById('playbtn').textContent='⏸';
+    document.getElementById('plart').classList.add('spin');
+    document.getElementById('plbadge').textContent='● Playing';
+    lastTs=null;rafM=requestAnimationFrame(tickM);
+  } else {
+    loadYT(tracks[ci].ytId,volVal,0);
+    cancelAnimationFrame(rafM);
+    document.getElementById('playbtn').textContent='▶';
+    document.getElementById('plart').classList.remove('spin');
+    document.getElementById('plbadge').textContent='Paused';
+  }
+  buildPl();
+}
+
+function nextT(){cancelAnimationFrame(rafM);loadT((ci+1)%tracks.length,playing)}
+function prevT(){cancelAnimationFrame(rafM);loadT((ci-1+tracks.length)%tracks.length,playing)}
+function setVol(v){volVal=parseInt(v);document.getElementById('volpct').textContent=v+'%';loadYT(tracks[ci].ytId,v,playing?1:0)}
+function toggleMute(){mutedState=!mutedState;document.getElementById('mute-btn').textContent=mutedState?'🔇':'🔊';const v=mutedState?0:volVal;document.getElementById('yt-frame').src=document.getElementById('yt-frame').src.replace(/volume=\d+/,'volume='+v)}
+
 buildPl();
-let autoplayed=false;
-['click','scroll','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{if(!autoplayed){autoplayed=true;initMusic()}},{once:true,passive:true}));
+
+// Auto-start on first user interaction (browser autoplay policy)
+let started=false;
+function tryStart(){
+  if(!started){
+    started=true;
+    loadT(0,true);
+  }
+}
+['click','keydown','scroll','touchstart'].forEach(ev=>document.addEventListener(ev,tryStart,{once:true,passive:true}));
 
 /* ======= GUESTBOOK ======= */
 let entries=[{name:'Aarav',msg:'This site feels like a breath of fresh air. Love the calm energy.',date:'Apr 2025'},{name:'Priya',msg:'Your thoughts on presence really hit different at 2am. Keep writing.',date:'Mar 2025'}];
