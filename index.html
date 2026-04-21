@@ -431,6 +431,11 @@ footer p{font-family:system-ui,sans-serif;font-size:11px;color:var(--muted);lett
   </div>
 </section>
 
+<!-- HIDDEN YOUTUBE PLAYER -->
+<div id="yt-container" style="position:fixed;bottom:80px;right:24px;z-index:300;display:none">
+  <iframe id="yt-frame" width="1" height="1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="opacity:0;pointer-events:none"></iframe>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p>© 2025 Kartik Goyal · kartikgoyal.in · Rajasthan, India</p>
@@ -635,22 +640,93 @@ function setMood(e,d,btn){
 
 /* ---- MUSIC PLAYER ---- */
 const tracks=[
-  {name:'Weightless',artist:'Marconi Union',dur:'4:32',icon:'🌊',s:272},
-  {name:'Experience',artist:'Ludovico Einaudi',dur:'5:14',icon:'🎹',s:314},
-  {name:"Comptine d'un autre été",artist:'Yann Tiersen',dur:'2:58',icon:'🌿',s:178},
-  {name:'Says',artist:'Nils Frahm',dur:'7:07',icon:'🌙',s:427},
-  {name:'On the Nature of Daylight',artist:'Max Richter',dur:'6:24',icon:'☀️',s:384},
-  {name:'Spiegel im Spiegel',artist:'Arvo Pärt',dur:'9:59',icon:'🪞',s:599},
+  {name:'Weightless',artist:'Marconi Union',dur:'8:09',icon:'🌊',ytId:'UfcAVejslrU'},
+  {name:'Experience',artist:'Ludovico Einaudi',dur:'5:14',icon:'🎹',ytId:'_QXHZeFT4p4'},
+  {name:"Comptine d'un autre été",artist:'Yann Tiersen',dur:'2:58',icon:'🌿',ytId:'yNi6Q3mEiGY'},
+  {name:'Clair de Lune',artist:'Claude Debussy',dur:'5:00',icon:'🌙',ytId:'CvFH_6DNRCY'},
+  {name:'On the Nature of Daylight',artist:'Max Richter',dur:'6:24',icon:'☀️',ytId:'rVN1B-tUpgs'},
+  {name:'Spiegel im Spiegel',artist:'Arvo Pärt',dur:'9:59',icon:'🪞',ytId:'TJ6Mzvh3XCc'},
 ];
 let ci=0,playing=false,elapsed=0,lastT=null,raf;
-function buildPl(){document.getElementById('pl-list').innerHTML=tracks.map((t,i)=>`<div class="pl-row${i===ci?' cur':''}" onclick="loadT(${i})"><span class="pl-n">${i+1}</span><span class="pl-name">${t.name} — ${t.artist}</span><span class="pl-d">${t.dur}</span></div>`).join('')}
-function loadT(i){ci=i;elapsed=0;playing=false;lastT=null;cancelAnimationFrame(raf);document.getElementById('pl-track').textContent=tracks[i].name;document.getElementById('pl-artist').textContent=tracks[i].artist;document.getElementById('pl-art').textContent=tracks[i].icon;document.getElementById('t-tot').textContent=tracks[i].dur;document.getElementById('play-btn').textContent='▶';document.getElementById('prog-fill').style.width='0%';document.getElementById('t-cur').textContent='0:00';buildPl()}
+
+function buildPl(){
+  document.getElementById('pl-list').innerHTML=tracks.map((t,i)=>`
+    <div class="pl-row${i===ci?' cur':''}" onclick="loadT(${i})">
+      <span class="pl-n">${i===ci&&playing?'▶':i+1}</span>
+      <span class="pl-name">${t.name} — ${t.artist}</span>
+      <span class="pl-d">${t.dur}</span>
+    </div>`).join('');
+}
+
+function loadYT(i,autoplay=true){
+  const frame=document.getElementById('yt-frame');
+  frame.src=`https://www.youtube.com/embed/${tracks[i].ytId}?autoplay=${autoplay?1:0}&loop=1&playlist=${tracks[i].ytId}&controls=0&rel=0&mute=0`;
+}
+
+function loadT(i,autoplay=true){
+  ci=i;elapsed=0;lastT=null;
+  cancelAnimationFrame(raf);
+  document.getElementById('pl-track').textContent=tracks[i].name;
+  document.getElementById('pl-artist').textContent=tracks[i].artist;
+  document.getElementById('pl-art').textContent=tracks[i].icon;
+  document.getElementById('t-tot').textContent=tracks[i].dur;
+  document.getElementById('prog-fill').style.width='0%';
+  document.getElementById('t-cur').textContent='0:00';
+  loadYT(i,autoplay);
+  if(autoplay){
+    playing=true;
+    document.getElementById('play-btn').textContent='⏸';
+    lastT=null;raf=requestAnimationFrame(tick2);
+  } else {
+    playing=false;
+    document.getElementById('play-btn').textContent='▶';
+  }
+  buildPl();
+}
+
 function fmt(s){s=Math.floor(s);return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`}
-function tick2(ts){if(!lastT)lastT=ts;elapsed+=(ts-lastT)/1000;lastT=ts;const p=Math.min(elapsed/tracks[ci].s,1);document.getElementById('prog-fill').style.width=(p*100)+'%';document.getElementById('t-cur').textContent=fmt(elapsed);if(p>=1){nextT();return}raf=requestAnimationFrame(tick2)}
-function togglePlay(){playing=!playing;document.getElementById('play-btn').textContent=playing?'⏸':'▶';if(playing){lastT=null;raf=requestAnimationFrame(tick2)}else cancelAnimationFrame(raf)}
-function nextT(){cancelAnimationFrame(raf);loadT((ci+1)%tracks.length)}
-function prevT(){cancelAnimationFrame(raf);loadT((ci-1+tracks.length)%tracks.length)}
+
+function tick2(ts){
+  if(!lastT)lastT=ts;
+  elapsed+=(ts-lastT)/1000;lastT=ts;
+  const total=parseInt(tracks[ci].dur.split(':')[0])*60+parseInt(tracks[ci].dur.split(':')[1]);
+  const p=Math.min(elapsed/total,1);
+  document.getElementById('prog-fill').style.width=(p*100)+'%';
+  document.getElementById('t-cur').textContent=fmt(elapsed);
+  if(p>=1){nextT();return}
+  raf=requestAnimationFrame(tick2);
+}
+
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('play-btn').textContent=playing?'⏸':'▶';
+  if(playing){
+    const frame=document.getElementById('yt-frame');
+    if(!frame.src||frame.src==='about:blank') loadYT(ci,true);
+    lastT=null;raf=requestAnimationFrame(tick2);
+  } else {
+    cancelAnimationFrame(raf);
+    // mute by reloading paused
+    document.getElementById('yt-frame').src=`https://www.youtube.com/embed/${tracks[ci].ytId}?autoplay=0&controls=0&rel=0`;
+  }
+  buildPl();
+}
+
+function nextT(){cancelAnimationFrame(raf);loadT((ci+1)%tracks.length,true)}
+function prevT(){cancelAnimationFrame(raf);loadT((ci-1+tracks.length)%tracks.length,true)}
+
 buildPl();
+// Autoplay on first user interaction (browser policy requires it)
+let autoplayed=false;
+function tryAutoplay(){
+  if(!autoplayed){autoplayed=true;loadT(0,true)}
+  document.removeEventListener('click',tryAutoplay);
+  document.removeEventListener('keydown',tryAutoplay);
+  document.removeEventListener('scroll',tryAutoplay);
+}
+document.addEventListener('click',tryAutoplay,{once:true});
+document.addEventListener('keydown',tryAutoplay,{once:true});
+document.addEventListener('scroll',tryAutoplay,{once:true,passive:true});
 
 /* ---- CONTACT FORM ---- */
 function sendMsg(){const n=document.getElementById('f-name').value.trim(),m=document.getElementById('f-msg').value.trim();if(!n||!m)return;document.getElementById('f-wrap').style.display='none';document.getElementById('f-ok').style.display='block'}
