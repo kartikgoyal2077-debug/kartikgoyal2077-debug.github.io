@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Kartik Goyal</title>
+<title>Kartik Goyal — A quiet space for thoughts & reflection</title>
+<meta name="description" content="Kartik Goyal's living notebook — daily quotes, thoughts, calm music, and quiet reflection. Based in Rajasthan, India."/>
+<meta name="author" content="Kartik Goyal"/>
+<meta name="theme-color" content="#07070a"/>
+<link rel="canonical" href="https://kartikgoyal.in/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Kartik Goyal"/>
+<meta property="og:description" content="A living notebook — reflection, presence, quiet motion."/>
+<meta property="og:url" content="https://kartikgoyal.in/"/>
+<meta property="og:site_name" content="Kartik Goyal"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kartik Goyal"/>
+<meta name="twitter:description" content="A living notebook — reflection, presence, quiet motion."/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2307070a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23d4a853' text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -363,6 +376,21 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
   #s-about .si{grid-template-columns:1fr!important}
   #s-vibe .si>div{grid-template-columns:1fr!important}
 }
+
+/* ===================== ACCESSIBILITY & MOTION ===================== */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .pi,.sl,.sr{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}
+  #cur,#cur-ring,#cur-trail{display:none}
+  body{cursor:auto}
+}
+@media(hover:none),(pointer:coarse){
+  body{cursor:auto}
+  #cur,#cur-ring,#cur-trail{display:none!important}
+}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px;border-radius:4px
+}
 </style>
 </head>
 <body>
@@ -375,15 +403,15 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
 </div>
 
 <!-- HIDDEN YOUTUBE PLAYER -->
-<iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen title="Background music player"></iframe>
 
 <div id="spbar"></div>
 <div id="cur"></div><div id="cur-ring"></div><div id="cur-trail"></div>
 <canvas id="bg-canvas"></canvas>
 <div id="wallpaper"></div><div id="wall-overlay"></div>
 <div id="grain"></div>
-<button id="btt" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
-<button id="rand-btn" onclick="showRand()">💭</button>
+<button id="btt" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">↑</button>
+<button id="rand-btn" onclick="showRand()" aria-label="Show a random thought">💭</button>
 <div id="rand-popup"></div>
 
 <!-- NAV -->
@@ -396,11 +424,11 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
     <a href="#s-guest">Guestbook</a><a href="#s-contact">Contact</a>
     <div id="clock"></div>
     <div class="nicons">
-      <button class="nibtn" onclick="toggleTheme()" id="theme-btn">☀️</button>
-      <button class="nibtn" onclick="toggleMute()" id="mute-btn">🔊</button>
+      <button class="nibtn" onclick="toggleTheme()" id="theme-btn" aria-label="Toggle light and dark theme">☀️</button>
+      <button class="nibtn" onclick="toggleMute()" id="mute-btn" aria-label="Mute or unmute music">🔊</button>
     </div>
   </div>
-  <button class="hamburger" id="hamb" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamb" onclick="toggleMenu()" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="mob-menu" id="mob-menu">
   <a href="#s-quote" onclick="toggleMenu()">Quote</a><a href="#s-wall" onclick="toggleMenu()">Wallpaper</a>
@@ -416,9 +444,9 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
   <p class="hero-sub">An evolving space — reflection, presence, quiet motion.<br>Here I record thoughts and let quiet intuition speak.</p>
   <div class="hero-ctas"><a href="#s-quote" class="btn-gold">Today's quote</a><a href="#s-wall" class="btn-outline">Set wallpaper</a></div>
   <div class="hero-socials">
-    <a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a>
-    <a href="https://x.com/Onlystudy694544" target="_blank">X / Twitter</a>
-    <a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a>
+    <a href="https://www.instagram.com/k4325412" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://x.com/Onlystudy694544" target="_blank" rel="noopener">X / Twitter</a>
+    <a href="https://github.com/kartikgoyal2077-debug" target="_blank" rel="noopener">GitHub</a>
   </div>
   <div class="scroll-hint" onclick="document.getElementById('s-quote').scrollIntoView({behavior:'smooth'})">
     <span>Scroll</span><div class="sline"></div>
@@ -437,7 +465,7 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
     <p class="qnum" id="qnum"></p>
   </div>
   <div class="qcats" id="qcats"></div>
-  <div class="aibox"><div class="ailbl">AI-generated quote for you</div><p class="aitext" id="ai-q">Click below to get a personalized quote…</p><button class="aibtn" onclick="genAIQuote()">✦ Generate with AI</button></div>
+  <div class="aibox"><div class="ailbl">A line composed for you</div><p class="aitext" id="ai-q">Tap below for a quiet line shaped by today's mood…</p><button class="aibtn" onclick="genAIQuote()">✦ Compose a line</button></div>
 </div></div></section>
 
 <!-- WALLPAPER — wipe left -->
@@ -482,9 +510,9 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
 <section class="panel pclip" id="s-projects"><div class="pi"><div class="si">
   <p class="stag">Projects</p><h2 class="stitle">Things I've built quietly</h2>
   <div class="pgrid stagger" id="pgrid">
-    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">🌐</div><div class="pname">kartikgoyal.in</div><div class="pdesc">This very site — a living notebook of thoughts, reflections, and quiet presence.</div><div class="ptags"><span class="ptag">HTML</span><span class="ptag">CSS</span><span class="ptag">JS</span></div></a>
-    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">⚡</div><div class="pname">Focus Timer</div><div class="pdesc">A minimal Pomodoro-style focus timer built for deep work sessions.</div><div class="ptags"><span class="ptag">JavaScript</span><span class="ptag">Web Audio</span></div></a>
-    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span class="plink">↗</span><div class="picon">📓</div><div class="pname">Daily Journal</div><div class="pdesc">A private journaling app with mood tracking and reflection prompts.</div><div class="ptags"><span class="ptag">React</span><span class="ptag">Storage</span></div></a>
+    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank" rel="noopener"><span class="plink">↗</span><div class="picon">🌐</div><div class="pname">kartikgoyal.in</div><div class="pdesc">This very site — a living notebook of thoughts, reflections, and quiet presence.</div><div class="ptags"><span class="ptag">HTML</span><span class="ptag">CSS</span><span class="ptag">JS</span></div></a>
+    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank" rel="noopener"><span class="plink">↗</span><div class="picon">⚡</div><div class="pname">Focus Timer</div><div class="pdesc">A minimal Pomodoro-style focus timer built for deep work sessions.</div><div class="ptags"><span class="ptag">JavaScript</span><span class="ptag">Web Audio</span></div></a>
+    <a class="pcard sc-item" href="https://github.com/kartikgoyal2077-debug" target="_blank" rel="noopener"><span class="plink">↗</span><div class="picon">📓</div><div class="pname">Daily Journal</div><div class="pdesc">A private journaling app with mood tracking and reflection prompts.</div><div class="ptags"><span class="ptag">React</span><span class="ptag">Storage</span></div></a>
   </div>
 </div></div></section>
 
@@ -510,17 +538,17 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
     <div class="wcard"><div class="wicon" id="wicon">🌤️</div><div class="winfo"><div class="wloc">Rajasthan · Live</div><div class="wtemp" id="wtemp">—°C</div><div class="wdesc" id="wdesc">Fetching…</div></div><div class="wmeta" id="wmeta"></div></div>
   </div>
   <div>
-    <p class="stag">Current vibe</p><h2 class="stitle" style="margin-bottom:18px">Calm music — always on</h2>
+    <p class="stag">Current vibe</p><h2 class="stitle" style="margin-bottom:18px">Calm music — press play</h2>
     <div class="player">
       <div class="pltop">
         <div class="plart" id="plart">🌊</div>
         <div class="plinfo"><div class="pltrack" id="pltrack">Weightless</div><div class="plartist" id="plartist">Marconi Union</div></div>
-        <div class="plbadge" id="plbadge">● Playing</div>
+        <div class="plbadge" id="plbadge">Paused</div>
       </div>
-      <div class="volwrap"><span class="vollbl">🔊</span><input type="range" class="vslider" id="vslider" min="0" max="100" step="1" value="70" oninput="setVol(this.value)"><span style="font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)" id="volpct">70%</span></div>
+      <div class="volwrap"><span class="vollbl">🔊</span><input type="range" class="vslider" id="vslider" min="0" max="100" step="1" value="70" oninput="setVol(this.value)" aria-label="Volume"><span style="font-family:system-ui,sans-serif;font-size:10px;color:var(--muted)" id="volpct">70%</span></div>
       <div class="progbar"><div class="progfill" id="progfill"></div></div>
       <div class="ptimes"><span id="tcur">0:00</span><span id="ttot">—:--</span></div>
-      <div class="pctrl"><button class="cbtn" onclick="prevT()">⏮</button><button class="cplay" id="playbtn" onclick="togglePlay()">⏸</button><button class="cbtn" onclick="nextT()">⏭</button></div>
+      <div class="pctrl"><button class="cbtn" onclick="prevT()" aria-label="Previous track">⏮</button><button class="cplay" id="playbtn" onclick="togglePlay()" aria-label="Play or pause">▶</button><button class="cbtn" onclick="nextT()" aria-label="Next track">⏭</button></div>
       <div class="pllist" id="pllist"></div>
     </div>
   </div>
@@ -531,7 +559,7 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
 <section class="panel pzoom" id="s-guest"><div class="pi"><div class="si">
   <p class="stag">Guestbook</p><h2 class="stitle">Leave a thought</h2>
   <div class="gbentries" id="gbentries"></div>
-  <div class="gbform"><input class="gbinput" id="gbname" placeholder="Your name"/><textarea class="gbinput" id="gbmsg" placeholder="Leave a message, a thought, anything…" rows="3"></textarea><button class="gbsubmit" onclick="addEntry()">Leave a message →</button></div>
+  <div class="gbform"><input class="gbinput" id="gbname" placeholder="Your name" maxlength="40"/><textarea class="gbinput" id="gbmsg" placeholder="Leave a message, a thought, anything…" rows="3" maxlength="400"></textarea><button class="gbsubmit" onclick="addEntry()">Leave a message →</button></div>
 </div></div></section>
 
 <!-- CONTACT — split -->
@@ -541,37 +569,41 @@ footer p{font-family:system-ui,sans-serif;font-size:10px;color:var(--muted);lett
     <p class="stag">Get in touch</p><h2 class="stitle">Let's talk</h2>
     <p style="color:var(--muted2);line-height:1.9;font-family:system-ui,sans-serif;font-size:14px;margin-bottom:20px">Whether you want to share a thought or just say hello — I'm here. I reply slowly, but I do reply.</p>
     <div class="clinks">
-      <a class="clink" href="https://www.instagram.com/k4325412" target="_blank"><span>📸</span>Instagram — @k4325412</a>
-      <a class="clink" href="https://x.com/Onlystudy694544" target="_blank"><span>✕</span>X — @Onlystudy694544</a>
-      <a class="clink" href="https://github.com/kartikgoyal2077-debug" target="_blank"><span>💻</span>GitHub — kartikgoyal2077-debug</a>
+      <a class="clink" href="https://www.instagram.com/k4325412" target="_blank" rel="noopener"><span>📸</span>Instagram — @k4325412</a>
+      <a class="clink" href="https://x.com/Onlystudy694544" target="_blank" rel="noopener"><span>✕</span>X — @Onlystudy694544</a>
+      <a class="clink" href="https://github.com/kartikgoyal2077-debug" target="_blank" rel="noopener"><span>💻</span>GitHub — kartikgoyal2077-debug</a>
     </div>
   </div>
   <div class="sr">
     <div class="cform"><div id="fwrap">
-      <div class="fg"><label class="fl">Your name</label><input class="fi" id="fname" placeholder="What should I call you?"/></div>
-      <div class="fg"><label class="fl">Message</label><textarea class="fi" id="fmsg" placeholder="A thought, a question, anything…"></textarea></div>
+      <div class="fg"><label class="fl" for="fname">Your name</label><input class="fi" id="fname" placeholder="What should I call you?"/></div>
+      <div class="fg"><label class="fl" for="fmsg">Message</label><textarea class="fi" id="fmsg" placeholder="A thought, a question, anything…"></textarea></div>
       <button class="fsub" onclick="sendMsg()">Send message →</button>
     </div><div class="fok" id="fok">✓ Received. I'll be in touch.</div></div>
   </div>
 </div></section>
 
 <div class="sdiv"></div>
-<footer><p>© 2025 Kartik Goyal · kartikgoyal.in · Rajasthan, India</p><div class="flinks"><a href="https://www.instagram.com/k4325412" target="_blank">Instagram</a><a href="https://x.com/Onlystudy694544" target="_blank">X</a><a href="https://github.com/kartikgoyal2077-debug" target="_blank">GitHub</a><a href="#">↑ Top</a></div></footer>
+<footer><p>© 2025 Kartik Goyal · kartikgoyal.in · Rajasthan, India</p><div class="flinks"><a href="https://www.instagram.com/k4325412" target="_blank" rel="noopener">Instagram</a><a href="https://x.com/Onlystudy694544" target="_blank" rel="noopener">X</a><a href="https://github.com/kartikgoyal2077-debug" target="_blank" rel="noopener">GitHub</a><a href="#">↑ Top</a></div></footer>
 
 <div class="moodbar" id="moodbar">
   <span class="mblbl">How are you feeling?</span>
   <div class="mbmoods"><button class="mbm" onclick="setMood('🌙','Calm & reflective',this)">🌙 Calm</button><button class="mbm" onclick="setMood('⚡','Energised & focused',this)">⚡ Focused</button><button class="mbm" onclick="setMood('🌿','Peaceful & slow',this)">🌿 Peaceful</button><button class="mbm" onclick="setMood('🔥','Creative & restless',this)">🔥 Creative</button><button class="mbm" onclick="setMood('💭','Deep in thought',this)">💭 Thinking</button></div>
-  <button class="mbclose" onclick="document.getElementById('moodbar').classList.remove('show')">✕</button>
+  <button class="mbclose" onclick="document.getElementById('moodbar').classList.remove('show')" aria-label="Close mood bar">✕</button>
 </div>
 
 <script>
+/* ======= REDUCED MOTION FLAG ======= */
+const REDUCE=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /* ======= LOADER ======= */
 window.addEventListener('load',()=>{
+  const delay=REDUCE?100:1200;
   setTimeout(()=>{
     document.getElementById('loader').classList.add('out');
     setTimeout(()=>document.getElementById('loader').style.display='none',950);
     startTypewriter();
-  },2100);
+  },delay);
 });
 
 /* ======= SCROLL ======= */
@@ -583,27 +615,32 @@ window.addEventListener('scroll',()=>{
   document.querySelectorAll('.sdiv').forEach(d=>{if(d.getBoundingClientRect().top<innerHeight*.9)d.classList.add('lit')});
 },{passive:true});
 
-/* ======= CURSOR — triple layer ======= */
-const CE=document.getElementById('cur'),RE=document.getElementById('cur-ring'),TE=document.getElementById('cur-trail');
-let mx=0,my=0,rx=0,ry=0,tx=0,ty=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;CE.style.transform=`translate(calc(${mx}px - 50%),calc(${my}px - 50%))`},{passive:true});
-(function rl(){
-  rx+=(mx-rx)*.14;ry+=(my-ry)*.14;RE.style.transform=`translate(calc(${rx}px - 50%),calc(${ry}px - 50%))`;
-  tx+=(mx-tx)*.06;ty+=(my-ty)*.06;TE.style.transform=`translate(calc(${tx}px - 50%),calc(${ty}px - 50%))`;
-  requestAnimationFrame(rl)
-})();
-document.querySelectorAll('a,button,.icard,.pcard,.clink,.plrow,.wthumb,.qcat,.tag,.gbentry').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{RE.style.width='48px';RE.style.height='48px';RE.style.borderColor='rgba(212,168,83,.8)'},{passive:true});
-  el.addEventListener('mouseleave',()=>{RE.style.width='30px';RE.style.height='30px';RE.style.borderColor='rgba(212,168,83,.55)'},{passive:true});
-});
+/* ======= CURSOR — triple layer (skipped on touch / reduced motion) ======= */
+const isTouch=window.matchMedia('(hover:none),(pointer:coarse)').matches;
+if(!isTouch&&!REDUCE){
+  const CE=document.getElementById('cur'),RE=document.getElementById('cur-ring'),TE=document.getElementById('cur-trail');
+  let mx=0,my=0,rx=0,ry=0,tx=0,ty=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;CE.style.transform=`translate(calc(${mx}px - 50%),calc(${my}px - 50%))`},{passive:true});
+  (function rl(){
+    rx+=(mx-rx)*.14;ry+=(my-ry)*.14;RE.style.transform=`translate(calc(${rx}px - 50%),calc(${ry}px - 50%))`;
+    tx+=(mx-tx)*.06;ty+=(my-ty)*.06;TE.style.transform=`translate(calc(${tx}px - 50%),calc(${ty}px - 50%))`;
+    requestAnimationFrame(rl)
+  })();
+  document.querySelectorAll('a,button,.icard,.pcard,.clink,.plrow,.wthumb,.qcat,.tag,.gbentry').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{RE.style.width='48px';RE.style.height='48px';RE.style.borderColor='rgba(212,168,83,.8)'},{passive:true});
+    el.addEventListener('mouseleave',()=>{RE.style.width='30px';RE.style.height='30px';RE.style.borderColor='rgba(212,168,83,.55)'},{passive:true});
+  });
+}
 
 /* ======= PARTICLES ======= */
 const cv=document.getElementById('bg-canvas'),cx=cv.getContext('2d');
 let W,H,pts=[];
 function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight}rsz();addEventListener('resize',rsz,{passive:true});
 class P{constructor(){this.r()}r(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.26;this.vy=(Math.random()-.5)*.26;this.rad=Math.random()*1.1+.3;this.a=Math.random()*.36+.05}dr(){cx.beginPath();cx.arc(this.x,this.y,this.rad,0,Math.PI*2);cx.fillStyle=`rgba(212,168,83,${this.a})`;cx.fill()}up(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.r()}}
-for(let i=0;i<80;i++)pts.push(new P());
-(function lp(){cx.clearRect(0,0,W,H);pts.forEach(p=>{p.up();p.dr()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<105){cx.beginPath();cx.strokeStyle=`rgba(212,168,83,${.05*(1-d/105)})`;cx.lineWidth=.4;cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.stroke()}}requestAnimationFrame(lp)})();
+if(!REDUCE){
+  for(let i=0;i<80;i++)pts.push(new P());
+  (function lp(){cx.clearRect(0,0,W,H);pts.forEach(p=>{p.up();p.dr()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<105){cx.beginPath();cx.strokeStyle=`rgba(212,168,83,${.05*(1-d/105)})`;cx.lineWidth=.4;cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.stroke()}}requestAnimationFrame(lp)})();
+}
 
 /* ======= MARQUEE ======= */
 const mw=['Reflection','Presence','Quiet motion','Focus','Calm','Late night','Curiosity','Depth','Stillness','Clarity','Intention','Wonder'];
@@ -612,8 +649,17 @@ const mqEl=document.getElementById('mq');mqEl.innerHTML=(mw.map(w=>`<span class=
 /* ======= CLOCK ======= */
 function tc(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})+' IST'}tc();setInterval(tc,1000);
 
-/* ======= THEME ======= */
-let dark=true;function toggleTheme(){dark=!dark;document.body.classList.toggle('light',!dark);document.getElementById('theme-btn').textContent=dark?'☀️':'🌙'}
+/* ======= THEME (persisted + follows system) ======= */
+let dark = localStorage.getItem('theme')
+  ? localStorage.getItem('theme') === 'dark'
+  : !window.matchMedia('(prefers-color-scheme: light)').matches;
+function applyTheme(){
+  document.body.classList.toggle('light',!dark);
+  document.getElementById('theme-btn').textContent=dark?'☀️':'🌙';
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content',dark?'#07070a':'#f2f0ea');
+}
+function toggleTheme(){dark=!dark;localStorage.setItem('theme',dark?'dark':'light');applyTheme()}
+applyTheme();
 
 /* ======= HAMBURGER ======= */
 let menuOpen=false;
@@ -622,7 +668,9 @@ function toggleMenu(){menuOpen=!menuOpen;document.getElementById('mob-menu').cla
 /* ======= TYPEWRITER ======= */
 function startTypewriter(){
   const el=document.getElementById('hero-name');
-  const txt='Kartik';let i=0;el.innerHTML='<span class="cblink"></span>';
+  const txt='Kartik';
+  if(REDUCE){el.innerHTML=txt+'<br><span class="hero-italic">Goyal</span>';return}
+  let i=0;el.innerHTML='<span class="cblink"></span>';
   const iv=setInterval(()=>{if(i<txt.length){el.innerHTML=txt.slice(0,++i)+'<span class="cblink"></span>'}else{clearInterval(iv);setTimeout(()=>{el.innerHTML=txt+'<br><span class="hero-italic">Goyal</span>'},350)}},95);
 }
 
@@ -649,22 +697,25 @@ const allQ={
   focus:[{t:"Concentrate all your thoughts upon the work in hand. The sun's rays do not burn until brought to a focus.",a:"Alexander Graham Bell"},{t:"You don't need more time. You need to decide.",a:"Seth Godin"},{t:"Where your attention goes, your life goes.",a:"Idowu Koyenikan"},{t:"The successful warrior is the average man, with laser-like focus.",a:"Bruce Lee"}],
   life:[{t:"The unexamined life is not worth living.",a:"Socrates"},{t:"We are what we repeatedly do. Excellence, then, is not an act, but a habit.",a:"Aristotle"},{t:"In three words I can sum up everything I've learned about life: it goes on.",a:"Robert Frost"},{t:"Do not go where the path may lead; go instead where there is no path and leave a trail.",a:"Emerson"}],
 };
-const cats=Object.keys(allQ);let aCat=cats[new Date().getDay()%cats.length],qIdx=new Date().getDate()%allQ[aCat].length,saved=[];
+const cats=Object.keys(allQ);let aCat=cats[new Date().getDay()%cats.length],qIdx=new Date().getDate()%allQ[aCat].length;
+let saved=JSON.parse(localStorage.getItem('savedQuotes')||'[]');
 function rCats(){document.getElementById('qcats').innerHTML=cats.map(c=>`<button class="qcat${c===aCat?' active':''}" onclick="switchCat('${c}')">${c[0].toUpperCase()+c.slice(1)}</button>`).join('')}
 function rQ(){const q=allQ[aCat][qIdx];document.getElementById('qbody').textContent=q.t;document.getElementById('qauthor').textContent=q.a;document.getElementById('qnum').textContent=`${qIdx+1} / ${allQ[aCat].length} · ${aCat}`;document.getElementById('qfav').textContent=saved.includes(qIdx+'|'+aCat)?'♥ Saved':'♡ Save'}
 function nextQ(){qIdx=(qIdx+1)%allQ[aCat].length;rQ()}
 function switchCat(c){aCat=c;qIdx=0;rCats();rQ()}
 function copyQ(){const q=allQ[aCat][qIdx];navigator.clipboard?.writeText(`"${q.t}" — ${q.a}`);document.getElementById('qfav').textContent='Copied!';setTimeout(rQ,1400)}
-function favQ(){const k=qIdx+'|'+aCat;const i=saved.indexOf(k);if(i>-1)saved.splice(i,1);else saved.push(k);rQ()}
+function favQ(){const k=qIdx+'|'+aCat;const i=saved.indexOf(k);if(i>-1)saved.splice(i,1);else saved.push(k);localStorage.setItem('savedQuotes',JSON.stringify(saved));rQ()}
 rCats();rQ();
 
-/* ======= AI QUOTE ======= */
-async function genAIQuote(){
-  const btn=document.querySelector('.aibtn'),el=document.getElementById('ai-q');
-  const mood=document.getElementById('moodd').textContent||'calm';
-  btn.textContent='Generating…';btn.disabled=true;el.textContent='Thinking…';
-  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:120,messages:[{role:'user',content:`Write one short original poetic quote (1-2 sentences) for someone feeling "${mood}". Quiet, wise, personal. Return only the quote, no attribution, no quote marks.`}]})});const d=await res.json();el.textContent=d.content?.[0]?.text||'In the space between thoughts, you already know the answer.'}catch{el.textContent='In the space between thoughts, you already know the answer.'}
-  btn.textContent='✦ Generate again';btn.disabled=false;
+/* ======= QUOTE COMPOSER (local, no API) ======= */
+function genAIQuote(){
+  const el=document.getElementById('ai-q'),btn=document.querySelector('.aibtn');
+  const open=['In the quiet,','When the noise fades,','Between two thoughts,','At the edge of stillness,','Long after midnight,'];
+  const mid=['you remember','you notice','you find','there waits','you meet'];
+  const end=['that you were never lost — only still.','the answer you already carried.','a clarity that asks for nothing.','the self that isn\'t rushing.','a calm that needed no permission.'];
+  const p=a=>a[Math.floor(Math.random()*a.length)];
+  el.textContent=`${p(open)} ${p(mid)} ${p(end)}`;
+  btn.textContent='✦ Compose another';
 }
 
 /* ======= WALLPAPERS ======= */
@@ -680,8 +731,10 @@ const walls=[
 ];
 let aWall=-1;
 document.getElementById('wgrid').innerHTML=walls.map((w,i)=>`<div class="wthumb" onclick="applyWall(${i})" id="wt${i}" style="background:${w.grad}"><span class="wtlbl">${w.label}</span></div>`).join('');
-function applyWall(i){aWall=i;const wp=document.getElementById('wallpaper'),ov=document.getElementById('wall-overlay');wp.style.background=walls[i].grad;wp.style.opacity='1';ov.style.opacity='1';document.getElementById('bg-canvas').style.opacity='.18';document.getElementById('winfo').textContent='Active: '+walls[i].label;document.querySelectorAll('.wthumb').forEach((t,j)=>t.classList.toggle('active',j===i))}
-function setWall(mode,btn){if(mode==='none'){document.getElementById('wallpaper').style.opacity='0';document.getElementById('wall-overlay').style.opacity='0';document.getElementById('bg-canvas').style.opacity='.4';document.getElementById('winfo').textContent='No wallpaper active';document.querySelectorAll('.wthumb').forEach(t=>t.classList.remove('active'));aWall=-1}else if(mode==='auto')applyWall(new Date().getDay()%walls.length);document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function applyWall(i){aWall=i;localStorage.setItem('wall',i);const wp=document.getElementById('wallpaper'),ov=document.getElementById('wall-overlay');wp.style.background=walls[i].grad;wp.style.opacity='1';ov.style.opacity='1';document.getElementById('bg-canvas').style.opacity='.18';document.getElementById('winfo').textContent='Active: '+walls[i].label;document.querySelectorAll('.wthumb').forEach((t,j)=>t.classList.toggle('active',j===i))}
+function setWall(mode,btn){if(mode==='none'){document.getElementById('wallpaper').style.opacity='0';document.getElementById('wall-overlay').style.opacity='0';document.getElementById('bg-canvas').style.opacity='.4';document.getElementById('winfo').textContent='No wallpaper active';document.querySelectorAll('.wthumb').forEach(t=>t.classList.remove('active'));aWall=-1;localStorage.removeItem('wall')}else if(mode==='auto')applyWall(new Date().getDay()%walls.length);document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+const savedWall=localStorage.getItem('wall');
+if(savedWall!==null){applyWall(parseInt(savedWall));document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('active'))}
 
 /* ======= THOUGHTS ======= */
 const thoughts=[{t:"Stillness is not the absence of movement — it's the presence of attention.",tag:"On focus"},{t:"The most important conversations happen in the quiet, with yourself.",tag:"On reflection"},{t:"Doing less, but with full presence, is the hardest and most valuable discipline.",tag:"On calm"},{t:"Late nights are honest. No performance, just thought.",tag:"On late nights"},{t:"You don't need to explain your pace to anyone.",tag:"On patience"},{t:"Some days the only progress is staying curious.",tag:"On growth"},{t:"Quiet people are often listening to what loud people miss.",tag:"On presence"}];
@@ -691,11 +744,13 @@ thoughts.forEach((_,i)=>{const d=document.createElement('div');d.className='tdot
 function rTh(){document.getElementById('thtext').textContent=thoughts[aTh].t;document.getElementById('thtag').textContent=thoughts[aTh].tag;document.getElementById('thdate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',month:'long',day:'numeric'});document.querySelectorAll('.tdot').forEach((d,i)=>d.classList.toggle('active',i===aTh))}
 rTh();
 
-/* ======= MOOD ======= */
+/* ======= MOOD (persisted) ======= */
 const moods=[{e:'🌙',d:'Calm & reflective'},{e:'⚡',d:'Energised & focused'},{e:'🌿',d:'Peaceful & slow'},{e:'🔥',d:'Creative & restless'},{e:'💭',d:'Deep in thought'}];
-const tm=moods[new Date().getDay()%moods.length];document.getElementById('moodval').textContent=tm.e;document.getElementById('moodd').textContent=tm.d;
-setTimeout(()=>document.getElementById('moodbar').classList.add('show'),4000);
-function setMood(e,d,btn){document.getElementById('moodval').textContent=e;document.getElementById('moodd').textContent=d;document.querySelectorAll('.mbm').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTimeout(()=>document.getElementById('moodbar').classList.remove('show'),1000)}
+const savedMood=JSON.parse(localStorage.getItem('mood')||'null');
+const tm=savedMood||moods[new Date().getDay()%moods.length];
+document.getElementById('moodval').textContent=tm.e;document.getElementById('moodd').textContent=tm.d;
+if(!savedMood)setTimeout(()=>document.getElementById('moodbar').classList.add('show'),4000);
+function setMood(e,d,btn){document.getElementById('moodval').textContent=e;document.getElementById('moodd').textContent=d;localStorage.setItem('mood',JSON.stringify({e,d}));document.querySelectorAll('.mbm').forEach(b=>b.classList.remove('active'));btn.classList.add('active');setTimeout(()=>document.getElementById('moodbar').classList.remove('show'),1000)}
 
 /* ======= WEATHER ======= */
 (async()=>{try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=27.2&longitude=76.3&current_weather=true&timezone=Asia%2FKolkata');const d=await r.json();const w=d.current_weather;const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',71:'❄️',80:'🌦️',95:'⛈️'};document.getElementById('wicon').textContent=ic[w.weathercode]||'🌡️';document.getElementById('wtemp').textContent=Math.round(w.temperature)+'°C';document.getElementById('wdesc').textContent=w.windspeed<20?'Light winds · Pleasant':'Windy · '+Math.round(w.windspeed)+'km/h';document.getElementById('wmeta').innerHTML=`Wind: ${Math.round(w.windspeed)}km/h<br>Updated: now`}catch{document.getElementById('wtemp').textContent='~38°C';document.getElementById('wdesc').textContent='Hot & dry · Summer';document.getElementById('wicon').textContent='☀️'}})();
@@ -709,7 +764,7 @@ const tracks=[
   {name:'On the Nature of Daylight', artist:'Max Richter',dur:'6:24',icon:'☀️', ytId:'rVN1B-tUpgs'},
   {name:'Spiegel im Spiegel',artist:"Arvo Pärt",         dur:'9:59', icon:'🪞', ytId:'TJ6Mzvh3XCc'},
 ];
-let ci=0,playing=true,elapsed=0,lastTs=null,rafM,volVal=70,mutedState=false;
+let ci=0,playing=false,elapsed=0,lastTs=null,rafM,volVal=70,mutedState=false;
 
 function buildPl(){
   document.getElementById('pllist').innerHTML=tracks.map((t,i)=>`
@@ -786,25 +841,19 @@ function togglePlay(){
 
 function nextT(){cancelAnimationFrame(rafM);loadT((ci+1)%tracks.length,playing)}
 function prevT(){cancelAnimationFrame(rafM);loadT((ci-1+tracks.length)%tracks.length,playing)}
-function setVol(v){volVal=parseInt(v);document.getElementById('volpct').textContent=v+'%';loadYT(tracks[ci].ytId,v,playing?1:0)}
-function toggleMute(){mutedState=!mutedState;document.getElementById('mute-btn').textContent=mutedState?'🔇':'🔊';const v=mutedState?0:volVal;document.getElementById('yt-frame').src=document.getElementById('yt-frame').src.replace(/volume=\d+/,'volume='+v)}
+function setVol(v){volVal=parseInt(v);document.getElementById('volpct').textContent=v+'%';if(playing)loadYT(tracks[ci].ytId,v,1)}
+function toggleMute(){mutedState=!mutedState;document.getElementById('mute-btn').textContent=mutedState?'🔇':'🔊';const f=document.getElementById('yt-frame');if(f.src)f.src=f.src.replace(/volume=\d+/,'volume='+(mutedState?0:volVal))}
 
 buildPl();
 
-// Auto-start on first user interaction (browser autoplay policy)
-let started=false;
-function tryStart(){
-  if(!started){
-    started=true;
-    loadT(0,true);
-  }
-}
-['click','keydown','scroll','touchstart'].forEach(ev=>document.addEventListener(ev,tryStart,{once:true,passive:true}));
-
-/* ======= GUESTBOOK ======= */
-let entries=[{name:'Aarav',msg:'This site feels like a breath of fresh air. Love the calm energy.',date:'Apr 2025'},{name:'Priya',msg:'Your thoughts on presence really hit different at 2am. Keep writing.',date:'Mar 2025'}];
-function renderGB(){document.getElementById('gbentries').innerHTML=entries.map(e=>`<div class="gbentry"><div class="gbname">${e.name}</div><div class="gbmsg">${e.msg}</div><div class="gbdate">${e.date}</div></div>`).join('')}
-function addEntry(){const n=document.getElementById('gbname').value.trim(),m=document.getElementById('gbmsg').value.trim();if(!n||!m)return;entries.unshift({name:n,msg:m,date:new Date().toLocaleDateString('en-IN',{month:'short',year:'numeric'})});document.getElementById('gbname').value='';document.getElementById('gbmsg').value='';renderGB()}
+/* ======= GUESTBOOK (persisted + XSS-safe) ======= */
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let entries=JSON.parse(localStorage.getItem('guestbook')||'null')||[
+  {name:'Aarav',msg:'This site feels like a breath of fresh air. Love the calm energy.',date:'Apr 2025'},
+  {name:'Priya',msg:'Your thoughts on presence really hit different at 2am. Keep writing.',date:'Mar 2025'}
+];
+function renderGB(){document.getElementById('gbentries').innerHTML=entries.map(e=>`<div class="gbentry"><div class="gbname">${esc(e.name)}</div><div class="gbmsg">${esc(e.msg)}</div><div class="gbdate">${esc(e.date)}</div></div>`).join('')}
+function addEntry(){const n=document.getElementById('gbname').value.trim(),m=document.getElementById('gbmsg').value.trim();if(!n||!m)return;entries.unshift({name:n,msg:m,date:new Date().toLocaleDateString('en-IN',{month:'short',year:'numeric'})});localStorage.setItem('guestbook',JSON.stringify(entries));document.getElementById('gbname').value='';document.getElementById('gbmsg').value='';renderGB()}
 renderGB();
 
 /* ======= RANDOM THOUGHT ======= */
